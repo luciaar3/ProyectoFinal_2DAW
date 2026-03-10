@@ -51,5 +51,25 @@ npm install
 # 5. Ejecutar las migraciones para crear las tablas en MySQL
 php artisan migrate
 
+## GitHub
+
+# 1. Antes de empezar a trabajar, me bajo lo último que hayan hecho mis compañeros
+git checkout main
+git pull origin main
+
+# 2. Creo una rama nueva para mi tarea (ejemplo: hacer el buscador)
+git checkout -b feature/buscador-cliente
+
+* La palabra "feature" en inglés significa literalmente "característica" o "funcionalidad".
+
+Cuando en Git escribimos el comando git checkout -b feature/buscador-cliente, lo que estamos haciendo es ponerle una "etiqueta" o "carpeta" al nombre de nuestra rama para tener el trabajo organizado. El guion o la barra diagonal (/) le dice a Git y a plataformas como GitHub cómo agrupar las ramas. *
+
+# ... (Aquí programan, guardan, prueban) ...
+
+# 3. Subo mi rama a GitHub
+git add .
+git commit -m "Añadido buscador por categorías"
+git push origin feature/buscador-cliente
+
 # 6. Levantar el servidor local
 php artisan serve
