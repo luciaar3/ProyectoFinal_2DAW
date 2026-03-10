@@ -51,7 +51,12 @@ npm install
 # 5. Ejecutar las migraciones para crear las tablas en MySQL
 php artisan migrate
 
+# 6. Levantar el servidor local
+php artisan serve
+```
+
 ## GitHub
+```bash
 
 # 1. Antes de empezar a trabajar, me bajo lo último que hayan hecho mis compañeros
 git checkout main
@@ -70,6 +75,3 @@ Cuando en Git escribimos el comando git checkout -b feature/buscador-cliente, lo
 git add .
 git commit -m "Añadido buscador por categorías"
 git push origin feature/buscador-cliente
-
-# 6. Levantar el servidor local
-php artisan serve
