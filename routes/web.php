@@ -18,7 +18,7 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 // cuentas (Protegidos por Auth)
 Route::middleware(['auth'])->group(function () {
-    Route::get('/account', [AuthController::class, 'accountCliente'])->name('account');
+    Route::get('/account', [AuthController::class, 'accountCliente'])->name('cliente.account');
     Route::get('/comerciante/account', [AuthController::class, 'accountComerciante'])->name('comerciante.account');
     Route::get('/admin/account', [AuthController::class, 'accountAdmin'])->name('admin.account');
     

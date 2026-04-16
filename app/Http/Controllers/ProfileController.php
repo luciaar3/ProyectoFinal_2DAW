@@ -28,11 +28,21 @@ class ProfileController extends Controller
         $user->email = $request->get('email');
 
 
-        if ($user->rol === 'Comerciante') {
-            $user->nombre_comercio = $request->get('nombre_comercio');
-            $user->cif = $request->get('cif');
-            $user->direccion = $request->get('direccion');
-        }
+        // Actualización de la tabla NEGOCIO_COMERCIO 
+        // Como ahora todos son vendedores ambulantes, actualizamos o creamos siempre.
+        // Asumimos que tienes la relación 'negocio()' definida en tu modelo User.
+        $user->negocio()->updateOrCreate(
+            ['ID_usuario' => $user->ID_usuario], // Buscamos por el ID del usuario
+            [
+                'Nombre'      => $request->get('nombre_negocio'),
+                'Descripcion' => $request->get('descripcion'),
+                'Ciudad'      => $request->get('ciudad'),
+                'Calle'       => $request->get('calle'),
+                'Numero'      => $request->get('numero'),
+                'Telefono'    => $request->get('telefono'),
+            ]
+        );
+        
         // Solo hasheamos y guardamos la contraseña si el usuario ha escrito algo
         if ($request->filled('password')) {
             $user->password = Hash::make($request->get('password'));

@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\NegocioComercio;
 use Illuminate\Http\RedirectResponse;
 use App\Http\Requests\RegistroRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
 class AuthController extends Controller
@@ -21,14 +23,30 @@ class AuthController extends Controller
     // 2. Procesa el formulario de registro
     public function registrar(RegistroRequest $request): RedirectResponse
     {
-        $user = new User();
-        $user->nombre = $request->get('nombre');
-        $user->primer_apellido = $request->get('primer_apellido');
-        $user->segundo_apellido = $request->get('segundo_apellido');
-        $user->email = $request->get('email');
-        $user->password = Hash::make($request->get('password'));
-        $user->rol = $request->get('rol');
-        $user->save();
+        // Usamos una transacción para que si el negocio falla, el usuario no se guarde
+        $user = DB::transaction(function () use ($request) {
+            $user = new User();
+            $user->nombre = $request->get('nombre');
+            $user->primer_apellido = $request->get('primer_apellido');
+            $user->segundo_apellido = $request->get('segundo_apellido');
+            $user->email = $request->get('email');
+            $user->password = Hash::make($request->get('password'));
+            $user->rol = $request->get('rol'); // 'Cliente' o 'Comerciante'
+            $user->save();
+
+            if ($user->rol === 'Comerciante') {
+                $negocio = new NegocioComercio();
+                $negocio->ID_usuario = $user->id;
+                $negocio->Nombre = $request->get('nombre_negocio');
+                $negocio->Descripcion = $request->get('descripcion');
+                $negocio->Ciudad = $request->get('ciudad');
+                $negocio->Numero_puesto = $request->get('numero_puesto');
+                $negocio->Telefono = $request->get('telefono');
+                $negocio->save();
+            }
+
+            return $user;
+        });
 
         Auth::login($user);
 
@@ -37,7 +55,7 @@ class AuthController extends Controller
             return redirect()->route('comerciante.account');
         }
         
-        return redirect()->route('account');
+        return redirect()->route('cliente.account');
     }
 
     // 3. Muestra el formulario de login (Con comprobación previa)

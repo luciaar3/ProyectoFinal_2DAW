@@ -31,7 +31,7 @@
                         
                         <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0 mt-2" aria-labelledby="navbarDropdown">
                             <li>
-                                <a class="dropdown-item py-2 fw-semibold" href="{{ Auth::user()->rol === 'Cliente' ? route('account') : (Auth::user()->rol === 'Comerciante' ? route('comerciante.account') : route('admin.account')) }}">
+                                <a class="dropdown-item py-2 fw-semibold" href="{{ Auth::user()->rol === 'Cliente' ? route('cliente.account') : (Auth::user()->rol === 'Comerciante' ? route('comerciante.account') : route('admin.account')) }}">
                                     Mi Panel
                                 </a>
                             </li>

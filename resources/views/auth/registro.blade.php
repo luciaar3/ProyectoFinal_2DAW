@@ -62,23 +62,37 @@
                     </div>
 
                     <div id="campos-comerciante" style="display: none;">
-                    <hr>
+                        <hr>
                         <h5 class="text-primary mb-3">Datos del Comercio</h5>
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Nombre del Negocio</label>
-                                <input type="text" name="nombre_comercio" class="form-control">
+                                <input type="text" name="nombre_negocio" class="form-control @error('nombre_negocio') is-invalid @enderror" value="{{ old('nombre_negocio') }}">
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label class="form-label">CIF / NIF</label>
-                                <input type="text" name="cif" class="form-control">
+                                <label class="form-label">Teléfono de contacto</label>
+                                <input type="text" name="telefono" class="form-control" 
+                                    inputmode="numeric" pattern="[0-9]*" placeholder="Ej: 600123456" 
+                                    value="{{ old('telefono') }}">
                             </div>
                             <div class="col-md-12 mb-3">
-                                <label class="form-label">Dirección (o zona de venta si es ambulante)</label>
-                                <input type="text" name="direccion" class="form-control">
+                                <label class="form-label">Descripción</label>
+                                <textarea name="descripcion" class="form-control @error('descripcion') is-invalid @enderror">{{ old('descripcion') }}</textarea>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Ciudad</label>
+                                <input type="text" name="ciudad" class="form-control @error('ciudad') is-invalid @enderror" value="{{ old('ciudad') }}">
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label class="form-label">Nº de Puesto</label>
+                                <input type="text" 
+                                    name="numero_puesto" 
+                                    class="form-control" 
+                                    value="{{ old('numero_puesto') }}" 
+                                    placeholder="Ej: 42">
                             </div>
                         </div>
-                </div>
+                    </div>
 
                     <div class="d-grid gap-2">
                         <button type="submit" class="btn btn-primary btn-lg">Registrar cuenta</button>

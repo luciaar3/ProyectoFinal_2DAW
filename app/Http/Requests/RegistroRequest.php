@@ -21,14 +21,24 @@ class RegistroRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            'nombre' => 'required|string|max:255',
-            'primer_apellido' => 'required|string|max:255',
-            'segundo_apellido' => 'nullable|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8|confirmed',
-            'rol' => 'required|in:Comerciante,Cliente',
-        ];
+        $rules = [
+        'nombre'           => ['required', 'string', 'max:255'],
+        'primer_apellido'  => ['required', 'string', 'max:255'],
+        'email'            => ['required', 'string', 'email', 'max:255', 'unique:users'],
+        'password'         => ['required', 'string', 'min:8', 'confirmed'],
+        'rol'              => ['required', 'in:Cliente,Comerciante'],
+    ];
+
+    // Validación condicional: solo si es Comerciante
+    if ($this->rol === 'Comerciante') {
+        $rules['nombre_negocio'] = ['required', 'string', 'min:2', 'max:50'];
+        $rules['descripcion']    = ['required', 'string', 'min:10', 'max:500'];
+        $rules['ciudad']         = ['required', 'string'];
+        $rules['numero_puesto']  = ['required','string', 'max:20'];
+        $rules['telefono']       = ['required', 'integer'];
+    }
+
+    return $rules;
     }
 
     public function messages(): array
@@ -62,6 +72,8 @@ class RegistroRequest extends FormRequest
             // Mensajes para el Rol
             'rol.required' => 'Debes seleccionar qué tipo de cuenta deseas crear.',
             'rol.in' => 'El tipo de cuenta seleccionado no es válido. Debe ser "Cliente" o "Comerciante".',
+
+            'numero_puesto.required' => 'El número de puesto es obligatorio para comerciantes.',
         ];
     }
 }

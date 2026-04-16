@@ -48,4 +48,8 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function negocio() {
+        return $this->hasOne(NegocioComercio::class, 'ID_usuario', 'ID_usuario');
+    }
 }
