@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+
 use Illuminate\Validation\Rule;
 
 class ProfileRequest extends FormRequest
@@ -22,10 +23,13 @@ class ProfileRequest extends FormRequest
      */
     public function rules(): array
     {
+
+        // 1. Reglas base para TODOS los usuario
         return [
             'nombre'           => ['required', 'string', 'max:255'],
             'primer_apellido'  => ['required', 'string', 'max:255'],
             'segundo_apellido' => ['nullable', 'string', 'max:255'],
+
             // Usamos $this->user()?->id para que funcione tanto en registro (null) como en edición
             'email'            => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($this->user()?->id)],
             'password'         => [$this->isMethod('post') ? 'required' : 'nullable', 'string', 'min:8', 'confirmed'],
@@ -37,6 +41,7 @@ class ProfileRequest extends FormRequest
             'numero_puesto'    => ['required','string', 'max:20'],
             'telefono'         => ['required', 'integer'],
         ];
+
     }
 
     public function messages(): array
@@ -56,6 +61,7 @@ class ProfileRequest extends FormRequest
             'numero_puesto.required'           => 'El número es obligatorio.',
             'telefono.required'         => 'El teléfono es obligatorio.',
             'telefono.integer'          => 'El teléfono debe ser un número válido.',
+
         ];
     }
 }
