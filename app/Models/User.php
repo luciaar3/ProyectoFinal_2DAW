@@ -18,9 +18,12 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
-        'name',
+        'nombre',
+        'primer_apellido',
+        'segundo_apellido',
         'email',
         'password',
+        'rol',
     ];
 
     /**
@@ -44,5 +47,9 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function negocio() {
+        return $this->hasOne(NegocioComercio::class, 'ID_usuario', 'ID_usuario');
     }
 }
