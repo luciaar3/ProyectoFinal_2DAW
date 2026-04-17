@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
-use App\Models\NegocioComercio;
+use App\Models\Negocio;
 use Illuminate\Http\RedirectResponse;
 use App\Http\Requests\RegistroRequest;
 use Illuminate\Support\Facades\Auth;
@@ -35,13 +35,13 @@ class AuthController extends Controller
             $user->save();
 
             if ($user->rol === 'Comerciante') {
-                $negocio = new NegocioComercio();
-                $negocio->ID_usuario = $user->id;
-                $negocio->Nombre = $request->get('nombre_negocio');
-                $negocio->Descripcion = $request->get('descripcion');
-                $negocio->Ciudad = $request->get('ciudad');
-                $negocio->Numero_puesto = $request->get('numero_puesto');
-                $negocio->Telefono = $request->get('telefono');
+                $negocio = new Negocio();
+                $negocio->user_id = $user->id; // Ajustado a minúsculas
+                $negocio->nombre = $request->get('nombre_negocio');
+                $negocio->descripcion = $request->get('descripcion');
+                $negocio->nif = $request->get('nif'); 
+                $negocio->numero_permiso = $request->get('numero_permiso');
+                $negocio->telefono = $request->get('telefono');
                 $negocio->save();
             }
 
@@ -114,10 +114,6 @@ class AuthController extends Controller
     // 6. vistas
     public function accountCliente(): View {
         return view('cliente.account');
-    }
-
-    public function accountComerciante(): View {
-        return view('comerciante.account');
     }
 
     public function accountAdmin(): View {

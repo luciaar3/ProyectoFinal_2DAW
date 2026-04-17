@@ -11,16 +11,24 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('horarios_comercio', function (Blueprint $table) {
+        Schema::create('horario_negocio', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('ID_negocio');
-            $table->enum('dia_semana', ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo']);
-            $table->string('ubicacion_ruta')->nullable();
-            $table->time('hora_inicio')->nullable();
-            $table->time('hora_fin')->nullable();
+            $table->foreignId('negocio_id')->constrained('negocio')->onDelete('cascade');
+            // Tiempo
+            $table->enum('dia', ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo']);
+            $table->time('apertura');
+            $table->time('cierre');
             $table->boolean('festivo_cerrado')->default(false);
 
-            $table->foreign('ID_negocio')->references('ID_negocio')->on('negocio_comercios')->onDelete('cascade');
+            // Ubicación del puesto (donde se mueve el negocio)
+            $table->string('poblacion'); // Ej: Valencia, Torrent...
+            $table->string('ubicacion'); // Ej: Mercadillo de Nazaret
+            
+            
+            // Para el mapa (muy recomendado)
+            $table->decimal('latitud', 10, 8)->nullable();
+            $table->decimal('longitud', 11, 8)->nullable();
+
             $table->timestamps();
         });
     }
@@ -30,6 +38,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('horarios_comercio');
+        Schema::dropIfExists('horario_negocio');
     }
 };
