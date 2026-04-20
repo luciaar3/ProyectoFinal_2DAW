@@ -37,7 +37,7 @@ class AuthController extends Controller
             if ($user->rol === 'Comerciante') {
                 $negocio = new Negocio();
                 $negocio->user_id = $user->id; // Ajustado a minúsculas
-                $negocio->nombre = $request->get('nombre_negocio');
+                $negocio->nombre = $request->get('nombre');
                 $negocio->descripcion = $request->get('descripcion');
                 $negocio->nif = $request->get('nif'); 
                 $negocio->numero_permiso = $request->get('numero_permiso');

@@ -61,35 +61,40 @@
                         @error('rol') <div class="invalid-feedback">{{ $message }}</div> @enderror
                     </div>
 
-                    <div id="campos-comerciante" style="display: none;">
+                    <div id="campos-comerciante" style="display: {{ old('rol') == 'Comerciante' ? 'block' : 'none' }};">
                         <hr>
                         <h5 class="text-primary mb-3">Datos del Comercio</h5>
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Nombre del Negocio</label>
-                                <input type="text" name="nombre_negocio" class="form-control @error('nombre_negocio') is-invalid @enderror" value="{{ old('nombre_negocio') }}">
+                                <input type="text" name="nombre" class="form-control @error('nombre') is-invalid @enderror" value="{{ old('nombre') }}">
+                                @error('nombre') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">NIF / DNI</label>
+                                <input type="text" name="nif" class="form-control @error('nif') is-invalid @enderror" placeholder="Ej: 12345678X" value="{{ old('nif') }}">
+                                @error('nif') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Número de Permiso</label>
+                                <input type="number" name="numero_permiso" class="form-control @error('numero_permiso') is-invalid @enderror" placeholder="Nº de licencia" value="{{ old('numero_permiso') }}">
+                                @error('numero_permiso') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                            </div>
+
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Teléfono de contacto</label>
-                                <input type="text" name="telefono" class="form-control" 
+                                <input type="text" name="telefono" class="form-control @error('telefono') is-invalid @enderror" 
                                     inputmode="numeric" pattern="[0-9]*" placeholder="Ej: 600123456" 
                                     value="{{ old('telefono') }}">
+                                @error('telefono') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
+
                             <div class="col-md-12 mb-3">
-                                <label class="form-label">Descripción</label>
-                                <textarea name="descripcion" class="form-control @error('descripcion') is-invalid @enderror">{{ old('descripcion') }}</textarea>
-                            </div>
-                            <div class="col-md-4 mb-3">
-                                <label class="form-label">Ciudad</label>
-                                <input type="text" name="ciudad" class="form-control @error('ciudad') is-invalid @enderror" value="{{ old('ciudad') }}">
-                            </div>
-                            <div class="col-md-3 mb-3">
-                                <label class="form-label">Nº de Puesto</label>
-                                <input type="text" 
-                                    name="numero_puesto" 
-                                    class="form-control" 
-                                    value="{{ old('numero_puesto') }}" 
-                                    placeholder="Ej: 42">
+                                <label class="form-label">Descripción del Negocio</label>
+                                <textarea name="descripcion" class="form-control @error('descripcion') is-invalid @enderror" placeholder="Cuéntanos qué vendes...">{{ old('descripcion') }}</textarea>
+                                @error('descripcion') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
                         </div>
                     </div>

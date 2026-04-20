@@ -1,9 +1,10 @@
 <?php
 
 namespace App\Http\Controllers;
-use Illuminate\Support\Facades\Auth;
 
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\NegocioRequest;
+use App\Http\Requests\ImagenesNegocioRequest;
 
 class ComercianteController extends Controller
 {
@@ -23,19 +24,29 @@ class ComercianteController extends Controller
     }
 
     // Procesa la actualización
-    public function update(Request $request)
-{
-    $negocio = Auth::user()->negocio;
-    
-    $validated = $request->validate([
-        'nombre'         => 'required|string|max:50',
-        'descripcion'    => 'required|string|max:500',
-        'nif'            => 'required|string|size:9|unique:negocio,nif,' . $negocio->id,
-        'numero_permiso' => 'required|integer',
-        'telefono'       => 'required|integer',
-    ]);
+    public function update(NegocioRequest $request)
+    {
+        $negocio = Auth::user()->negocio;
+        $datos = $request->validated(); // Aquí ya vienen solo los datos limpios y validados
 
-    $negocio->update($validated);
-    return redirect()->route('comerciante.account');
-}
+        if ($request->hasFile('imagen')) {
+        if ($negocio->imagen) Storage::disk('public')->delete($negocio->imagen);
+        $datos['imagen'] = $request->file('imagen')->store('negocios/logos', 'public');
+    }
+
+        $negocio->update($datos);
+        return redirect()->route('comerciante.account');
+    }
+
+    public function storeImagenes(ImagenesNegocioRequest $request) 
+    {
+        $negocio = auth()->user()->negocio;
+
+        foreach ($request->file('fotos') as $foto) {
+            $ruta = $foto->store('negocios/galeria', 'public');
+            $negocio->imagenes()->create(['ruta' => $ruta]);
+        }
+
+        return back();
+    }
 }

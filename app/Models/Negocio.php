@@ -7,11 +7,31 @@ use Illuminate\Database\Eloquent\Model;
 class Negocio extends Model
 {
     protected $table = 'negocio';
-    protected $primaryKey = 'ID_negocio';
     
     // Los campos que se pueden rellenar
     protected $fillable = [
-        'ID_usuario', 'nombre', 'descripcion', 'horario', 
-        'ciudad', 'numero_permiso', 'nif', 'telefono', 'imagen'
+        'user_id',
+        'nombre', 
+        'descripcion', 
+        'numero_permiso', 
+        'nif', 
+        'telefono', 
+        'imagen'
     ];
+
+    public function user()
+    {
+        // Esto soluciona el error del ComercianteController
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    // 4. DEFINIMOS LA RELACIÓN CON LOS HORARIOS (Rutas ambulantes)
+    public function horarios()
+    {
+        return $this->hasMany(Horario::class, 'negocio_id');
+    }
+
+    public function imagenes() {
+    return $this->hasMany(ImagenNegocio::class, 'negocio_id');
+}
 }

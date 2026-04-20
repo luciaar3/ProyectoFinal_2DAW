@@ -50,6 +50,6 @@ class User extends Authenticatable
     }
 
     public function negocio() {
-        return $this->hasOne(Negocio::class, 'ID_usuario', 'id');
+        return $this->hasOne(Negocio::class, 'user_id', 'id');
     }
 }
