@@ -32,6 +32,8 @@ class NegocioRequest extends FormRequest
             'numero_permiso' => ['required', 'integer'],
             'nif'            => ['required', 'string', 'size:9', 'unique:negocio,nif,' . $negocioId],
             'imagen'         => ['nullable', 'image', 'mimes:jpeg,png,jpg,webp', 'max:2048'],
+            'imagenes_galeria'   => ['nullable', 'array'],
+            'imagenes_galeria.*' => ['image', 'mimes:jpeg,png,jpg,webp', 'max:2048'],
         ];
     }
 

@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\NegocioRequest;
-use App\Http\Requests\ImagenesNegocioRequest;
+use App\Models\ImagenNegocio;
 
 class ComercianteController extends Controller
 {
@@ -27,26 +28,45 @@ class ComercianteController extends Controller
     public function update(NegocioRequest $request)
     {
         $negocio = Auth::user()->negocio;
-        $datos = $request->validated(); // Aquí ya vienen solo los datos limpios y validados
-
+        
+        $negocio->nombre = $request->nombre;
+        $negocio->nif = $request->nif;
+        $negocio->telefono = $request->telefono;
+        $negocio->descripcion = $request->descripcion;
+        $negocio->numero_permiso = $request->numero_permiso;
+        //logo
         if ($request->hasFile('imagen')) {
-        if ($negocio->imagen) Storage::disk('public')->delete($negocio->imagen);
-        $datos['imagen'] = $request->file('imagen')->store('negocios/logos', 'public');
-    }
+            if ($negocio->imagen) {
+                Storage::disk('public')->delete($negocio->imagen);
+            }
+            $negocio->imagen = $request->file('imagen')->store('negocios/logos', 'public');
+        }
+        $negocio->save();
+        
+        //galeria del negocio (carrusel)
+        if ($request->hasFile('imagenes_galeria')) {
+            foreach ($request->file('imagenes_galeria') as $foto) {
+                $ruta = $foto->store('negocios/galeria', 'public');
+                
+                // Creamos el registro en la tabla
+                $negocio->imagenes()->create([
+                    'ruta' => $ruta,
+                    'orden' => 0
+                ]);
+            }
+        }
 
-        $negocio->update($datos);
         return redirect()->route('comerciante.account');
     }
 
-    public function storeImagenes(ImagenesNegocioRequest $request) 
+    public function destroyImagen(ImagenNegocio $imagen) 
     {
-        $negocio = auth()->user()->negocio;
-
-        foreach ($request->file('fotos') as $foto) {
-            $ruta = $foto->store('negocios/galeria', 'public');
-            $negocio->imagenes()->create(['ruta' => $ruta]);
+        // Solo puede borrar si es su propio negocio
+        if ($imagen->negocio_id === auth()->user()->negocio->id) {
+            Storage::disk('public')->delete($imagen->ruta);
+            $imagen->delete();
+            return back();
         }
-
         return back();
     }
 }
