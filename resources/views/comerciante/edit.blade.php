@@ -5,7 +5,7 @@
 @section('content')
 <style>
     .transition { transition: all 0.3s ease; }
-    .hover-shadow:hover { 
+    .hover-shadow:hover {
         transform: translateY(-2px);
         box-shadow: 0 .5rem 1rem rgba(0,0,0,.08)!important;
         border-color: #0d6efd !important;
@@ -28,12 +28,12 @@
                 <div class="card border-0 shadow-sm mb-4" style="border-radius: 20px;">
                     <div class="card-body p-4">
                         <h4 class="mb-4 fw-bold text-primary">Configuración del Negocio</h4>
-                        
+
                         {{-- Nombre --}}
                         <div class="mb-3">
                             <label class="form-label fw-semibold">Nombre Comercial</label>
-                            <input type="text" name="nombre" id="inputNombre" 
-                                class="form-control rounded-pill @error('nombre') is-invalid @enderror" 
+                            <input type="text" name="nombre" id="inputNombre"
+                                class="form-control rounded-pill @error('nombre') is-invalid @enderror"
                                 value="{{ old('nombre', $negocio->nombre) }}">
                             @error('nombre')
                                 <div class="invalid-feedback ms-2">{{ $message }}</div>
@@ -44,8 +44,8 @@
                             {{-- NIF --}}
                             <div class="col-md-6 mb-3">
                                 <label class="form-label fw-semibold">NIF</label>
-                                <input type="text" name="nif" 
-                                    class="form-control rounded-pill @error('nif') is-invalid @enderror" 
+                                <input type="text" name="nif"
+                                    class="form-control rounded-pill @error('nif') is-invalid @enderror"
                                     value="{{ old('nif', $negocio->nif) }}">
                                 @error('nif')
                                     <div class="invalid-feedback ms-2">{{ $message }}</div>
@@ -54,8 +54,8 @@
                             {{-- Teléfono --}}
                             <div class="col-md-6 mb-3">
                                 <label class="form-label fw-semibold">Teléfono</label>
-                                <input type="text" name="telefono" id="inputTelefono" 
-                                    class="form-control rounded-pill @error('telefono') is-invalid @enderror" 
+                                <input type="text" name="telefono" id="inputTelefono"
+                                    class="form-control rounded-pill @error('telefono') is-invalid @enderror"
                                     value="{{ old('telefono', $negocio->telefono) }}">
                                 @error('telefono')
                                     <div class="invalid-feedback ms-2">{{ $message }}</div>
@@ -66,9 +66,9 @@
                         {{-- Permiso (Solo lectura) --}}
                         <div class="mb-3">
                             <label class="form-label fw-semibold text-muted">Número de Permiso Municipal (No editable)</label>
-                            <input type="text" name="numero_permiso" 
-                                class="form-control rounded-pill" 
-                                value="{{ $negocio->numero_permiso }}" 
+                            <input type="text" name="numero_permiso"
+                                class="form-control rounded-pill"
+                                value="{{ $negocio->numero_permiso }}"
                                 readonly>
                             <div class="form-text ms-2 small">Este número está vinculado a tu licencia y no se puede cambiar.</div>
                         </div>
@@ -76,8 +76,8 @@
                         {{-- Descripción --}}
                         <div class="mb-3">
                             <label class="form-label fw-semibold">Descripción para Clientes</label>
-                            <textarea name="descripcion" id="inputDesc" 
-                                class="form-control @error('descripcion') is-invalid @enderror" 
+                            <textarea name="descripcion" id="inputDesc"
+                                class="form-control @error('descripcion') is-invalid @enderror"
                                 style="border-radius: 15px;" rows="4">{{ old('descripcion', $negocio->descripcion) }}</textarea>
                             @error('descripcion')
                                 <div class="invalid-feedback ms-2">{{ $message }}</div>
@@ -87,7 +87,7 @@
                         {{-- Logo --}}
                         <div class="mb-4">
                             <label class="form-label fw-semibold">Logo Principal</label>
-                            <input type="file" name="imagen" 
+                            <input type="file" name="imagen"
                                 class="form-control rounded-pill shadow-sm @error('imagen') is-invalid @enderror">
                             @error('imagen')
                                 <div class="invalid-feedback ms-2">{{ $message }}</div>
@@ -97,7 +97,7 @@
                         {{-- Galería --}}
                         <div class="mb-4">
                             <label class="form-label fw-bold">Añadir Fotos a la Galería</label>
-                            <input type="file" name="imagenes_galeria[]" id="inputGaleria" 
+                            <input type="file" name="imagenes_galeria[]" id="inputGaleria"
                                 class="form-control rounded-pill @error('imagenes_galeria*') is-invalid @enderror" multiple>
                             <div class="form-text ms-2 small">Puedes seleccionar varias fotos a la vez.</div>
                             @error('imagenes_galeria*')
@@ -110,12 +110,12 @@
                         <div class="d-flex flex-wrap gap-3 mb-4">
                             @foreach($negocio->imagenes as $img)
                                 <div class="position-relative shadow-sm rounded" style="width: 80px; height: 80px;">
-                                    <img src="{{ asset('storage/' . $img->ruta) }}" 
-                                        class="rounded w-100 h-100" 
+                                    <img src="{{ asset('storage/' . $img->ruta) }}"
+                                        class="rounded w-100 h-100"
                                         style="object-fit: cover;">
-                                    
-                                    <button type="button" 
-                                            onclick="confirmDelete('{{ route('comerciante.imagen.destroy', $img->id) }}')" 
+
+                                    <button type="button"
+                                            onclick="confirmDelete('{{ route('comerciante.imagen.destroy', $img->id) }}')"
                                             class="btn btn-danger btn-sm position-absolute top-0 start-100 translate-middle rounded-circle p-0 d-flex align-items-center justify-content-center"
                                             style="width: 20px; height: 20px; border: 2px solid white;"
                                             title="Eliminar foto">
@@ -154,27 +154,27 @@
                                         <div class="col-md-5">
                                             <div class="row g-2">
                                                 <div class="col-6">
-                                                    <input type="text" name="horarios[{{ $dia }}][poblacion]" 
+                                                    <input type="text" name="horarios[{{ $dia }}][poblacion]"
                                                            id="pob-{{ $dia }}" {{-- ID para autocompletar --}}
-                                                           class="form-control form-control-sm rounded-pill" 
-                                                           placeholder="Población" 
+                                                           class="form-control form-control-sm rounded-pill"
+                                                           placeholder="Población"
                                                            value="{{ old("horarios.$dia.poblacion", $h->poblacion ?? '') }}">
                                                 </div>
                                                 <div class="col-6">
-                                                    <input type="text" name="horarios[{{ $dia }}][ubicacion]" 
+                                                    <input type="text" name="horarios[{{ $dia }}][ubicacion]"
                                                            id="ubi-{{ $dia }}" {{-- ID para autocompletar --}}
-                                                           class="form-control form-control-sm rounded-pill" 
-                                                           placeholder="Ubicación o Mercadillo" 
+                                                           class="form-control form-control-sm rounded-pill"
+                                                           placeholder="Ubicación o Mercadillo"
                                                            value="{{ old("horarios.$dia.ubicacion", $h->ubicacion ?? '') }}">
                                                 </div>
                                             </div>
                                             {{-- Campos ocultos para coordenadas --}}
                                             <input type="hidden" name="horarios[{{ $dia }}][latitud]" id="lat-{{ $dia }}" value="{{ old("horarios.$dia.latitud", $h->latitud ?? '') }}">
                                             <input type="hidden" name="horarios[{{ $dia }}][longitud]" id="lng-{{ $dia }}" value="{{ old("horarios.$dia.longitud", $h->longitud ?? '') }}">
-                                            
+
                                             {{-- Botón Mapa --}}
                                             <button type="button" class="btn btn-link btn-sm p-0 mt-1 text-decoration-none small" onclick="abrirMapa('{{ $dia }}')">
-                                                <i class="fas fa-map-marker-alt me-1 text-danger"></i> 
+                                                <i class="fas fa-map-marker-alt me-1 text-danger"></i>
                                                 <span id="status-{{ $dia }}">{{ (isset($h->latitud) && $h->latitud) ? 'Ubicación fijada' : 'Fijar en mapa' }}</span>
                                             </button>
                                         </div>
@@ -182,12 +182,12 @@
                                         {{-- Horas --}}
                                         <div class="col-md-3">
                                             <div class="input-group input-group-sm">
-                                                <input type="time" name="horarios[{{ $dia }}][apertura]" 
-                                                       class="form-control" 
+                                                <input type="time" name="horarios[{{ $dia }}][apertura]"
+                                                       class="form-control"
                                                        value="{{ old("horarios.$dia.apertura", $h ? \Carbon\Carbon::parse($h->apertura)->format('H:i') : '') }}">
                                                 <span class="input-group-text bg-light border-0 small">a</span>
-                                                <input type="time" name="horarios[{{ $dia }}][cierre]" 
-                                                       class="form-control" 
+                                                <input type="time" name="horarios[{{ $dia }}][cierre]"
+                                                       class="form-control"
                                                        value="{{ old("horarios.$dia.cierre", $h ? \Carbon\Carbon::parse($h->cierre)->format('H:i') : '') }}">
                                             </div>
                                         </div>
@@ -195,7 +195,7 @@
                                         {{-- Festivo --}}
                                         <div class="col-md-2 text-end">
                                             <div class="form-check form-switch ms-2 d-inline-block">
-                                                <input class="form-check-input" type="checkbox" name="horarios[{{ $dia }}][festivo_cerrado]" 
+                                                <input class="form-check-input" type="checkbox" name="horarios[{{ $dia }}][festivo_cerrado]"
                                                        {{ (old("horarios.$dia.festivo_cerrado", $h->festivo_cerrado ?? false)) ? 'checked' : '' }}>
                                                 <label class="small text-muted mb-0">Festivo</label>
                                             </div>
@@ -218,7 +218,7 @@
             <div class="col-lg-5">
                 <div class="sticky-top" style="top: 20px;">
                     <h5 class="text-secondary mb-3 ms-2 small fw-bold text-uppercase">Vista previa para clientes</h5>
-                    
+
                     <div class="card border-0 shadow-lg overflow-hidden" style="border-radius: 25px;">
                         <div class="position-relative">
                             {{-- Carousel Preview --}}
@@ -248,7 +248,7 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                         {{-- Textos Preview --}}
                         <div style="margin-top: 55px;"></div>
                         <div class="card-body p-4 text-center">
@@ -286,7 +286,7 @@
             <div class="modal-body">
                 {{-- Contenedor del Mapa --}}
                 <div id="mapContainer" style="height: 450px; width: 100%; border-radius: 20px; border: 2px solid #f8f9fa;"></div>
-                
+
                 <div class="alert alert-info mt-3 border-0 small d-flex align-items-center" style="border-radius: 12px; background-color: #f0f7ff; color: #0056b3;">
                     <i class="fas fa-info-circle me-2 fa-lg"></i>
                     <div>Haz clic en el mapa para marcar el punto exacto donde montas tu puesto este día. Los campos de población y dirección se intentarán rellenar automáticamente.</div>
@@ -401,7 +401,7 @@
         // Guardar coordenadas en inputs ocultos
         document.getElementById(`lat-${currentDia}`).value = lat;
         document.getElementById(`lng-${currentDia}`).value = lng;
-        
+
         // Actualizar estado visual
         document.getElementById(`status-${currentDia}`).innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i>Buscando dirección...';
 
@@ -422,7 +422,7 @@
             if (data && data.address) {
                 // 1. Extraer Población (Nominatim usa jerarquías city, town, village, municipality...)
                 const poblacion = data.address.city || data.address.town || data.address.village || data.address.municipality || data.address.hamlet || "";
-                
+
                 // 2. Extraer Dirección (Calle + Número)
                 const calle = data.address.road || data.address.pedestrian || "";
                 const numero = data.address.house_number || "";
@@ -435,7 +435,7 @@
                 if (direccionFormateada) {
                     document.getElementById(`ubi-${currentDia}`).value = direccionFormateada;
                 }
-                
+
                 document.getElementById(`status-${currentDia}`).innerHTML = '<i class="fas fa-check-circle text-success me-1"></i>Ubicación y dirección fijadas';
             } else {
                  document.getElementById(`status-${currentDia}`).innerText = "Ubicación fijada (dirección no encontrada)";
