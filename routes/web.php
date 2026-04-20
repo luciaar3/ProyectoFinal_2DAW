@@ -5,6 +5,7 @@ use App\Http\Controllers\IndexController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ComercianteController;
+use App\Http\Controllers\NegocioController;
 
 Route::get('/', IndexController::class)->name('index');
 
@@ -26,6 +27,11 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/comerciante/editar-negocio', [ComercianteController::class, 'edit'])->name('comerciante.edit');
     Route::put('/comerciante/editar-negocio', [ComercianteController::class, 'update'])->name('comerciante.update');
     Route::get('/comerciante/account', [ComercianteController::class, 'account'])->name('comerciante.account');
+    // Rutas de negocio
+    Route::get('/buscar', [NegocioController::class, 'index'])->name('negocios.index');
+    Route::get('/negocio/{negocio}', [NegocioController::class, 'show'])->name('negocios.show');
+
+    // admin
     Route::get('/admin/account', [AuthController::class, 'accountAdmin'])->name('admin.account');
     
     Route::get('/mi-perfil', [ProfileController::class, 'editProfile'])->name('profile.edit');

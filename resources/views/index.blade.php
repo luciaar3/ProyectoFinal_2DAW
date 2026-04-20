@@ -124,6 +124,18 @@
         Descubre productos cerca de ti o gestiona el inventario de tu negocio desde un solo lugar.
     </p>
 
+    <div class="mx-auto mb-5" style="max-width: 600px;">
+        <form action="{{ route('negocios.index') }}" method="GET" class="input-group input-group-lg shadow-sm rounded-pill overflow-hidden border">
+            <input type="text" name="search" class="form-control border-0 px-4" placeholder="¿Qué buscas? (Ej: Frutería, Madrid, Pan...)" aria-label="Buscar negocios">
+            <button class="btn btn-primary px-4" type="submit" style="background-color: #7b52d9; border: none;">
+                <i class="bi bi-search"></i>
+            </button>
+        </form>
+        <div class="mt-2 text-start ms-4">
+            <small class="text-muted italic">Prueba con: "Panadería", "Valencia" o "Frutas Paco"</small>
+        </div>
+    </div>
+
     <div class="row g-4 mt-4 justify-content-center align-items-center">
         
         <div class="col-lg-4 col-md-6 z-1">
