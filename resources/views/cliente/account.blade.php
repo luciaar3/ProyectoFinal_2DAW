@@ -23,6 +23,14 @@
                 <button class="btn btn-outline-primary">Ver reservas</button>
             </div>
         </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card shadow-sm text-center p-3">
+                <h4>Productos favoritos</h4>
+                <p>Échale un ojo a tus productos favoritos.</p>
+                <button class="btn btn-outline-primary">Ver favoritos</button>
+            </div>
+        </div>
     </div>
 </div>
 @endsection
