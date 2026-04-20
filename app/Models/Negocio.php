@@ -28,7 +28,7 @@ class Negocio extends Model
     // 4. DEFINIMOS LA RELACIÓN CON LOS HORARIOS (Rutas ambulantes)
     public function horarios()
     {
-        return $this->hasMany(Horario::class, 'negocio_id');
+        return $this->hasMany(HorarioNegocio::class, 'negocio_id');
     }
 
     public function imagenes() {

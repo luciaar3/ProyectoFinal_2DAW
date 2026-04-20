@@ -33,7 +33,7 @@ class ComercianteController extends Controller
         $negocio->nif = $request->nif;
         $negocio->telefono = $request->telefono;
         $negocio->descripcion = $request->descripcion;
-        $negocio->numero_permiso = $request->numero_permiso;
+        
         //logo
         if ($request->hasFile('imagen')) {
             if ($negocio->imagen) {
@@ -55,6 +55,29 @@ class ComercianteController extends Controller
                 ]);
             }
         }
+
+        if ($request->has('horarios')) {
+        foreach ($request->horarios as $dia => $datosDia) {
+            // Guardamos solo si hay población o apertura indicada
+            if (!empty($datosDia['poblacion']) || !empty($datosDia['apertura'])) {
+                $negocio->horarios()->updateOrCreate(
+                    ['dia' => $dia],
+                    [
+                        'poblacion'       => $datosDia['poblacion'],
+                        'ubicacion'       => $datosDia['ubicacion'],
+                        'latitud'         => $datosDia['latitud'] ?? null,
+                        'longitud'        => $datosDia['longitud'] ?? null,
+                        'apertura'        => $datosDia['apertura'],
+                        'cierre'          => $datosDia['cierre'],
+                        'festivo_cerrado' => isset($datosDia['festivo_cerrado']), 
+                    ]
+                );
+            } else {
+                // Si el usuario borra los datos de un día, lo eliminamos de la BD
+                $negocio->horarios()->where('dia', $dia)->delete();
+            }
+        }
+    }
 
         return redirect()->route('comerciante.account');
     }
