@@ -6,7 +6,7 @@
 <div class="container mt-5 pt-4 mb-5">
     <div class="row justify-content-center">
         <div class="col-md-10 col-lg-8">
-            
+
             @if(session('success'))
                 <div class="alert alert-success alert-dismissible fade show rounded-4 shadow-sm" role="alert" style="background-color: #e6f8f3; border-color: #b0eed3; color: #0f5132;">
                     <i class="bi bi-check-circle-fill me-2"></i> {{ session('success') }}
@@ -29,7 +29,7 @@
                     <form action="{{ route('profile.update') }}" method="POST">
                         @csrf
                         @method('PUT')
-                        
+
                         <div class="row">
                             <div class="col-md-4 mb-3">
                                 <label for="nombre" class="form-label text-secondary">Nombre</label>
@@ -59,20 +59,20 @@
                         @if($user->rol === 'Comerciante')
                             <hr class="text-muted my-4">
                             <h5 class="fw-bold mb-3" style="color: #7b52d9;"><i class="bi bi-shop me-2"></i>Datos del Comercio</h5>
-                            
+
                             <div class="row">
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label text-secondary">Nombre del Negocio</label>
                                     <input type="text" name="nombre_comercio" class="form-control @error('nombre_comercio') is-invalid @enderror" value="{{ old('nombre_comercio', $user->nombre_comercio ?? '') }}" style="border-radius: 12px;">
                                     @error('nombre_comercio') <div class="invalid-feedback">{{ $message }}</div> @enderror
                                 </div>
-                                
+
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label text-secondary">CIF / NIF</label>
                                     <input type="text" name="cif" class="form-control @error('cif') is-invalid @enderror" value="{{ old('cif', $user->cif ?? '') }}" style="border-radius: 12px;">
                                     @error('cif') <div class="invalid-feedback">{{ $message }}</div> @enderror
                                 </div>
-                                
+
                                 <div class="col-md-12 mb-4">
                                     <label class="form-label text-secondary">Dirección (o zona de venta si es ambulante)</label>
                                     <input type="text" name="direccion" class="form-control @error('direccion') is-invalid @enderror" value="{{ old('direccion', $user->direccion ?? '') }}" style="border-radius: 12px;">
