@@ -7,6 +7,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ComercianteController;
 use App\Http\Controllers\NegocioController;
 use App\Http\Controllers\ProductoController;
+use App\Http\Controllers\NotificationController;
 
 // --- RUTAS TOTALMENTE PÚBLICAS ---
 Route::get('/', IndexController::class)->name('index');
@@ -46,6 +47,12 @@ Route::middleware(['auth'])->group(function () {
 
     // Admin y Perfil
     Route::get('/admin/account', [AuthController::class, 'accountAdmin'])->name('admin.account');
+
     Route::get('/mi-perfil', [ProfileController::class, 'editProfile'])->name('profile.edit');
     Route::put('/mi-perfil', [ProfileController::class, 'updateProfile'])->name('profile.update');
+
 });
+
+//Notificaciones
+Route::resource('notifications', NotificationController::class);
+
