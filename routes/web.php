@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\IndexController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\NotificationController;
 
 Route::get('/', IndexController::class)->name('index');
 
@@ -21,9 +22,12 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/account', [AuthController::class, 'accountCliente'])->name('cliente.account');
     Route::get('/comerciante/account', [AuthController::class, 'accountComerciante'])->name('comerciante.account');
     Route::get('/admin/account', [AuthController::class, 'accountAdmin'])->name('admin.account');
-    
+
     Route::get('/mi-perfil', [ProfileController::class, 'editProfile'])->name('profile.edit');
     Route::put('/mi-perfil', [ProfileController::class, 'updateProfile'])->name('profile.update');
-    
+
 });
+
+//Notificaciones
+Route::resource('notifications', NotificationController::class);
 
