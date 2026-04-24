@@ -8,19 +8,19 @@ use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\ProfileRequest;
 use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
-use App\Models\User;
 
 class ProfileController extends Controller
 {
     public function editProfile(): View
     {
+        // Cargamos al usuario junto con su negocio relacionado
         return view('profile.edit', [
             'user' => Auth::user()
         ]);
     }
 
     // Procesa el formulario y actualiza los datos
-    public function updateProfile(ProfileRequest $request, User $user): RedirectResponse
+    public function updateProfile(ProfileRequest $request): RedirectResponse
     {
         $user = Auth::user();
         $user->nombre = $request->input('nombre');
