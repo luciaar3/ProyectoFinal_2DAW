@@ -5,6 +5,7 @@ use App\Http\Controllers\IndexController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\ForumController;
 
 Route::get('/', IndexController::class)->name('index');
 
@@ -30,4 +31,7 @@ Route::middleware(['auth'])->group(function () {
 
 //Notificaciones
 Route::resource('notifications', NotificationController::class);
+
+//Foros
+Route::resource('forums', ForumController::class);
 

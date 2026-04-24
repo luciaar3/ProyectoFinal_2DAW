@@ -1,10 +1,10 @@
 @extends('layouts.layout')
-@section('title', 'Notificaciones')
+@section('title', 'Foros')
 @section('content')
 <div class="container mt-5 text-center">
-    <h1>Notificaciones recientes:</h1>
+    <h1>Foros disponibles:</h1>
     <ul>
-    @forelse ($notifications as $notification)
+    @forelse ($forums as $foros)
         <li>
         <h3>{{$notification->title}}</h3>
         <p>{{$notification->message}}</p>
