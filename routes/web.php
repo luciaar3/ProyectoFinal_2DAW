@@ -8,6 +8,7 @@ use App\Http\Controllers\ComercianteController;
 use App\Http\Controllers\NegocioController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\ForumController;
 
 // --- RUTAS TOTALMENTE PÚBLICAS ---
 Route::get('/', IndexController::class)->name('index');
@@ -55,4 +56,7 @@ Route::middleware(['auth'])->group(function () {
 
 //Notificaciones
 Route::resource('notifications', NotificationController::class);
+
+//Foros
+Route::resource('forums', ForumController::class);
 

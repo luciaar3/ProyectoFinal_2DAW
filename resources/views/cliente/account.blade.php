@@ -28,7 +28,7 @@
             <div class="card shadow-sm text-center p-3">
                 <h4>Notificaciones</h4>
                 <p>Mira tus notificaciones.</p>
-                <a href="{{ route('notifications.index') }}" class="btn w-100 rounded-pill fw-bold py-2" style="background-color: rgba(108, 117, 125, 0.1); color: #6c757d; border: none;">Ver notificaciones</a>
+                <a href="{{ route('notifications.index') }}" class="btn btn-outline-primary">Ver notificaciones</a>
             </div>
         </div>
     </div>
@@ -52,7 +52,7 @@
             <div class="card shadow-sm text-center p-3">
                 <h4>Mi cuenta</h4>
                 <p>Edita tu cuenta.</p>
-                <a href="{{ route('profile.edit') }}" class="btn w-100 rounded-pill fw-bold py-2" style="background-color: rgba(108, 117, 125, 0.1); color: #6c757d; border: none;">Editar Perfil</a>
+                <a href="{{ route('profile.edit') }}" class="btn btn-outline-primary">Editar Perfil</a>
             </div>
         </div>
     </div>

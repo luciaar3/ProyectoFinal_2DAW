@@ -26,33 +26,33 @@
                         </p>
                     </div>
 
-                    <form action="{{ route('profile.update') }}" method="POST">
+                    <form action="{{route('profile.update', $user)}}" method="post" enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
 
                         <div class="row">
                             <div class="col-md-4 mb-3">
                                 <label for="nombre" class="form-label text-secondary">Nombre</label>
-                                <input type="text" class="form-control @error('nombre') is-invalid @enderror" id="nombre" name="nombre" value="{{ old('nombre', $user->nombre) }}" required style="border-radius: 12px;">
+                                <input type="text" class="form-control @error('nombre') is-invalid @enderror" id="nombre" name="nombre" value="{{$user->nombre}}" required style="border-radius: 12px;">
                                 @error('nombre') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
 
                             <div class="col-md-4 mb-3">
                                 <label for="primer_apellido" class="form-label text-secondary">Primer Apellido</label>
-                                <input type="text" class="form-control @error('primer_apellido') is-invalid @enderror" id="primer_apellido" name="primer_apellido" value="{{ old('primer_apellido', $user->primer_apellido) }}" required style="border-radius: 12px;">
+                                <input type="text" class="form-control @error('primer_apellido') is-invalid @enderror" id="primer_apellido" name="primer_apellido" value="{{$user->primer_apellido}}" required style="border-radius: 12px;">
                                 @error('primer_apellido') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
 
                             <div class="col-md-4 mb-3">
                                 <label for="segundo_apellido" class="form-label text-secondary">Segundo Apellido</label>
-                                <input type="text" class="form-control @error('segundo_apellido') is-invalid @enderror" id="segundo_apellido" name="segundo_apellido" value="{{ old('segundo_apellido', $user->segundo_apellido) }}" style="border-radius: 12px;">
+                                <input type="text" class="form-control @error('segundo_apellido') is-invalid @enderror" id="segundo_apellido" name="segundo_apellido" value="{{$user->segundo_apellido}}" style="border-radius: 12px;">
                                 @error('segundo_apellido') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
                         </div>
 
                         <div class="mb-4">
                             <label for="email" class="form-label text-secondary">Correo Electrónico</label>
-                            <input type="email" class="form-control @error('email') is-invalid @enderror" id="email" name="email" value="{{ old('email', $user->email) }}" required style="border-radius: 12px;">
+                            <input type="email" class="form-control @error('email') is-invalid @enderror" id="email" name="email" value="{{$user->email}}" required style="border-radius: 12px;">
                             @error('email') <div class="invalid-feedback">{{ $message }}</div> @enderror
                         </div>
 

@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\ProfileRequest;
 use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
+use App\Models\User;
 
 class ProfileController extends Controller
 {
@@ -20,7 +21,7 @@ class ProfileController extends Controller
     }
 
     // Procesa el formulario y actualiza los datos
-    public function updateProfile(ProfileRequest $request): RedirectResponse
+    public function updateProfile(ProfileRequest $request, User $user): RedirectResponse
     {
         $user = Auth::user();
         $user->nombre = $request->input('nombre');
