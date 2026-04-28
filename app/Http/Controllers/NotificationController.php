@@ -62,5 +62,6 @@ class NotificationController extends Controller
     public function destroy(Notification $notification)
     {
         $notification->delete();
+        return redirect()->route('notifications.index');
     }
 }
