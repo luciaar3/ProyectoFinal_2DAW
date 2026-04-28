@@ -41,10 +41,10 @@ class ProfileController extends Controller
             $user->negocio()->updateOrCreate(
                 ['user_id' => $user->id], // Buscamos por el ID del usuario
                 [
-                    'nombre'         => $request->get('nombre'),
+                    'nombre_negocio'         => $request->get('nombre_negocio'),
                     'descripcion'    => $request->get('descripcion'),
-                    'nif'            => $request->get('nif'),         // Nuevo campo obligatorio
-                    'numero_permiso' => $request->get('numero_permiso'), // Nuevo campo
+                    'nif'            => $request->get('nif'),
+                    'numero_permiso' => $request->get('numero_permiso'),
                     'telefono'       => $request->get('telefono'),
                 ]
             );

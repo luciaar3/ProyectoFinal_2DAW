@@ -67,8 +67,8 @@
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Nombre del Negocio</label>
-                                <input type="text" name="nombre" class="form-control @error('nombre') is-invalid @enderror" value="{{ old('nombre') }}">
-                                @error('nombre') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                                <input type="text" name="nombre_negocio" class="form-control @error('nombre_negocio') is-invalid @enderror" value="{{ old('nombre_negocio') }}">
+                                @error('nombre_negocio') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
                             
                             <div class="col-md-6 mb-3">

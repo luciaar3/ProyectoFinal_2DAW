@@ -26,7 +26,7 @@ class NegocioRequest extends FormRequest
         $negocioId = Auth::user()->negocio->id;
 
         return [
-            'nombre'         => ['required', 'string', 'max:50'],
+            'nombre_negocio'         => ['required', 'string', 'max:50'],
             'descripcion'    => ['required', 'string', 'max:500'],
             'telefono'       => ['required', 'integer'],
             'numero_permiso' => ['required', 'integer'],
@@ -40,7 +40,7 @@ class NegocioRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'nombre.required'      => 'El nombre del negocio es obligatorio.',
+            'nombre_negocio.required'      => 'El nombre del negocio es obligatorio.',
             'nif.unique'           => 'Este NIF ya está registrado por otro comercio.',
             'imagen.image'         => 'El archivo debe ser una imagen.',
             'imagen.max'           => 'La imagen no puede pesar más de 2MB.',

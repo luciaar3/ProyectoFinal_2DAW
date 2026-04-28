@@ -6,6 +6,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ComercianteController;
 use App\Http\Controllers\NegocioController;
+use App\Http\Controllers\ProductoController;
 
 Route::get('/', IndexController::class)->name('index');
 
@@ -30,7 +31,11 @@ Route::middleware(['auth'])->group(function () {
     // Rutas de negocio
     Route::get('/buscar', [NegocioController::class, 'index'])->name('negocios.index');
     Route::get('/negocio/{negocio}', [NegocioController::class, 'show'])->name('negocios.show');
-
+    //catalogo
+    Route::get('/comerciante/catalogo', [ProductoController::class, 'index'])->name('productos.index');
+    Route::post('/comerciante/catalogo', [ProductoController::class, 'store'])->name('productos.store');
+    Route::put('/comerciante/catalogo/{producto}', [ProductoController::class, 'update'])->name('productos.update');
+    Route::delete('/comerciante/catalogo/{producto}', [ProductoController::class, 'destroy'])->name('productos.destroy');
     // admin
     Route::get('/admin/account', [AuthController::class, 'accountAdmin'])->name('admin.account');
     

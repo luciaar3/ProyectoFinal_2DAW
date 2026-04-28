@@ -37,7 +37,7 @@ class AuthController extends Controller
             if ($user->rol === 'Comerciante') {
                 $negocio = new Negocio();
                 $negocio->user_id = $user->id; // Ajustado a minúsculas
-                $negocio->nombre = $request->get('nombre');
+                $negocio->nombre_negocio = $request->get('nombre_negocio');
                 $negocio->descripcion = $request->get('descripcion');
                 $negocio->nif = $request->get('nif'); 
                 $negocio->numero_permiso = $request->get('numero_permiso');
@@ -113,7 +113,9 @@ class AuthController extends Controller
 
     // 6. vistas
     public function accountCliente(): View {
-        return view('cliente.account');
+        // Traemos todos los negocios para poder listarlos
+        $negocios = Negocio::all(); 
+        return view('cliente.account', compact('negocios'));
     }
 
     public function accountAdmin(): View {

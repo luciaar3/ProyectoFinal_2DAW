@@ -26,7 +26,7 @@
                     </div>
                     <h4 class="fw-bold mb-3 text-dark">Catálogo</h4>
                     <p class="text-secondary mb-4">Gestiona tus productos, precios, stock y categorías.</p>
-                    <a href="#" class="btn w-100 rounded-pill fw-bold py-2" style="background-color: rgba(123, 82, 217, 0.1); color: #7b52d9; border: none;">Gestionar Catálogo</a>
+                    <a href="{{ route('productos.index') }}" class="btn w-100 rounded-pill fw-bold py-2" style="background-color: rgba(123, 82, 217, 0.1); color: #7b52d9; border: none;">Gestionar Catálogo</a>
                 </div>
             </div>
         </div>

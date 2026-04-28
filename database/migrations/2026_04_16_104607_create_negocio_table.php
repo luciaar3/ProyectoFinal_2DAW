@@ -16,7 +16,7 @@ return new class extends Migration
             $table->id(); // cp
             $table->foreignId('user_id')->unique()->constrained('users')->onDelete('cascade'); // fk
             
-            $table->string('nombre', 50);
+            $table->string('nombre_negocio', 50);
             $table->string('descripcion', 500);
             $table->integer('numero_permiso');
             $table->string('nif', 9)->unique();

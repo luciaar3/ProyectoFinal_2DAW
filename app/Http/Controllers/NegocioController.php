@@ -4,47 +4,45 @@ namespace App\Http\Controllers;
 
 use App\Models\Negocio;
 use Illuminate\Http\Request;
-use Carbon\Carbon;
 
 class NegocioController extends Controller
 {
     public function index(Request $request)
     {
-        // 1. Obtener el día de la semana actual en español
+        // 1. Configuración de fechas
         $diasSemana = [
             'Sunday' => 'domingo', 'Monday' => 'lunes', 'Tuesday' => 'martes',
             'Wednesday' => 'miercoles', 'Thursday' => 'jueves', 'Friday' => 'viernes', 'Saturday' => 'sabado'
         ];
-        $diaHoy = $diasSemana[Carbon::now()->format('l')];
+        $diaHoy = $diasSemana[now()->format('l')];
+        $diaFiltro = $request->get('dia', $diaHoy);
 
-        // 2. Query con filtros
+        // 2. Iniciamos la Query
         $query = Negocio::with(['horarios', 'imagenes']);
 
-        // Filtro por nombre o población
+        // 3. Aplicamos Filtro por nombre o población
         if ($request->filled('search')) {
             $search = $request->search;
             $query->where(function($q) use ($search) {
-                $q->where('nombre', 'like', "%$search%")
-                  ->orWhereHas('horarios', function($q2) use ($search) {
-                      $q2->where('poblacion', 'like', "%$search%");
-                  });
+                $q->where('nombre_negocio', 'like', "%$search%")
+                ->orWhereHas('horarios', function($q2) use ($search) {
+                    $q2->where('poblacion', 'like', "%$search%");
+                });
             });
         }
 
-        // Filtro por día
-        $diaFiltro = $request->get('dia', $diaHoy);
+        // 4. Aplicamos Filtro por día (Solo negocios que abren ese día y no es festivo)
         $query->whereHas('horarios', function($q) use ($diaFiltro) {
             $q->where('dia', $diaFiltro)->where('festivo_cerrado', false);
         });
 
-        $negocios = $query->get();
-
-        //datos para el mapa
-        $puntosMapa = $negocios->map(function($n) use ($diaFiltro) {
+        // 5. OBTENEMOS DATOS PARA EL MAPA (Todos los que cumplen el filtro, sin paginar)
+        // Usamos clone para no ensuciar la query original que luego paginaremos
+        $puntosMapa = (clone $query)->get()->map(function($n) use ($diaFiltro) {
             $h = $n->horarios->where('dia', $diaFiltro)->first();
             return [
                 'id'     => $n->id,
-                'nombre' => $n->nombre,
+                'nombre_negocio' => $n->nombre_negocio,
                 'lat'    => $h->latitud,
                 'lng'    => $h->longitud,
                 'pob'    => $h->poblacion,
@@ -54,12 +52,26 @@ class NegocioController extends Controller
             ];
         });
 
-        return view('comerciante.negocio.index', compact('negocios', 'puntosMapa', 'diaHoy', 'diaFiltro'));
+        // 6. EJECUTAMOS LA PAGINACIÓN PARA LA LISTA
+        $negocios = $query->paginate(10)->withQueryString(); 
+
+        return view('comerciante.negocio.index', compact('negocios', 'puntosMapa', 'diaHoy', 'diaFiltro'))->findOrFail($id);
     }
 
     public function show(Negocio $negocio)
     {
-        $negocio->load(['horarios', 'imagenes']);
-        return view('comerciante.negocio.show', compact('negocio'));
+        // 1. Cargamos las relaciones sobre el objeto YA EXISTENTE
+        // Usamos load(), NO with(). load() mantiene el objeto como Modelo.
+        $negocio->load(['horarios', 'productos', 'imagenes']);
+
+        // 2. Definimos el día de hoy (puedes usar este helper rápido)
+        $diasSemana = [
+            'Sunday' => 'domingo', 'Monday' => 'lunes', 'Tuesday' => 'martes',
+            'Wednesday' => 'miercoles', 'Thursday' => 'jueves', 'Friday' => 'viernes', 'Saturday' => 'sabado'
+        ];
+        $diaHoy = $diasSemana[now()->format('l')];
+
+        // 3. Enviamos a la vista
+        return view('comerciante.negocio.show', compact('negocio', 'diaHoy'));
     }
 }

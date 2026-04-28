@@ -32,7 +32,7 @@ class RegistroRequest extends FormRequest
 
     // Validación condicional: solo si es Comerciante
     if ($this->rol === 'Comerciante') {
-            $rules['nombre'] = ['required', 'string', 'min:2', 'max:50'];
+            $rules['nombre_negocio'] = ['required', 'string', 'min:2', 'max:50'];
             $rules['descripcion']    = ['required', 'string', 'min:10', 'max:500'];
             $rules['telefono']       = ['required', 'integer'];
             $rules['nif']            = ['required', 'string', 'size:9', 'unique:negocio,nif'];

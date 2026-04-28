@@ -3,8 +3,9 @@
 @section('content')
 <div class="container-fluid p-0">
     <div class="row g-0" style="height: calc(100vh - 70px);">
-        <div class="col-lg-4 col-md-5 bg-light p-4 overflow-auto">
-            <h4 class="fw-bold mb-3">Encuentra puestos</h4>
+        
+        <div id="columna-scroll" class="col-lg-4 col-md-5 bg-light p-4 overflow-auto" style="height: 100%; scrollbar-width: none;">
+            <h2 class="fw-bold mb-4">Comercios Cercanos</h2>
             
             <form action="{{ route('negocios.index') }}" method="GET" class="mb-4">
                 <input type="text" name="search" class="form-control rounded-pill mb-2" placeholder="Nombre o ciudad..." value="{{ request('search') }}">
@@ -15,24 +16,15 @@
                 </select>
             </form>
 
-            @forelse($negocios as $n)
-                <div class="card border-0 shadow-sm mb-3 hover-shadow transition" style="border-radius: 15px;">
-                    <div class="card-body p-3">
-                        <div class="d-flex align-items-center">
-                            <img src="{{ asset('storage/'.$n->imagen) }}" class="rounded-circle me-3" style="width:60px; height:60px; object-fit:cover;">
-                            <div>
-                                <h6 class="fw-bold mb-0">{{ $n->nombre }}</h6>
-                                <small class="text-muted"><i class="fas fa-map-marker-alt text-danger"></i> {{ $n->horarios->where('dia', $diaFiltro)->first()->poblacion }}</small>
-                            </div>
-                            <a href="{{ route('negocios.show', $n->id) }}" class="btn btn-primary btn-sm ms-auto rounded-pill">Ver</a>
-                        </div>
-                    </div>
-                </div>
-            @empty
-                <div class="text-center py-5">
-                    <p class="text-muted">No hay puestos activos para este filtro.</p>
-                </div>
-            @endforelse
+            <div id="lista-negocios">
+                {{-- Carga inicial de los primeros 10 --}}
+                @include('comerciante.negocio._cards')
+            </div>
+
+            <div id="loading-mensaje" class="text-center py-3" style="display: none;">
+                <div class="spinner-border text-primary spinner-border-sm" role="status"></div>
+                <p class="mt-2 text-muted small">Cargando más puestos...</p>
+            </div>
         </div>
 
         <div class="col-lg-8 col-md-7">
@@ -44,27 +36,74 @@
 
 @section('scripts')
 <script>
+    // --- 1. MAPA (Leaflet) ---
     var map = L.map('mapaGlobal').setView([40.4167, -3.7037], 6);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
-
-    var puntos = @json($puntosMapa);
     var markers = L.featureGroup();
 
+    // Dibujamos los puntos que vienen del controlador
+    var puntos = @json($puntosMapa);
     puntos.forEach(function(p) {
         if(p.lat && p.lng) {
-            var marker = L.marker([p.lat, p.lng]).addTo(markers);
-            marker.bindPopup(`
-                <div class="text-center" style="width:150px">
-                    <img src="${p.logo}" class="rounded-circle mb-2" style="width:50px; height:50px; object-fit:cover;">
-                    <h6 class="mb-0 fw-bold">${p.nombre}</h6>
-                    <small class="text-muted d-block mb-2">${p.ubi}</small>
+            L.marker([p.lat, p.lng]).addTo(markers).bindPopup(`
+                <div class="text-center">
+                    <img src="${p.logo}" class="rounded-circle mb-2" style="width:40px; height:40px; object-fit:cover;">
+                    <h6 class="fw-bold mb-1">${p.nombre}</h6>
                     <a href="${p.url}" class="btn btn-primary btn-sm rounded-pill text-white w-100">Ver Perfil</a>
                 </div>
             `);
         }
     });
-
     markers.addTo(map);
     if(puntos.length > 0) map.fitBounds(markers.getBounds().pad(0.1));
+
+    // --- 2. LÓGICA DE PAGINACIÓN AJAX (Infinite Scroll) ---
+    let page = 1;
+    let stopScroll = false;
+
+    // Detectamos el scroll en el div de la izquierda
+    $('#columna-scroll').on('scroll', function() {
+        let div = $(this);
+        // Si el usuario llega al fondo del scroll (menos 50px de margen)
+        if (div.scrollTop() + div.innerHeight() >= div[0].scrollHeight - 50) {
+            if (!stopScroll) {
+                stopScroll = true; // Pausamos para no duplicar peticiones
+                page++;
+                cargarMasPuestos(page);
+            }
+        }
+    });
+
+    function cargarMasPuestos(pageNumber) {
+        $('#loading-mensaje').show();
+
+        $.ajax({
+            url: "{{ route('negocios.index') }}",
+            data: {
+                page: pageNumber,
+                search: "{{ request('search') }}",
+                dia: "{{ $diaFiltro }}"
+            },
+            type: "get",
+            headers: { 'X-Requested-With': 'XMLHttpRequest' }
+        })
+        .done(function(html) {
+            // Si Laravel ya no devuelve más HTML, paramos el scroll
+            if (html.trim() === "") {
+                $('#loading-mensaje').html('<span class="text-muted small">No hay más comercios disponibles</span>');
+                stopScroll = true;
+                return;
+            }
+            
+            // Pegamos el contenido de tu _cards al final del listado
+            $("#lista-negocios").append(html);
+            $('#loading-mensaje').hide();
+            stopScroll = false; // Listos para pedir la siguiente página si hace falta
+        })
+        .fail(function() {
+            $('#loading-mensaje').hide();
+            stopScroll = false;
+        });
+    }
 </script>
 @endsection

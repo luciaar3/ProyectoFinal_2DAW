@@ -1,6 +1,6 @@
 @extends('layouts.layout')
 
-@section('title', 'Editar mi Negocio - ' . $negocio->nombre)
+@section('title', 'Editar mi Negocio - ' . $negocio->nombre_negocio)
 
 @section('content')
 <style>
@@ -32,10 +32,10 @@
                         {{-- Nombre --}}
                         <div class="mb-3">
                             <label class="form-label fw-semibold">Nombre Comercial</label>
-                            <input type="text" name="nombre" id="inputNombre" 
-                                class="form-control rounded-pill @error('nombre') is-invalid @enderror" 
-                                value="{{ old('nombre', $negocio->nombre) }}">
-                            @error('nombre')
+                            <input type="text" name="nombre_negocio" id="inputNombre" 
+                                class="form-control rounded-pill @error('nombre_negocio') is-invalid @enderror" 
+                                value="{{ old('nombre_negocio', $negocio->nombre_negocio) }}">
+                            @error('nombre_negocio')
                                 <div class="invalid-feedback ms-2">{{ $message }}</div>
                             @enderror
                         </div>

@@ -29,7 +29,7 @@ class ComercianteController extends Controller
     {
         $negocio = Auth::user()->negocio;
         
-        $negocio->nombre = $request->nombre;
+        $negocio->nombre_negocio = $request->nombre_negocio;
         $negocio->nif = $request->nif;
         $negocio->telefono = $request->telefono;
         $negocio->descripcion = $request->descripcion;
