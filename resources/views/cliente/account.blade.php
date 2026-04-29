@@ -27,7 +27,7 @@
             <div class="card shadow-sm text-center p-3">
                 <h4>Notificaciones</h4>
                 <p>Mira tus notificaciones.</p>
-                <a href="{{ route('notifications.index') }}" class="btn btn-outline-primary">Ver notificaciones</a>
+                <a href="{{ route('notificationes.index') }}" class="btn btn-outline-primary">Ver notificaciones</a>
             </div>
         </div>
     </div>
