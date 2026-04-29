@@ -55,7 +55,7 @@ class NegocioController extends Controller
         // 6. EJECUTAMOS LA PAGINACIÓN PARA LA LISTA
         $negocios = $query->paginate(10)->withQueryString(); 
 
-        return view('comerciante.negocio.index', compact('negocios', 'puntosMapa', 'diaHoy', 'diaFiltro'))->findOrFail($id);
+        return view('comerciante.negocio.index', compact('negocios', 'puntosMapa', 'diaHoy', 'diaFiltro'));
     }
 
     public function show(Negocio $negocio)
