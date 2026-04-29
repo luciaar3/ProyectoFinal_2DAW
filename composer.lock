@@ -1055,6 +1055,7 @@
         },
         {
             "name": "laravel/framework",
+<<<<<<< HEAD
             "version": "v12.54.1",
             "source": {
                 "type": "git",
@@ -1065,6 +1066,18 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/laravel/framework/zipball/325497463e7599cd14224c422c6e5dd2fe832868",
                 "reference": "325497463e7599cd14224c422c6e5dd2fe832868",
+=======
+            "version": "v12.56.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/laravel/framework.git",
+                "reference": "dac16d424b59debb2273910dde88eb7050a2a709"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/dac16d424b59debb2273910dde88eb7050a2a709",
+                "reference": "dac16d424b59debb2273910dde88eb7050a2a709",
+>>>>>>> 983802abe834e436de73ee7f67f4d0676fe71d9b
                 "shasum": ""
             },
             "require": {
@@ -1180,7 +1193,11 @@
                 "orchestra/testbench-core": "^10.9.0",
                 "pda/pheanstalk": "^5.0.6|^7.0.0",
                 "php-http/discovery": "^1.15",
+<<<<<<< HEAD
                 "phpstan/phpstan": "^2.0",
+=======
+                "phpstan/phpstan": "^2.1.41",
+>>>>>>> 983802abe834e436de73ee7f67f4d0676fe71d9b
                 "phpunit/phpunit": "^10.5.35|^11.5.3|^12.0.1",
                 "predis/predis": "^2.3|^3.0",
                 "resend/resend-php": "^0.10.0|^1.0",
@@ -1273,6 +1290,7 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
+<<<<<<< HEAD
             "time": "2026-03-10T20:25:56+00:00"
         },
         {
@@ -1287,6 +1305,22 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/laravel/prompts/zipball/9f0e371244eedfe2ebeaa72c79c54bb5df6e0176",
                 "reference": "9f0e371244eedfe2ebeaa72c79c54bb5df6e0176",
+=======
+            "time": "2026-03-26T14:51:54+00:00"
+        },
+        {
+            "name": "laravel/prompts",
+            "version": "v0.3.16",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/laravel/prompts.git",
+                "reference": "11e7d5f93803a2190b00e145142cb00a33d17ad2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/laravel/prompts/zipball/11e7d5f93803a2190b00e145142cb00a33d17ad2",
+                "reference": "11e7d5f93803a2190b00e145142cb00a33d17ad2",
+>>>>>>> 983802abe834e436de73ee7f67f4d0676fe71d9b
                 "shasum": ""
             },
             "require": {
@@ -1330,9 +1364,15 @@
             "description": "Add beautiful and user-friendly forms to your command-line applications.",
             "support": {
                 "issues": "https://github.com/laravel/prompts/issues",
+<<<<<<< HEAD
                 "source": "https://github.com/laravel/prompts/tree/v0.3.14"
             },
             "time": "2026-03-01T09:02:38+00:00"
+=======
+                "source": "https://github.com/laravel/prompts/tree/v0.3.16"
+            },
+            "time": "2026-03-23T14:35:33+00:00"
+>>>>>>> 983802abe834e436de73ee7f67f4d0676fe71d9b
         },
         {
             "name": "laravel/serializable-closure",
@@ -1463,6 +1503,7 @@
         },
         {
             "name": "league/commonmark",
+<<<<<<< HEAD
             "version": "2.8.1",
             "source": {
                 "type": "git",
@@ -1473,6 +1514,18 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/thephpleague/commonmark/zipball/84b1ca48347efdbe775426f108622a42735a6579",
                 "reference": "84b1ca48347efdbe775426f108622a42735a6579",
+=======
+            "version": "2.8.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/thephpleague/commonmark.git",
+                "reference": "59fb075d2101740c337c7216e3f32b36c204218b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/thephpleague/commonmark/zipball/59fb075d2101740c337c7216e3f32b36c204218b",
+                "reference": "59fb075d2101740c337c7216e3f32b36c204218b",
+>>>>>>> 983802abe834e436de73ee7f67f4d0676fe71d9b
                 "shasum": ""
             },
             "require": {
@@ -1566,7 +1619,11 @@
                     "type": "tidelift"
                 }
             ],
+<<<<<<< HEAD
             "time": "2026-03-05T21:37:03+00:00"
+=======
+            "time": "2026-03-19T13:16:38+00:00"
+>>>>>>> 983802abe834e436de73ee7f67f4d0676fe71d9b
         },
         {
             "name": "league/config",
@@ -1652,6 +1709,7 @@
         },
         {
             "name": "league/flysystem",
+<<<<<<< HEAD
             "version": "3.32.0",
             "source": {
                 "type": "git",
@@ -1662,6 +1720,18 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/254b1595b16b22dbddaaef9ed6ca9fdac4956725",
                 "reference": "254b1595b16b22dbddaaef9ed6ca9fdac4956725",
+=======
+            "version": "3.33.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/thephpleague/flysystem.git",
+                "reference": "570b8871e0ce693764434b29154c54b434905350"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/570b8871e0ce693764434b29154c54b434905350",
+                "reference": "570b8871e0ce693764434b29154c54b434905350",
+>>>>>>> 983802abe834e436de73ee7f67f4d0676fe71d9b
                 "shasum": ""
             },
             "require": {
@@ -1729,9 +1799,15 @@
             ],
             "support": {
                 "issues": "https://github.com/thephpleague/flysystem/issues",
+<<<<<<< HEAD
                 "source": "https://github.com/thephpleague/flysystem/tree/3.32.0"
             },
             "time": "2026-02-25T17:01:41+00:00"
+=======
+                "source": "https://github.com/thephpleague/flysystem/tree/3.33.0"
+            },
+            "time": "2026-03-25T07:59:30+00:00"
+>>>>>>> 983802abe834e436de73ee7f67f4d0676fe71d9b
         },
         {
             "name": "league/flysystem-local",
@@ -3020,6 +3096,7 @@
         },
         {
             "name": "psy/psysh",
+<<<<<<< HEAD
             "version": "v0.12.21",
             "source": {
                 "type": "git",
@@ -3030,6 +3107,18 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/bobthecow/psysh/zipball/4821fab5b7cd8c49a673a9fd5754dc9162bb9e97",
                 "reference": "4821fab5b7cd8c49a673a9fd5754dc9162bb9e97",
+=======
+            "version": "v0.12.22",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/bobthecow/psysh.git",
+                "reference": "3be75d5b9244936dd4ac62ade2bfb004d13acf0f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/bobthecow/psysh/zipball/3be75d5b9244936dd4ac62ade2bfb004d13acf0f",
+                "reference": "3be75d5b9244936dd4ac62ade2bfb004d13acf0f",
+>>>>>>> 983802abe834e436de73ee7f67f4d0676fe71d9b
                 "shasum": ""
             },
             "require": {
@@ -3093,9 +3182,15 @@
             ],
             "support": {
                 "issues": "https://github.com/bobthecow/psysh/issues",
+<<<<<<< HEAD
                 "source": "https://github.com/bobthecow/psysh/tree/v0.12.21"
             },
             "time": "2026-03-06T21:21:28+00:00"
+=======
+                "source": "https://github.com/bobthecow/psysh/tree/v0.12.22"
+            },
+            "time": "2026-03-22T23:03:24+00:00"
+>>>>>>> 983802abe834e436de73ee7f67f4d0676fe71d9b
         },
         {
             "name": "ralouphie/getallheaders",
@@ -6346,6 +6441,7 @@
         },
         {
             "name": "laravel/sail",
+<<<<<<< HEAD
             "version": "v1.53.0",
             "source": {
                 "type": "git",
@@ -6356,6 +6452,18 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/laravel/sail/zipball/e340eaa2bea9b99192570c48ed837155dbf24fbb",
                 "reference": "e340eaa2bea9b99192570c48ed837155dbf24fbb",
+=======
+            "version": "v1.55.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/laravel/sail.git",
+                "reference": "67dc1b72da4e066a2fb54c1c7582fd2f140ea191"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/laravel/sail/zipball/67dc1b72da4e066a2fb54c1c7582fd2f140ea191",
+                "reference": "67dc1b72da4e066a2fb54c1c7582fd2f140ea191",
+>>>>>>> 983802abe834e436de73ee7f67f4d0676fe71d9b
                 "shasum": ""
             },
             "require": {
@@ -6405,7 +6513,11 @@
                 "issues": "https://github.com/laravel/sail/issues",
                 "source": "https://github.com/laravel/sail"
             },
+<<<<<<< HEAD
             "time": "2026-02-06T12:16:02+00:00"
+=======
+            "time": "2026-03-23T15:56:34+00:00"
+>>>>>>> 983802abe834e436de73ee7f67f4d0676fe71d9b
         },
         {
             "name": "mockery/mockery",
@@ -8395,5 +8507,9 @@
         "php": "^8.2"
     },
     "platform-dev": {},
+<<<<<<< HEAD
     "plugin-api-version": "2.9.0"
+=======
+    "plugin-api-version": "2.6.0"
+>>>>>>> 983802abe834e436de73ee7f67f4d0676fe71d9b
 }
