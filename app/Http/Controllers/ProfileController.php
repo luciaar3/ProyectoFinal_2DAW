@@ -23,33 +23,32 @@ class ProfileController extends Controller
     public function updateProfile(ProfileRequest $request): RedirectResponse
     {
         $user = Auth::user();
+        $user->nombre = $request->input('nombre');
+        $user->primer_apellido = $request->input('primer_apellido');
+        $user->segundo_apellido = $request->input('segundo_apellido');
+        $user->email = $request->input('email');
 
-        // 1. Actualización de datos del usuario
-        $user->nombre = $request->get('nombre');
-        $user->primer_apellido = $request->get('primer_apellido');
-        $user->segundo_apellido = $request->get('segundo_apellido');
-        $user->email = $request->get('email');
 
+        // Actualización de la tabla NEGOCIO_COMERCIO
+        // Como ahora todos son vendedores ambulantes, actualizamos o creamos siempre.
+        // Asumimos que tienes la relación 'negocio()' definida en tu modelo User.
+        $user->negocio()->updateOrCreate(
+            ['ID_usuario' => $user->ID_usuario], // Buscamos por el ID del usuario
+            [
+                'Nombre'      => $request->get('nombre_negocio'),
+                'Descripcion' => $request->get('descripcion'),
+                'Ciudad'      => $request->get('ciudad'),
+                'Calle'       => $request->get('calle'),
+                'Numero'      => $request->get('numero'),
+                'Telefono'    => $request->get('telefono'),
+            ]
+        );
+
+        // Solo hasheamos y guardamos la contraseña si el usuario ha escrito algo
         if ($request->filled('password')) {
-            $user->password = Hash::make($request->get('password'));
+            $user->password = Hash::make($request->input('password'));
         }
         $user->save();
-
-        // 2. Actualización de la tabla NEGOCIO
-        // Solo si el usuario es Comerciante
-        if ($user->rol === 'Comerciante') {
-            $user->negocio()->updateOrCreate(
-                ['user_id' => $user->id], // Buscamos por el ID del usuario
-                [
-                    'nombre_negocio'         => $request->get('nombre_negocio'),
-                    'descripcion'    => $request->get('descripcion'),
-                    'nif'            => $request->get('nif'),
-                    'numero_permiso' => $request->get('numero_permiso'),
-                    'telefono'       => $request->get('telefono'),
-                ]
-            );
-        }
-
-        return back();
+        return back()->with('success', 'Perfil actualizado');
     }
 }
