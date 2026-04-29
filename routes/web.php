@@ -55,7 +55,7 @@ Route::middleware(['auth'])->group(function () {
 });
 
 //Notificaciones
-Route::resource('notifications', NotificationController::class);
+Route::resource('notificationes', NotificationController::class);
 
 //Foros
 Route::resource('forums', ForumController::class);

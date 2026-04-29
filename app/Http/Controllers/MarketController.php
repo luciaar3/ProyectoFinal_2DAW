@@ -2,18 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Notification;
+use App\Models\market;
 use Illuminate\Http\Request;
 
-class NotificationController extends Controller
+class MarketController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $notificationes = Notification::get();
-        return view('notificationes.index', compact('notificationes'));
+        //
     }
 
     /**
@@ -35,7 +34,7 @@ class NotificationController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Notification $notification)
+    public function show(market $market)
     {
         //
     }
@@ -43,7 +42,7 @@ class NotificationController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Notification $notification)
+    public function edit(market $market)
     {
         //
     }
@@ -51,7 +50,7 @@ class NotificationController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Notification $notification)
+    public function update(Request $request, market $market)
     {
         //
     }
@@ -59,9 +58,8 @@ class NotificationController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Notification $notification)
+    public function destroy(market $market)
     {
-        $notification->delete();
-        return redirect()->route('notificationes.index');
+        //
     }
 }
