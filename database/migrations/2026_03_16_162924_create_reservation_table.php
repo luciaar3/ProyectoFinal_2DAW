@@ -17,8 +17,8 @@ return new class extends Migration
             $table->date('creation');
             $table->enum('state', ['sent', 'due', 'cancelled']);
             $table->double('cost');
-            $table->foreignId('user_id')->constrained();
-            $table->foreignId('business_id')->constrained();
+            $table->foreignId('user_id');
+            $table->unsignedBigInteger('business_id');
             $table->timestamps();
         });
     }

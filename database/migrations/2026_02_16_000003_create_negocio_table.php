@@ -12,10 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('negocio', function (Blueprint $table) {
-            
+
             $table->id(); // cp
             $table->foreignId('user_id')->unique()->constrained('users')->onDelete('cascade'); // fk
-            
+            $table->foreignId('reservation_id')->nullable();
             $table->string('nombre_negocio', 50);
             $table->string('descripcion', 500);
             $table->integer('numero_permiso');

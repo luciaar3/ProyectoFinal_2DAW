@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('reservation_business_', function (Blueprint $table) {
             $table->foreignId('reservation_id');
-            $table->foreignId('business_id');
+            $table->foreignId('business_id')->constrained('negocio');
             $table->enum('rol', ['admin', 'merchant', 'customer']);
             $table->timestamps();
         });

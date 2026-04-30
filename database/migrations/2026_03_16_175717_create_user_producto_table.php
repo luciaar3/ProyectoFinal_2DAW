@@ -12,8 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('user_product', function (Blueprint $table) {
-            $table->foreignId('user_id');
-            $table->foreignId('product_id');
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            // CAMBIO: Quitamos constrained() para que no busque la tabla 'products' o 'productos' todavía
+            $table->unsignedBigInteger('product_id');
             $table->enum('rol', ['admin', 'merchant', 'customer']);
             $table->timestamps();
         });

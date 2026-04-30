@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('user_publication', function (Blueprint $table) {
             $table->foreignId('publication_id');
-            $table->foreignId('user_id');
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->date('moderate_date');
             $table->timestamps();
         });

@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('user_business', function (Blueprint $table) {
-            $table->foreignId('user_id');
-            $table->foreignId('business_id');
+            $table->foreignId('user_id')->constrained()->onDelete('cascade'); // Hacia 'users' (ya existe)
+            $table->unsignedBigInteger('business_id'); // <--- CAMBIO: Solo el campo, sin constrained()
             $table->enum('rol', ['admin', 'merchant', 'customer']);
             $table->timestamps();
         });
