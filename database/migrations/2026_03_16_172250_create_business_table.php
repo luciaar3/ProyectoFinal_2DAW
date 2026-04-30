@@ -15,14 +15,14 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained();
             $table->foreignId('reservation_id')->constrained();
-            $table->count('type', ['fixed', 'roaming']);
+            $table->enum('type', ['fixed', 'roaming']);
             $table->string('name');
             $table->text('description');
             $table->text('schedules');
             $table->text('city');
-            $table->int('number');
+            $table->integer('number');
             $table->text('street');
-            $table->int('phone');
+            $table->integer('phone');
             $table->string('images');
             $table->timestamps();
         });

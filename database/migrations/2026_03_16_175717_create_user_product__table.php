@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('user_product', function (Blueprint $table) {
             $table->foreignId('user_id');
             $table->foreignId('product_id');
-            $table->count('rol', ['admin', 'merchant', 'customer']);
+            $table->enum('rol', ['admin', 'merchant', 'customer']);
             $table->timestamps();
         });
     }

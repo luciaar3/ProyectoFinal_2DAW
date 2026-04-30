@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->date('expiraton');
             $table->date('creation');
-            $table->count('state', ['sent', 'due', 'cancelled']);
+            $table->enum('state', ['sent', 'due', 'cancelled']);
             $table->double('cost');
             $table->foreignId('user_id')->constrained();
             $table->foreignId('business_id')->constrained();

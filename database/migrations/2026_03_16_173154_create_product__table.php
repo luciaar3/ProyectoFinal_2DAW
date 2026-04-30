@@ -14,11 +14,11 @@ return new class extends Migration
         Schema::create('product', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->count('state', ['in sale', 'sold out']);
+            $table->enum('state', ['in sale', 'sold out']);
             $table->double('price');
-            $table->int('stock');
+            $table->integer('stock');
             $table->text('code');
-            $table->count('category', ['first', 'second', 'third']);
+            $table->enum('category', ['first', 'second', 'third']);
             $table->text('description');
             $table->foreignId('business_id');
             $table->foreignId('user_id');
