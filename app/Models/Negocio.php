@@ -16,7 +16,8 @@ class Negocio extends Model
         'numero_permiso', 
         'nif', 
         'telefono', 
-        'imagen'
+        'imagen',
+        'estado_validacion'
     ];
 
     public function user()
@@ -37,5 +38,10 @@ class Negocio extends Model
 
     public function productos() {
         return $this->hasMany(Producto::class);
+    }
+    // Filtro para obtener solo los aprobados
+    public function scopeValidados($query)
+    {
+        return $query->where('estado_validacion', 'aprobado');
     }
 }

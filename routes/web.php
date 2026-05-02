@@ -7,6 +7,8 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ComercianteController;
 use App\Http\Controllers\NegocioController;
 use App\Http\Controllers\ProductoController;
+use App\Http\Controllers\AdminController;
+
 
 // --- RUTAS TOTALMENTE PÚBLICAS ---
 Route::get('/', IndexController::class)->name('index');
@@ -48,4 +50,12 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/admin/account', [AuthController::class, 'accountAdmin'])->name('admin.account');
     Route::get('/mi-perfil', [ProfileController::class, 'editProfile'])->name('profile.edit');
     Route::put('/mi-perfil', [ProfileController::class, 'updateProfile'])->name('profile.update');
+});
+
+// Rutas admin
+Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
+    Route::get('/account', [AdminController::class, 'account'])->name('admin.account');
+    Route::get('/validaciones', [AdminController::class, 'index'])->name('admin.validaciones');
+    Route::post('/validaciones/{id}/aprobar', [AdminController::class, 'aprobar'])->name('admin.aprobar');
+    Route::post('/validaciones/{id}/rechazar', [AdminController::class, 'rechazar'])->name('admin.rechazar');
 });

@@ -20,6 +20,10 @@ class ProductoController extends Controller
     {
         $negocio = auth()->user()->negocio;
 
+        if ($negocio->estado_validacion !== 'aprobado') {
+            return back();
+        }
+
         // Creamos la instancia del producto con los datos validados
         $producto = new Producto();
         $producto->negocio_id = $negocio->id;

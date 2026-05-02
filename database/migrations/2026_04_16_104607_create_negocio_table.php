@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('nif', 9)->unique();
             $table->integer('telefono');
             $table->string('imagen')->nullable(); // Opcional
+            $table->string('estado_validacion')->default('pendiente'); //validación admin
             $table->timestamps();
 
         });
