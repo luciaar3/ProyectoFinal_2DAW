@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('user_product', function (Blueprint $table) {
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             // CAMBIO: Quitamos constrained() para que no busque la tabla 'products' o 'productos' todavía
-            $table->unsignedBigInteger('product_id');
+            $table->unsignedBigInteger('producto_id');
             $table->enum('rol', ['admin', 'merchant', 'customer']);
             $table->timestamps();
         });

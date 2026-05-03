@@ -33,6 +33,12 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/account', [AuthController::class, 'accountCliente'])->name('cliente.account');
 
+    // Favoritos y Reservas
+    Route::post('/productos/{producto}/favorito', [\App\Http\Controllers\ClienteInteraccionesController::class, 'toggleFavorito'])->name('productos.favorito');
+    Route::post('/productos/{producto}/reservar', [\App\Http\Controllers\ClienteInteraccionesController::class, 'reservar'])->name('productos.reservar');
+    Route::get('/mis-reservas', [\App\Http\Controllers\ClienteInteraccionesController::class, 'misReservas'])->name('cliente.reservas');
+    Route::get('/mis-favoritos', [\App\Http\Controllers\ClienteInteraccionesController::class, 'misFavoritos'])->name('cliente.favoritos');
+
     // Gestión del Comerciante (Solo el dueño puede tocar esto)
     Route::delete('/comerciante/imagen/{imagen}', [ComercianteController::class, 'destroyImagen'])->name('comerciante.imagen.destroy');
     Route::post('/comerciante/guardar-galeria', [ComercianteController::class, 'storeImagenes'])->name('comerciante.galeria.store');

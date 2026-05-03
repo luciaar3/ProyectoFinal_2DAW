@@ -3,16 +3,30 @@
 @section('content')
 <div class="main-wrapper" style="background-color: #faf9f6; min-height: 100vh;">
     
-    <div class="container-fluid px-0 position-relative">
-        <div id="carouselGaleria" class="carousel slide" data-bs-ride="carousel" style="height: 500px;">
-            <div class="carousel-inner h-100">
-                @foreach($negocio->imagenes as $key => $img)
-                    <div class="carousel-item h-100 {{ $key == 0 ? 'active' : '' }}">
-                        <img src="{{ asset('storage/'.$img->ruta) }}" class="d-block w-100 h-100" style="object-fit: cover; filter: brightness(0.85);">
-                    </div>
-                @endforeach
+    <!-- Contenedor para Alertas (Dinámicas y de Sesión) -->
+    <div class="container pt-4 position-relative" style="z-index: 1050;" id="alertas-dinamicas">
+        @if(session('success'))
+            <div class="alert alert-success alert-dismissible fade show shadow-sm" role="alert">
+                {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
-            <div class="position-absolute bottom-0 start-0 w-100" style="height: 150px; background: linear-gradient(transparent, #faf9f6);"></div>
+        @endif
+        @if($errors->any())
+            <div class="alert alert-danger alert-dismissible fade show shadow-sm" role="alert">
+                <ul class="mb-0">
+                    @foreach($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+    </div>
+
+    <div class="container-fluid px-0 position-relative">
+        <!-- Default Banner -->
+        <div style="height: 300px; background: linear-gradient(135deg, #4a5d4e 0%, #6b7a63 100%);">
+            <div class="position-absolute bottom-0 start-0 w-100" style="height: 100px; background: linear-gradient(transparent, #faf9f6);"></div>
         </div>
 
         <div class="container position-relative" style="margin-top: -100px; z-index: 10;">
@@ -103,15 +117,34 @@
                                     <h3 class="fw-bold mb-1">{{ $p->nombre }}</h3>
                                     <div class="text-sage fw-bold fs-4 mb-3">{{ number_format($p->precio, 2) }}€</div>
                                     <p class="text-muted mb-4">{{ $p->descripcion }}</p>
-                                    
-                                    <div class="d-grid gap-2">
-                                        <a href="https://wa.me/34{{ $negocio->telefono }}?text=Hola, quiero reservar {{ $p->nombre }}" target="_blank" class="btn btn-success rounded-pill py-2 fw-bold">
-                                            <i class="fab fa-whatsapp me-2"></i> Reservar por WhatsApp
-                                        </a>
-                                        <button class="btn btn-dark rounded-pill py-2 fw-bold">
-                                            <i class="fas fa-shopping-cart me-2"></i> Añadir al carrito
-                                        </button>
-                                    </div>
+                                    <p class="fw-bold mb-3" style="color: #6b7a63;">Stock disponible: <span id="stock-text-{{ $p->id }}">{{ $p->stock }}</span></p>
+
+                                    @auth
+                                        <div class="d-flex justify-content-center gap-2 mb-3">
+                                            <form action="{{ route('productos.favorito', $p->id) }}" method="POST" class="form-favorito" data-id="{{ $p->id }}">
+                                                @csrf
+                                                <button type="submit" id="btn-fav-{{ $p->id }}" class="btn {{ Auth::user()->favoritos->contains($p->id) ? 'btn-danger' : 'btn-outline-danger' }} rounded-circle" style="width: 45px; height: 45px;">
+                                                    <i class="fas fa-heart"></i>
+                                                </button>
+                                            </form>
+                                        </div>
+
+                                        <form action="{{ route('productos.reservar', $p->id) }}" method="POST" class="form-reservar d-flex flex-column gap-2 {{ $p->stock > 0 ? '' : 'd-none' }}" data-id="{{ $p->id }}" id="form-reservar-container-{{ $p->id }}">
+                                            @csrf
+                                            <div class="input-group">
+                                                <span class="input-group-text bg-light border-0">Cantidad</span>
+                                                <input type="number" name="cantidad" id="input-cantidad-{{ $p->id }}" class="form-control bg-light border-0 text-center" value="1" min="1" max="{{ $p->stock }}">
+                                            </div>
+                                            <button type="submit" class="btn btn-dark rounded-pill py-2 fw-bold" id="btn-reservar-{{ $p->id }}">
+                                                <i class="fas fa-calendar-check me-2"></i> Reservar Producto
+                                            </button>
+                                        </form>
+                                        <button id="btn-agotado-{{ $p->id }}" class="btn btn-secondary rounded-pill py-2 fw-bold w-100 {{ $p->stock <= 0 ? '' : 'd-none' }}" disabled>Agotado</button>
+                                    @else
+                                        <div class="alert alert-warning small">
+                                            Inicia sesión para reservar o guardar favoritos.
+                                        </div>
+                                    @endauth
                                 </div>
                             </div>
                         </div>
@@ -159,4 +192,64 @@
     .main-wrapper { animation: fadeIn 0.6s ease-in-out; }
     @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 </style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Favoritos AJAX
+    document.querySelectorAll('.form-favorito').forEach(form => {
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const productId = this.getAttribute('data-id');
+            const btn = document.getElementById('btn-fav-' + productId);
+            const formData = new FormData(this);
+
+            fetch(this.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if(data.success) {
+                    if(data.is_favorite) {
+                        btn.classList.remove('btn-outline-danger');
+                        btn.classList.add('btn-danger');
+                    } else {
+                        btn.classList.remove('btn-danger');
+                        btn.classList.add('btn-outline-danger');
+                    }
+                    mostrarAlerta(data.message, 'success');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    });
+
+
+    // Función para mostrar alertas dinámicas sin recargar
+    function mostrarAlerta(mensaje, tipo) {
+        const contenedor = document.getElementById('alertas-dinamicas');
+        if (!contenedor) return;
+
+        const alertHtml = `
+            <div class="alert alert-${tipo} alert-dismissible fade show shadow-sm" role="alert">
+                ${mensaje}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        `;
+        contenedor.innerHTML = alertHtml;
+        
+        // Quitar la alerta tras 5 segundos
+        setTimeout(() => {
+            const alertNode = contenedor.querySelector('.alert');
+            if(alertNode) {
+                const bsAlert = new bootstrap.Alert(alertNode);
+                bsAlert.close();
+            }
+        }, 5000);
+    }
+});
+</script>
 @endsection

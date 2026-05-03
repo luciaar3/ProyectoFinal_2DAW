@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -18,7 +17,8 @@ return new class extends Migration
             $table->enum('state', ['sent', 'due', 'cancelled']);
             $table->double('cost');
             $table->foreignId('user_id');
-            $table->unsignedBigInteger('business_id');
+            $table->unsignedBigInteger('product_id');
+            $table->integer('quantity')->default(1);
             $table->timestamps();
         });
     }

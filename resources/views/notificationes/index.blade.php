@@ -21,7 +21,6 @@
                     <form action="{{ route('notificationes.destroy', $notification) }}" method="POST">
                         @csrf
                         @method('DELETE')
-
                         <button type="submit" class="btn btn-outline-danger">
                             Eliminar
                         </button>

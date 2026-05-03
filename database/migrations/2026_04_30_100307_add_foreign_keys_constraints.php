@@ -15,11 +15,11 @@ return new class extends Migration
 
         // Aprovechamos para conectar reservation si también te fallaba
         Schema::table('reservation', function (Blueprint $table) {
-            $table->foreign('business_id')->references('id')->on('negocio')->onDelete('cascade');
+            $table->foreign('product_id')->references('id')->on('productos')->onDelete('cascade');
         });
 
         Schema::table('user_product', function (Blueprint $table) {
-            $table->foreign('product_id')->references('id')->on('productos')->onDelete('cascade');
+            $table->foreign('producto_id')->references('id')->on('productos')->onDelete('cascade');
         });
     }
 

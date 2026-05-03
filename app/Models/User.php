@@ -52,4 +52,12 @@ class User extends Authenticatable
     public function negocio() {
         return $this->hasOne(Negocio::class, 'user_id', 'id');
     }
+
+    public function favoritos() {
+        return $this->belongsToMany(Producto::class, 'user_product', 'user_id', 'producto_id')->withPivot('rol')->withTimestamps();
+    }
+
+    public function reservations() {
+        return $this->hasMany(Reservation::class, 'user_id', 'id');
+    }
 }
