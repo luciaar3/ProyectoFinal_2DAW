@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\market;
+use App\Models\Foro;
 use Illuminate\Http\Request;
 
-class MarketController extends Controller
+class ForoController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -34,7 +34,7 @@ class MarketController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(market $market)
+    public function show(Forum $forum)
     {
         //
     }
@@ -42,7 +42,7 @@ class MarketController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(market $market)
+    public function edit(Forum $forum)
     {
         //
     }
@@ -50,7 +50,7 @@ class MarketController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, market $market)
+    public function update(Request $request, Forum $forum)
     {
         //
     }
@@ -58,7 +58,7 @@ class MarketController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(market $market)
+    public function destroy(Forum $forum)
     {
         //
     }

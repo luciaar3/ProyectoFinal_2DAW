@@ -14,10 +14,10 @@ class Producto extends Model
     }
 
     public function favoritedBy() {
-        return $this->belongsToMany(User::class, 'user_product', 'producto_id', 'user_id')->withPivot('rol')->withTimestamps();
+        return $this->belongsToMany(User::class, 'producto_user', 'producto_id', 'user_id')->withPivot('rol')->withTimestamps();
     }
 
-    public function reservations() {
-        return $this->hasMany(Reservation::class, 'product_id');
+    public function reservas() {
+        return $this->hasMany(Reserva::class, 'producto_id');
     }
 }

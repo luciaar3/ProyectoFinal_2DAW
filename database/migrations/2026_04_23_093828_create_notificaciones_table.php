@@ -11,10 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('reservation_business_', function (Blueprint $table) {
-            $table->foreignId('reservation_id');
-            $table->foreignId('business_id')->constrained('negocio');
-            $table->enum('rol', ['admin', 'merchant', 'customer']);
+        Schema::create('notificaciones', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->string('titulo', 50);
+            $table->text('mensaje');
+            $table->boolean('leido')->default(false);
             $table->timestamps();
         });
     }
@@ -24,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('reservation_business_');
+        Schema::dropIfExists('notificaciones');
     }
 };

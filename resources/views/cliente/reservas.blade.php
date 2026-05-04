@@ -26,19 +26,19 @@
             @foreach($reservas as $reserva)
                 <div class="col-md-6 col-lg-4">
                     <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden position-relative">
-                        <!-- Cabecera de la tarjeta con color del estado -->
+                        
                         <div class="p-3 bg-opacity-10 
-                            @if($reserva->state == 'sent') bg-success text-success 
-                            @elseif($reserva->state == 'due') bg-warning text-warning 
+                            @if($reserva->estado == 'completada') bg-success text-success 
+                            @elseif($reserva->estado == 'pendiente') bg-warning text-warning 
                             @else bg-danger text-danger @endif">
                             <div class="d-flex justify-content-between align-items-center">
                                 <span class="badge 
-                                    @if($reserva->state == 'sent') bg-success 
-                                    @elseif($reserva->state == 'due') bg-warning text-dark 
+                                    @if($reserva->estado == 'completada') bg-success 
+                                    @elseif($reserva->estado == 'pendiente') bg-warning text-dark 
                                     @else bg-danger @endif rounded-pill px-3 py-2">
-                                    {{ ucfirst($reserva->state) }}
+                                    {{ ucfirst($reserva->estado) }}
                                 </span>
-                                <small class="fw-bold">{{ \Carbon\Carbon::parse($reserva->creation)->format('d/m/Y') }}</small>
+                                <small class="fw-bold">{{ \Carbon\Carbon::parse($reserva->fecha_creacion)->format('d/m/Y') }}</small>
                             </div>
                         </div>
 
@@ -48,7 +48,9 @@
                                      class="rounded-3 object-fit-cover me-3 shadow-sm" style="width: 60px; height: 60px;">
                                 <div>
                                     <h5 class="fw-bold mb-0 text-truncate" style="max-width: 200px;">{{ $reserva->producto->nombre }}</h5>
-                                    <p class="text-muted small mb-0"><i class="fas fa-store me-1"></i> {{ $reserva->producto->negocio->nombre_negocio }}</p>
+                                    <p class="text-muted small mb-0">
+                                        <i class="fas fa-store me-1"></i> {{ $reserva->producto->negocio->nombre_negocio ?? 'Tienda' }}
+                                    </p>
                                 </div>
                             </div>
                             
@@ -56,11 +58,11 @@
                             
                             <div class="d-flex justify-content-between mb-2">
                                 <span class="text-secondary">Cantidad:</span>
-                                <span class="fw-bold">{{ $reserva->quantity }}</span>
+                                <span class="fw-bold">{{ $reserva->cantidad }} unidades</span>
                             </div>
                             <div class="d-flex justify-content-between mb-3">
                                 <span class="text-secondary">Precio Total:</span>
-                                <span class="fw-bold text-sage fs-5">{{ number_format($reserva->cost, 2) }}€</span>
+                                <span class="fw-bold text-sage fs-5">{{ number_format($reserva->coste_total, 2, ',', '.') }}€</span>
                             </div>
 
                             <div class="d-grid mt-auto">
@@ -72,7 +74,6 @@
                     </div>
                 </div>
 
-                <!-- Modal Detalles de Reserva -->
                 <div class="modal fade" id="modalReserva{{ $reserva->id }}" tabindex="-1" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content border-0 rounded-5 overflow-hidden">
@@ -81,32 +82,34 @@
                                     <img src="{{ $reserva->producto->imagen ? asset('storage/'.$reserva->producto->imagen) : 'https://via.placeholder.com/150' }}" class="rounded-circle shadow-sm" style="width: 120px; height: 120px; object-fit: cover;">
                                 </div>
                                 <h3 class="fw-bold mb-1">{{ $reserva->producto->nombre }}</h3>
-                                <p class="text-muted mb-4">Vendido por <strong>{{ $reserva->producto->negocio->nombre_negocio }}</strong></p>
+                                <p class="text-muted mb-4">Vendido por <strong>{{ $reserva->producto->negocio->nombre_negocio ?? 'Comercio' }}</strong></p>
                                 
                                 <div class="bg-light rounded-4 p-3 mb-4 text-start">
                                     <div class="d-flex justify-content-between mb-2">
                                         <span class="text-secondary">Fecha de reserva:</span>
-                                        <span>{{ \Carbon\Carbon::parse($reserva->creation)->format('d/m/Y H:i') }}</span>
+                                        <span>{{ \Carbon\Carbon::parse($reserva->fecha_creacion)->format('d/m/Y') }}</span>
                                     </div>
                                     <div class="d-flex justify-content-between mb-2">
                                         <span class="text-secondary">Expira el:</span>
-                                        <span>{{ \Carbon\Carbon::parse($reserva->expiraton)->format('d/m/Y') }}</span>
+                                        <span class="text-danger fw-bold">{{ \Carbon\Carbon::parse($reserva->fecha_expiracion)->format('d/m/Y') }}</span>
                                     </div>
                                     <div class="d-flex justify-content-between mb-2">
-                                        <span class="text-secondary">Cantidad reservada:</span>
-                                        <span>{{ $reserva->quantity }} unidades</span>
+                                        <span class="text-secondary">Cantidad:</span>
+                                        <span>{{ $reserva->cantidad }} unidades</span>
                                     </div>
                                     <hr>
                                     <div class="d-flex justify-content-between align-items-center">
                                         <span class="text-secondary">Total a pagar:</span>
-                                        <span class="fw-bold fs-4 text-sage">{{ number_format($reserva->cost, 2) }}€</span>
+                                        <span class="fw-bold fs-4 text-sage">{{ number_format($reserva->coste_total, 2, ',', '.') }}€</span>
                                     </div>
                                 </div>
                                 
                                 <div class="d-grid gap-2">
-                                    <a href="tel:{{ $reserva->producto->negocio->telefono }}" class="btn btn-outline-dark rounded-pill py-2 fw-bold">
-                                        <i class="fas fa-phone-alt me-2"></i> Contactar al vendedor
-                                    </a>
+                                    @if($reserva->producto->negocio->telefono)
+                                        <a href="tel:{{ $reserva->producto->negocio->telefono }}" class="btn btn-outline-dark rounded-pill py-2 fw-bold">
+                                            <i class="fas fa-phone-alt me-2"></i> Contactar al vendedor
+                                        </a>
+                                    @endif
                                     <button type="button" class="btn btn-secondary rounded-pill py-2 fw-bold" data-bs-dismiss="modal">Cerrar</button>
                                 </div>
                             </div>
@@ -120,5 +123,6 @@
 
 <style>
     .text-sage { color: #4a5d4e !important; }
+    .object-fit-cover { object-fit: cover; }
 </style>
 @endsection

@@ -7,8 +7,9 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ComercianteController;
 use App\Http\Controllers\NegocioController;
 use App\Http\Controllers\ProductoController;
-use App\Http\Controllers\NotificationController;
-use App\Http\Controllers\ForumController;
+use App\Http\Controllers\NotificacionController;
+use App\Http\Controllers\ForoController;
+use App\Http\Controllers\ClienteController;
 
 // --- RUTAS TOTALMENTE PÚBLICAS ---
 Route::get('/', IndexController::class)->name('index');
@@ -34,10 +35,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/account', [AuthController::class, 'accountCliente'])->name('cliente.account');
 
     // Favoritos y Reservas
-    Route::post('/productos/{producto}/favorito', [\App\Http\Controllers\ClienteInteraccionesController::class, 'toggleFavorito'])->name('productos.favorito');
-    Route::post('/productos/{producto}/reservar', [\App\Http\Controllers\ClienteInteraccionesController::class, 'reservar'])->name('productos.reservar');
-    Route::get('/mis-reservas', [\App\Http\Controllers\ClienteInteraccionesController::class, 'misReservas'])->name('cliente.reservas');
-    Route::get('/mis-favoritos', [\App\Http\Controllers\ClienteInteraccionesController::class, 'misFavoritos'])->name('cliente.favoritos');
+    Route::post('/productos/{producto}/favorito', [ClienteController::class, 'toggleFavorito'])->name('productos.favorito');
+    Route::post('/productos/{producto}/reservar', [ClienteController::class, 'reservar'])->name('productos.reservar');
+    Route::get('/mis-reservas', [ClienteController::class, 'misReservas'])->name('cliente.reservas');
+    Route::get('/mis-favoritos', [ClienteController::class, 'misFavoritos'])->name('cliente.favoritos');
 
     // Gestión del Comerciante (Solo el dueño puede tocar esto)
     Route::delete('/comerciante/imagen/{imagen}', [ComercianteController::class, 'destroyImagen'])->name('comerciante.imagen.destroy');
@@ -52,6 +53,11 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/comerciante/catalogo/{producto}', [ProductoController::class, 'update'])->name('productos.update');
     Route::delete('/comerciante/catalogo/{producto}', [ProductoController::class, 'destroy'])->name('productos.destroy');
 
+    //Notificaciones
+    Route::resource('notificaciones', NotificacionController::class);
+
+    //Foros
+    Route::resource('foros', ForoController::class);
     // Admin y Perfil
     Route::get('/admin/account', [AuthController::class, 'accountAdmin'])->name('admin.account');
 
@@ -59,10 +65,4 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/mi-perfil', [ProfileController::class, 'updateProfile'])->name('profile.update');
 
 });
-
-//Notificaciones
-Route::resource('notificationes', NotificationController::class);
-
-//Foros
-Route::resource('forums', ForumController::class);
 

@@ -13,12 +13,12 @@
     </div>
     <!-- LISTADO -->
     <div class="row g-4">
-        @forelse ($notificationes as $notification)
+        @forelse ($notificaciones as $notificacion)
             <div class="col-md-4">
                 <div class="card shadow-sm text-center p-3 h-100">
-                    <h4>{{ $notification->titulo }}</h4>
-                    <p class="text-muted">{{ $notification->mensaje }}</p>
-                    <form action="{{ route('notificationes.destroy', $notification) }}" method="POST">
+                    <h4>{{ $notificacion->titulo }}</h4>
+                    <p class="text-muted">{{ $notificacion->mensaje }}</p>
+                    <form action="{{ route('notificaciones.destroy', $notificacion) }}" method="POST">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="btn btn-outline-danger">

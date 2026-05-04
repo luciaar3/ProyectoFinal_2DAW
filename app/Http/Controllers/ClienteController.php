@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Producto;
-use App\Models\Reservation;
+use App\Models\Reserva;
 use Illuminate\Http\Request;
 
-class ClienteInteraccionesController extends Controller
+class ClienteController extends Controller
 {
     public function toggleFavorito(Request $request, Producto $producto)
     {
@@ -19,7 +19,7 @@ class ClienteInteraccionesController extends Controller
             $is_favorite = false;
         } else {
             // Se le asigna el rol 'customer' ya que la tabla lo requiere según el enum
-            $user->favoritos()->attach($producto->id, ['rol' => 'customer']);
+            $user->favoritos()->attach($producto->id, ['rol' => 'Cliente']);
             $message = 'Producto añadido a favoritos.';
             $is_favorite = true;
         }
@@ -44,14 +44,14 @@ class ClienteInteraccionesController extends Controller
         $producto->save();
 
         // Se crea la reserva
-        Reservation::create([
-            'expiraton' => now()->addDays(7),
-            'creation' => now(),
-            'state' => 'sent',
-            'cost' => $producto->precio * $cantidad,
-            'user_id' => auth()->id(),
-            'product_id' => $producto->id,
-            'quantity' => $cantidad,
+        Reserva::create([
+            'fecha_expiracion' => now()->addDays(7),
+            'fecha_creacion'   => now(),
+            'estado'           => 'pendiente',
+            'coste_total'      => $producto->precio * $cantidad,
+            'user_id'          => auth()->id(),
+            'producto_id'      => $producto->id,
+            'cantidad'         => $cantidad,
         ]);
 
         $message = 'Reserva realizada con éxito.';
@@ -66,7 +66,7 @@ class ClienteInteraccionesController extends Controller
     public function misReservas()
     {
         // Obtener las reservas del usuario con el producto y el negocio asociado
-        $reservas = auth()->user()->reservations()->with(['producto.negocio'])->orderBy('created_at', 'desc')->get();
+        $reservas = auth()->user()->reservas()->with(['producto.negocio'])->orderBy('created_at', 'desc')->get();
         return view('cliente.reservas', compact('reservas'));
     }
 

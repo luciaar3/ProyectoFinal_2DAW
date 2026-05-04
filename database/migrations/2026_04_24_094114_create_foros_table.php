@@ -13,7 +13,10 @@ return new class extends Migration
     {
         Schema::create('foros', function (Blueprint $table) {
             $table->id();
-            $table->string('titulo', 20);
+            $table->string('titulo', 100);
+            $table->text('contenido');      //mensaje del usuario.
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('negocio_id')->nullable()->constrained('negocio')->onDelete('cascade');
             $table->timestamps();
         });
     }

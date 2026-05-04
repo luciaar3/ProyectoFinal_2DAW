@@ -54,10 +54,15 @@ class User extends Authenticatable
     }
 
     public function favoritos() {
-        return $this->belongsToMany(Producto::class, 'user_product', 'user_id', 'producto_id')->withPivot('rol')->withTimestamps();
+        return $this->belongsToMany(Producto::class, 'producto_user', 'user_id', 'producto_id')->withPivot('rol')->withTimestamps();
     }
 
-    public function reservations() {
-        return $this->hasMany(Reservation::class, 'user_id', 'id');
+    public function reservas() {
+        return $this->hasMany(Reserva::class, 'user_id');
+    }
+
+    public function notificaciones()
+    {
+        return $this->hasMany(Notificacion::class, 'user_id');
     }
 }

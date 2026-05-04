@@ -2,17 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Forum;
+use App\Models\Notificacion;
 use Illuminate\Http\Request;
 
-class ForumController extends Controller
+class NotificacionController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        $notificaciones = auth()->user()->notificaciones()->latest()->get();
+        return view('notificaciones.index', compact('notificaciones'));
     }
 
     /**
@@ -34,7 +35,7 @@ class ForumController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Forum $forum)
+    public function show(Notificacion $notificacion)
     {
         //
     }
@@ -42,7 +43,7 @@ class ForumController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Forum $forum)
+    public function edit(Notificacion $notificacion)
     {
         //
     }
@@ -50,7 +51,7 @@ class ForumController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Forum $forum)
+    public function update(Request $request, Notificacion $notificacion)
     {
         //
     }
@@ -58,8 +59,9 @@ class ForumController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Forum $forum)
+    public function destroy(Notificacion $notificacion)
     {
-        //
+        $notification->delete();
+        return redirect()->route('notificationes.index');
     }
 }
