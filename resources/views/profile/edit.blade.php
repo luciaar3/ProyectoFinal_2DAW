@@ -6,7 +6,7 @@
 <div class="container mt-5 pt-4 mb-5">
     <div class="row justify-content-center">
         <div class="col-md-10 col-lg-8">
-            
+
             @if(session('success'))
                 <div class="alert alert-success alert-dismissible fade show rounded-4 shadow-sm" role="alert" style="background-color: #e6f8f3; border-color: #b0eed3; color: #0f5132;">
                     <i class="bi bi-check-circle-fill me-2"></i> {{ session('success') }}
@@ -29,7 +29,7 @@
                     <form action="{{ route('profile.update') }}" method="POST">
                         @csrf
                         @method('PUT')
-                        
+
                         <div class="row">
                             <div class="col-md-4 mb-3">
                                 <label for="nombre" class="form-label text-secondary">Nombre</label>

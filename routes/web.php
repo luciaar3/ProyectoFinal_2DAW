@@ -8,7 +8,9 @@ use App\Http\Controllers\ComercianteController;
 use App\Http\Controllers\NegocioController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\AdminController;
-
+use App\Http\Controllers\NotificacionController;
+use App\Http\Controllers\ForoController;
+use App\Http\Controllers\ClienteController;
 
 // --- RUTAS TOTALMENTE PÚBLICAS ---
 Route::get('/', IndexController::class)->name('index');
@@ -30,8 +32,14 @@ Route::get('/negocio/{negocio}', [NegocioController::class, 'show'])->name('nego
 
 // --- RUTAS PROTEGIDAS (Requieren estar logueado) ---
 Route::middleware(['auth'])->group(function () {
-    
+
     Route::get('/account', [AuthController::class, 'accountCliente'])->name('cliente.account');
+
+    // Favoritos y Reservas
+    Route::post('/productos/{producto}/favorito', [ClienteController::class, 'toggleFavorito'])->name('productos.favorito');
+    Route::post('/productos/{producto}/reservar', [ClienteController::class, 'reservar'])->name('productos.reservar');
+    Route::get('/mis-reservas', [ClienteController::class, 'misReservas'])->name('cliente.reservas');
+    Route::get('/mis-favoritos', [ClienteController::class, 'misFavoritos'])->name('cliente.favoritos');
 
     // Gestión del Comerciante (Solo el dueño puede tocar esto)
     Route::delete('/comerciante/imagen/{imagen}', [ComercianteController::class, 'destroyImagen'])->name('comerciante.imagen.destroy');
@@ -46,8 +54,14 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/comerciante/catalogo/{producto}', [ProductoController::class, 'update'])->name('productos.update');
     Route::delete('/comerciante/catalogo/{producto}', [ProductoController::class, 'destroy'])->name('productos.destroy');
 
+    //Notificaciones
+    Route::resource('notificaciones', NotificacionController::class);
+
+    //Foros
+    Route::resource('foros', ForoController::class);
     // Admin y Perfil
     Route::get('/admin/account', [AuthController::class, 'accountAdmin'])->name('admin.account');
+
     Route::get('/mi-perfil', [ProfileController::class, 'editProfile'])->name('profile.edit');
     Route::put('/mi-perfil', [ProfileController::class, 'updateProfile'])->name('profile.update');
 });
@@ -59,3 +73,4 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::post('/validaciones/{id}/aprobar', [AdminController::class, 'aprobar'])->name('admin.aprobar');
     Route::post('/validaciones/{id}/rechazar', [AdminController::class, 'rechazar'])->name('admin.rechazar');
 });
+

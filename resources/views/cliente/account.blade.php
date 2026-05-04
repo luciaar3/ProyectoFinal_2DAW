@@ -1,26 +1,59 @@
 @extends('layouts.layout')
 
 @section('content')
-<div class="container py-5">
-    <h2 class="fw-bold mb-4">Descubre Tiendas Locales</h2>
-    
-    <div class="row g-4">
-        @foreach($negocios as $n)
-            <div class="col-md-4">
-                <div class="card border-0 shadow-sm rounded-4 overflow-hidden h-100">
-                    <img src="{{ asset('storage/'.$n->imagen) }}" class="card-img-top" style="height: 200px; object-fit: cover;">
-                    
-                    <div class="card-body">
-                        <h5 class="fw-bold text-primary">{{ $n->nombre }}</h5>
-                        <p class="text-muted small text-truncate">{{ $n->descripcion }}</p>
-                        
-                        <a href="{{ route('negocios.show', $n->id) }}" class="btn btn-outline-primary w-100 rounded-pill fw-bold">
-                            Visitar Tienda
-                        </a>
-                    </div>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-12">
+                <h2 class="mb-4">Hola, {{ Auth::user()->nombre }}</h2>
+                <div class="alert alert-info">
+                    Has iniciado sesión como <strong>Cliente</strong>.
                 </div>
             </div>
-        @endforeach
+            <div class="col-md-4">
+                <div class="card shadow-sm text-center p-3">
+                    <h4>Comercios</h4>
+                    <p>Explora tiendas cercanas.</p>
+                    <a href="{{ route('negocios.index') }}" class="btn btn-outline-primary">Ver tiendas</a>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card shadow-sm text-center p-3">
+                    <h4>Mis Reservas</h4>
+                    <p>Gestiona tus pedidos activos.</p>
+                    <a href="{{ route('cliente.reservas') }}" class="btn btn-outline-primary">Ver reservas</a>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card shadow-sm text-center p-3">
+                    <h4>Notificaciones</h4>
+                    <p>Mira tus notificaciones.</p>
+                    <a href="{{ route('notificaciones.index') }}" class="btn btn-outline-primary">Ver notificaciones</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-md-4">
+                <div class="card shadow-sm text-center p-3">
+                    <h4>Foros</h4>
+                    <p>Navega en los foros con otros usuarios.</p>
+                    <button class="btn btn-outline-primary">Ver foros</button>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card shadow-sm text-center p-3">
+                    <h4>Productos Favoritos</h4>
+                    <p>Accede a los productos que más te gustan.</p>
+                    <a href="{{ route('cliente.favoritos') }}" class="btn btn-outline-primary">Ver favoritos</a>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card shadow-sm text-center p-3">
+                    <h4>Mi cuenta</h4>
+                    <p>Edita tu cuenta.</p>
+                    <a href="{{ route('profile.edit') }}" class="btn btn-outline-primary">Editar Perfil</a>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
 @endsection
