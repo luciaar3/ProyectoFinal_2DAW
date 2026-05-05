@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Producto;
+use App\Models\AtributoValor;
 use App\Http\Requests\ProductoRequest;
 use Illuminate\Support\Facades\Storage;
 
@@ -13,7 +14,9 @@ class ProductoController extends Controller
     {
         $negocio = auth()->user()->negocio;
         $productos = $negocio->productos()->latest()->get();
-        return view('comerciante.negocio.productos.index', compact('productos'));
+
+        $atributos_valores = AtributoValor::with('atributo')->get();
+        return view('comerciante.negocio.productos.index', compact('productos', 'atributos_valores'));
     }
 
     public function store(ProductoRequest $request)

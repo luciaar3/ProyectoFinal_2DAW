@@ -13,6 +13,16 @@ class Producto extends Model
         return $this->belongsTo(Negocio::class);
     }
 
+    public function etiquetas()
+    {
+        return $this->belongsToMany(Etiqueta::class, 'producto_etiqueta');
+    }
+
+    public function variantes()
+    {
+        return $this->hasMany(ProductoVariante::class, 'producto_id');
+    }
+
     public function favoritedBy() {
         return $this->belongsToMany(User::class, 'producto_user', 'producto_id', 'user_id')->withPivot('rol')->withTimestamps();
     }
