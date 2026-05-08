@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Reserva;
 use App\Models\Negocio;
 use Illuminate\Http\Request;
 
@@ -73,5 +74,36 @@ class NegocioController extends Controller
 
         // 3. Enviamos a la vista
         return view('comerciante.negocio.show', compact('negocio', 'diaHoy'));
+    }
+
+    public function misReservas()
+    {
+        // 1. Buscamos el negocio que pertenece al usuario autenticado
+        $negocio = Negocio::where('user_id', auth()->id())->firstOrFail();
+
+        // 2. Traemos las reservas de los productos de ese negocio
+        // Usamos 'with' para cargar el producto y el cliente de golpe (evita lentitud)
+        $reservas = Reserva::whereHas('producto', function($query) use ($negocio) {
+            $query->where('negocio_id', $negocio->id);
+        })->with(['producto', 'user'])->orderBy('created_at', 'desc')->get();
+
+        return view('comerciante.negocio.reservas', compact('reservas', 'negocio'));
+    }
+
+    public function actualizarEstadoReserva(Request $request, Reserva $reserva)
+    {
+        // Validamos que el estado sea uno de los permitidos
+        $request->validate([
+            'estado' => 'required|in:pendiente,completada,cancelada'
+        ]);
+
+        // Opcional: Podrías verificar que la reserva pertenece al negocio del usuario actual
+        // if ($reserva->producto->negocio->user_id !== auth()->id()) { abort(403); }
+
+        $reserva->update([
+            'estado' => $request->estado
+        ]);
+
+        return back()->with('success', 'Estado de la reserva actualizado a ' . $request->estado);
     }
 }

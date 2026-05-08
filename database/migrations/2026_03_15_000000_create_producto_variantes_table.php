@@ -13,6 +13,11 @@ return new class extends Migration
     {
         Schema::create('producto_variantes', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('producto_id')->constrained('productos')->onDelete('cascade');
+            $table->string('tipo');
+            $table->string('nombre_valor');
+            $table->integer('stock')->default(0);
+            $table->decimal('precio_especial', 8, 2)->nullable(); // Por si la talla XXL es más cara
             $table->timestamps();
         });
     }

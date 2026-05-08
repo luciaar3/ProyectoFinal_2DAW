@@ -16,6 +16,7 @@ class Reserva extends Model
         'user_id',
         'producto_id',
         'cantidad',
+        'variante_elegida'
     ];
 
     public function user()

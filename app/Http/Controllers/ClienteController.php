@@ -39,11 +39,25 @@ class ClienteController extends Controller
 
         $cantidad = $request->input('cantidad');
 
-        // Descontamos el stock
+        // 1. RECOGER LAS VARIANTES
+        // Buscamos todos los campos que empiecen por "variante_"
+        $opcionesSeleccionadas = [];
+        foreach ($request->all() as $key => $value) {
+            if (str_contains($key, 'variante_')) {
+                // Limpiamos el nombre (de "variante_talla" a "Talla")
+                $nombreAtributo = ucfirst(str_replace('variante_', '', $key));
+                $opcionesSeleccionadas[] = "$nombreAtributo: $value";
+            }
+        }
+        
+        // Convertimos el array ["Talla: L", "Color: Rojo"] en un string "Talla: L, Color: Rojo"
+        $varianteTexto = implode(', ', $opcionesSeleccionadas);
+
+        // 2. DESCONTAR STOCK
         $producto->stock -= $cantidad;
         $producto->save();
 
-        // Se crea la reserva
+        // 3. CREAR LA RESERVA (Añadimos la nueva columna)
         Reserva::create([
             'fecha_expiracion' => now()->addDays(7),
             'fecha_creacion'   => now(),
@@ -52,6 +66,8 @@ class ClienteController extends Controller
             'user_id'          => auth()->id(),
             'producto_id'      => $producto->id,
             'cantidad'         => $cantidad,
+            // Guardamos el texto final para el comerciante
+            'variante_elegida' => $varianteTexto ?: 'Sin variantes', 
         ]);
 
         $message = 'Reserva realizada con éxito.';

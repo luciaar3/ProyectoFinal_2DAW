@@ -49,11 +49,10 @@
 
                     <div class="card-body p-4">
                         <div class="d-flex justify-content-between align-items-start mb-2">
-                            <h5 class="fw-bold text-dark mb-0 text-truncate" style="max-width: 70%;">{{ $producto->nombre }}</h5>
-                            {{-- Muestra etiquetas si existen --}}
+                            <h5 class="fw-bold text-dark mb-0 text-truncate" style="max-width: 60%;">{{ $producto->nombre }}</h5>
                             <div class="d-flex gap-1 flex-wrap justify-content-end">
                                 @foreach($producto->etiquetas as $etiqueta)
-                                    <span class="badge bg-info-subtle text-info rounded-pill" style="font-size: 0.65rem;">{{ $etiqueta->nombre }}</span>
+                                    <span class="badge bg-primary-subtle text-primary rounded-pill" style="font-size: 0.65rem; background-color: #eef2ff !important;">{{ $etiqueta->nombre }}</span>
                                 @endforeach
                             </div>
                         </div>
@@ -68,7 +67,6 @@
                     </div>
 
                     <div class="card-footer bg-white border-0 p-4 pt-0 d-flex gap-2">
-                        {{-- BOTÓN EDITAR --}}
                         <button class="btn btn-outline-secondary btn-sm rounded-pill flex-grow-1 edit-button"
                             data-bs-toggle="modal" data-bs-target="#modalEditProducto"
                             data-id="{{ $producto->id }}" data-nombre="{{ $producto->nombre }}"
@@ -77,14 +75,12 @@
                             <i class="bi bi-pencil"></i>
                         </button>
 
-                        {{-- BOTÓN VARIANTES (Tallas/Colores) --}}
                         <button class="btn btn-outline-primary btn-sm rounded-pill flex-grow-1 btn-variantes" 
                             data-bs-toggle="modal" data-bs-target="#modalVariantes"
                             data-id="{{ $producto->id }}" data-nombre="{{ $producto->nombre }}">
                             <i class="bi bi-layers-half"></i> Tallas
                         </button>
 
-                        {{-- BOTÓN ELIMINAR --}}
                         <form action="{{ route('productos.destroy', $producto->id) }}" method="POST" class="d-inline">
                             @csrf @method('DELETE')
                             <button type="submit" class="btn btn-outline-danger btn-sm rounded-circle" onclick="return confirm('¿Seguro que quieres eliminar este producto?')">
@@ -128,16 +124,36 @@
                             <input type="number" name="stock" class="form-control rounded-pill border-light-subtle" required>
                         </div>
                     </div>
+
+                    {{-- NUEVO: DESPLEGABLE DE ETIQUETAS --}}
                     <div class="mb-3">
-                        <label class="form-label small fw-bold">Categoría</label>
-                        <input type="text" name="categoria" class="form-control rounded-pill border-light-subtle">
+                        <label class="form-label small fw-bold">Etiqueta Principal</label>
+                        <select name="etiqueta_nombre" id="select-etiqueta-add" class="form-select rounded-pill border-light-subtle" required>
+                            <option value="">Selecciona una...</option>
+                            <option value="ropa">Ropa</option>
+                            <option value="calzado">Calzado</option>
+                            <option value="complementos">Complementos (Bolsos, cinturones...)</option>
+                            <option value="comida">Comida / Gourmet</option>
+                            <option value="fruta_verdura">Fruta y Verdura</option>
+                            <option value="aroma">Aroma y Cosmética</option>
+                            <option value="artesania">Artesanía</option>
+                            <option value="hogar">Hogar y Decoración</option>
+                            <option value="bisuteria">Bisutería / Joyería</option>
+                            <option value="juguetes">Juguetes / Infantil</option>
+                        </select>
                     </div>
+
+                    {{-- AVISO DINÁMICO --}}
+                    <div id="aviso-ropa-add" class="alert alert-info border-0 rounded-4 d-none mb-3" style="background-color: #eef2ff;">
+                        <small class="text-primary fw-bold"><i class="bi bi-info-circle-fill me-1"></i> Modo Ropa: Podrás añadir tallas después de crear el producto.</small>
+                    </div>
+
                     <div class="mb-3">
-                        <label class="form-label small fw-bold">Descripción</label>
-                        <textarea name="descripcion" class="form-control" style="border-radius: 15px;" rows="3"></textarea>
+                        <label class="form-label small fw-bold">Descripción corta</label>
+                        <textarea name="descripcion" class="form-control" style="border-radius: 15px;" rows="2"></textarea>
                     </div>
                     <div class="mb-0">
-                        <label class="form-label small fw-bold">Foto</label>
+                        <label class="form-label small fw-bold">Foto del producto</label>
                         <input type="file" name="imagen" class="form-control rounded-pill border-light-subtle">
                     </div>
                 </div>
@@ -175,10 +191,6 @@
                         </div>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label small fw-bold">Categoría</label>
-                        <input type="text" name="categoria" id="edit_categoria" class="form-control rounded-pill">
-                    </div>
-                    <div class="mb-3">
                         <label class="form-label small fw-bold">Descripción</label>
                         <textarea name="descripcion" id="edit_descripcion" class="form-control" style="border-radius: 15px;" rows="2"></textarea>
                     </div>
@@ -195,7 +207,7 @@
     </div>
 </div>
 
-{{-- MODAL VARIANTES --}}
+{{-- MODAL VARIANTES (Mantenlo igual pero con el span de nombre) --}}
 <div class="modal fade" id="modalVariantes" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content border-0 shadow" style="border-radius: 24px;">
@@ -204,41 +216,44 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body p-4">
-                {{-- Formulario para añadir variante --}}
                 <div class="row g-2 mb-4 p-3 bg-light rounded-4">
-                    <div class="col-md-5">
-                        <label class="small fw-bold mb-1">Atributo y Valor</label>
-                        <select id="select-atributo-valor" class="form-select rounded-pill border-0 shadow-sm">
-                            <option value="">Selecciona (ej: Talla M)</option>
-                            @foreach($atributos_valores as $av)
-                                <option value="{{ $av->id }}">{{ $av->atributo->nombre }}: {{ $av->valor }}</option>
-                            @endforeach
+                    <div class="col-md-4">
+                        <label class="form-label small fw-bold">Tipo</label>
+                        <select id="tipo-atributo" class="form-select rounded-pill">
+                            <option value="Color">Color</option>
+                            <option value="Talla">Talla</option>
+                            <option value="Estampado">Estampado</option>
+                            <option value="Material">Material</option>
                         </select>
                     </div>
-                    <div class="col-md-4">
-                        <label class="small fw-bold mb-1">Stock específico</label>
-                        <input type="number" id="input-stock-variante" class="form-control rounded-pill border-0 shadow-sm" placeholder="Cantidad">
-                    </div>
-                    <div class="col-md-3 d-flex align-items-end">
-                        <button type="button" id="btn-guardar-variante" class="btn btn-primary w-100 rounded-pill fw-bold shadow-sm" style="background-color: #7b52d9; border: none;">Añadir</button>
-                    </div>
-                </div>
 
-                {{-- Tabla de variantes existentes --}}
-                <div class="table-responsive">
-                    <table class="table table-hover align-middle">
-                        <thead class="table-light">
-                            <tr>
-                                <th>Variante</th>
-                                <th>Stock</th>
-                                <th>Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tabla-variantes-body">
-                            {{-- Se rellena con JS --}}
-                        </tbody>
-                    </table>
-                </div>
+                    <div class="col-md-5">
+                        <label class="form-label small fw-bold">Nombre/Valor</label>
+                        <input type="text" id="valor-atributo" class="form-control rounded-pill" placeholder="Ej: Azul Marino o XL">
+                    </div>
+
+                    <div class="col-md-3">
+                        <label class="form-label small fw-bold">Stock</label>
+                        <input type="number" id="stock-atributo" class="form-control rounded-pill" value="1">
+                    </div>
+            </div>
+            <button type="button" id="btn-confirmar-variante" class="btn btn-primary w-100 mt-3 rounded-pill" style="background-color: #7b52d9; border: none;">
+                <i class="bi bi-plus-circle me-2"></i> Añadir Opción
+            </button>
+            <hr class="my-4 opacity-25">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th class="small fw-bold">Variante</th>
+                            <th class="small fw-bold">Stock</th>
+                            <th class="small fw-bold">Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabla-variantes-body">
+                        {{-- El JS rellenará esto --}}
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
@@ -259,9 +274,20 @@
 </style>
 
 <script>
+    // --- LÓGICA DE AVISO ROPA ---
+    document.getElementById('select-etiqueta-add').addEventListener('change', function() {
+        const texto = this.options[this.selectedIndex].text.toLowerCase();
+        const aviso = document.getElementById('aviso-ropa-add');
+        if(texto.includes('ropa') || texto.includes('calzado')) {
+            aviso.classList.remove('d-none');
+        } else {
+            aviso.classList.add('d-none');
+        }
+    });
+
     let currentProductoId = null;
 
-    // --- LÓGICA DE EDICIÓN ---
+    // --- EDICIÓN ---
     document.querySelectorAll('.edit-button').forEach(button => {
         button.addEventListener('click', function() {
             const id = this.getAttribute('data-id');
@@ -269,12 +295,11 @@
             document.getElementById('edit_nombre').value = this.getAttribute('data-nombre');
             document.getElementById('edit_precio').value = this.getAttribute('data-precio');
             document.getElementById('edit_stock').value = this.getAttribute('data-stock');
-            document.getElementById('edit_categoria').value = this.getAttribute('data-categoria');
             document.getElementById('edit_descripcion').value = this.getAttribute('data-descripcion');
         });
     });
 
-    // --- LÓGICA DE VARIANTES ---
+    // --- ABRIR MODAL VARIANTES ---
     document.querySelectorAll('.btn-variantes').forEach(btn => {
         btn.addEventListener('click', function() {
             currentProductoId = this.dataset.id;
@@ -283,19 +308,27 @@
         });
     });
 
+    // --- CARGAR LISTA DE VARIANTES ---
     async function cargarVariantes(productoId) {
         const tbody = document.getElementById('tabla-variantes-body');
+        if(!tbody) return; // Seguridad por si falta el ID en el HTML
+        
         tbody.innerHTML = '<tr><td colspan="3" class="text-center text-muted">Cargando...</td></tr>';
 
         try {
             const response = await fetch(`/comerciante/productos/${productoId}/variantes`);
             const variantes = await response.json();
-
             tbody.innerHTML = '';
+            
+            if(variantes.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="3" class="text-center text-muted">No hay variantes añadidas</td></tr>';
+                return;
+            }
+
             variantes.forEach(v => {
                 tbody.innerHTML += `
                     <tr>
-                        <td class="fw-bold text-secondary">${v.nombre_valor}</td>
+                        <td class="fw-bold text-secondary text-start">${v.nombre_valor}</td>
                         <td><span class="badge bg-light text-dark border px-3">${v.stock}</span></td>
                         <td>
                             <button class="btn btn-sm btn-outline-danger rounded-circle" onclick="eliminarVariante(${v.id})">
@@ -309,29 +342,61 @@
         }
     }
 
-    document.getElementById('btn-guardar-variante').addEventListener('click', async function() {
-        const valorId = document.getElementById('select-atributo-valor').value;
-        const stock = document.getElementById('input-stock-variante').value;
+    // Usamos un Event Listener en lugar de onclick para que sea más estable
+    document.addEventListener('DOMContentLoaded', function() {
+        const btnGuardar = document.getElementById('btn-confirmar-variante');
+        
+        if (btnGuardar) {
+            btnGuardar.addEventListener('click', async function() {
+                // Capturamos los elementos
+                const inputTipo = document.getElementById('tipo-atributo');
+                const inputValor = document.getElementById('valor-atributo');
+                const inputStock = document.getElementById('stock-atributo');
 
-        if(!valorId || !stock) return alert("Rellena el atributo y el stock");
+                // Validamos que existan y tengan valor
+                if (!inputValor.value.trim() || !inputStock.value) {
+                    alert("Por favor, introduce un nombre (ej: XL) y el stock disponible.");
+                    return;
+                }
 
-        const response = await fetch('/comerciante/productos/variantes', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': '{{ csrf_token() }}'
-            },
-            body: JSON.stringify({
-                producto_id: currentProductoId,
-                atributo_valor_id: valorId,
-                stock: stock
-            })
-        });
+                try {
+                    const response = await fetch('/comerciante/productos/variantes', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        },
+                        body: JSON.stringify({
+                            producto_id: currentProductoId,
+                            tipo: inputTipo.value,
+                            valor: inputValor.value.trim(),
+                            stock: inputStock.value
+                        })
+                    });
 
-        if(response.ok) {
-            document.getElementById('input-stock-variante').value = '';
-            cargarVariantes(currentProductoId);
+                    const data = await response.json();
+
+                    if (response.ok && data.success) {
+                        // Limpiar solo el valor y resetear stock a 1
+                        inputValor.value = '';
+                        inputStock.value = '1';
+                        // Refrescar la tabla
+                        cargarVariantes(currentProductoId);
+                    } else {
+                        alert("No se pudo guardar: " + (data.message || "Error desconocido"));
+                    }
+                } catch (error) {
+                    console.error("Error en la petición:", error);
+                    alert("Error de conexión. Revisa la consola (F12).");
+                }
+            });
         }
     });
+    
+    // Función opcional por si quieres borrar variantes
+    async function eliminarVariante(id) {
+        if(!confirm('¿Eliminar esta variante?')) return;
+        // Aquí iría el fetch de DELETE si lo programas
+    }
 </script>
 @endsection

@@ -63,8 +63,8 @@ class ComercianteController extends Controller
                 $negocio->horarios()->updateOrCreate(
                     ['dia' => $dia],
                     [
-                        'poblacion'       => $datosDia['poblacion'],
-                        'ubicacion'       => $datosDia['ubicacion'],
+                        'poblacion'       => $datosDia['poblacion'] ?? 'Sin ubicación',
+                        'ubicacion'       => $datosDia['ubicacion'] ?? 'Sin ubicación',
                         'latitud'         => $datosDia['latitud'] ?? null,
                         'longitud'        => $datosDia['longitud'] ?? null,
                         'apertura'        => $datosDia['apertura'],

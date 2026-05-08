@@ -12,11 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('variante_valores', function (Blueprint $table) {
+            $table->id();
             $table->foreignId('producto_variante_id')->constrained('producto_variantes')->onDelete('cascade');
             $table->foreignId('atributo_valor_id')->constrained('atributo_valores')->onDelete('cascade');
             
-            // Clave primaria compuesta para que no se repitan valores en la misma variante
-            $table->primary(['producto_variante_id', 'atributo_valor_id']);
+            // Clave unica compuesta para que no se repitan valores en la misma variante
+            $table->unique(['producto_variante_id', 'atributo_valor_id']);
         });
     }
 

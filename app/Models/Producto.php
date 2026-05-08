@@ -15,7 +15,7 @@ class Producto extends Model
 
     public function etiquetas()
     {
-        return $this->belongsToMany(Etiqueta::class, 'producto_etiqueta');
+        return $this->belongsToMany(Etiqueta::class, 'producto_etiqueta', 'producto_id', 'etiqueta_id');
     }
 
     public function variantes()

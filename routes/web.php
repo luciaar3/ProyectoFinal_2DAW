@@ -28,6 +28,8 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 // Esto permite que los clientes busquen y vean los puestos y sus productos
 Route::get('/buscar', [NegocioController::class, 'index'])->name('negocios.index');
 Route::get('/negocio/{negocio}', [NegocioController::class, 'show'])->name('negocios.show');
+Route::get('/panel-negocio/reservas', [NegocioController::class, 'misReservas'])->name('negocios.reservas');
+Route::patch('/reservas/{reserva}/estado', [NegocioController::class, 'actualizarEstadoReserva'])->name('reservas.actualizarEstado');
 
 
 // --- RUTAS PROTEGIDAS (Requieren estar logueado) ---
@@ -50,9 +52,14 @@ Route::middleware(['auth'])->group(function () {
 
     // Gestión del Catálogo (Solo el dueño crea/edita/borra)
     Route::get('/comerciante/catalogo', [ProductoController::class, 'index'])->name('productos.index');
+    Route::get('/producto/{id}', [ProductoController::class, 'show'])->name('productos.show');
     Route::post('/comerciante/catalogo', [ProductoController::class, 'store'])->name('productos.store');
     Route::put('/comerciante/catalogo/{producto}', [ProductoController::class, 'update'])->name('productos.update');
     Route::delete('/comerciante/catalogo/{producto}', [ProductoController::class, 'destroy'])->name('productos.destroy');
+
+    // Rutas para la gestión de variantes (Tallas/Colores) mediante AJAX
+    Route::get('/comerciante/productos/{producto}/variantes', [ProductoController::class, 'getVariantes']);
+    Route::post('/comerciante/productos/variantes', [ProductoController::class, 'addVariante']);
 
     //Notificaciones
     Route::resource('notificaciones', NotificacionController::class);

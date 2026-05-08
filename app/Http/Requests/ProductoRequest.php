@@ -23,11 +23,12 @@ class ProductoRequest extends FormRequest
     {
         return [
             'nombre'      => 'required|string|max:255',
-            'descripcion' => 'nullable|string',
             'precio'      => 'required|numeric|min:0',
             'stock'       => 'required|integer|min:0',
-            'categoria'   => 'nullable|string|max:100',
-            'imagen'      => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+            'etiqueta_nombre' => 'required|string',
+            'descripcion' => 'nullable|string',
+            'categoria'   => 'nullable|string',
+            'imagen'      => 'nullable|image|max:2048',
         ];
     }
 

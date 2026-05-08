@@ -95,7 +95,30 @@
                 </div>
             </div>
         </div>
-
+        <div class="col-md-6 col-lg-4">
+            <div class="card h-100 border-0 shadow-sm {{ $estado !== 'aprobado' ? 'opacity-75' : '' }}" 
+                style="border-radius: 24px; transition: transform 0.3s; {{ $estado !== 'aprobado' ? 'cursor: not-allowed;' : '' }}"
+                @if($estado === 'aprobado') onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'" @endif>
+                <div class="card-body p-5 text-center">
+                    <div class="d-inline-flex align-items-center justify-content-center rounded-circle mb-4" 
+                        style="width: 80px; height: 80px; background-color: rgba(25, 135, 84, 0.1); color: #198754;">
+                        <i class="bi bi-calendar-check fs-1"></i>
+                    </div>
+                    <h4 class="fw-bold mb-3 text-dark">Reservas</h4>
+                    <p class="text-secondary mb-4">Consulta los pedidos de tus clientes y gestiona sus variantes y estados.</p>
+                    
+                    @if($estado === 'aprobado')
+                        <a href="{{ route('negocios.reservas') }}" class="btn w-100 rounded-pill fw-bold py-2" 
+                        style="background-color: rgba(25, 135, 84, 0.1); color: #198754; border: none;">
+                        Ver Pedidos
+                        </a>
+                    @else
+                        <button class="btn w-100 rounded-pill fw-bold py-2 border-0" 
+                                style="background-color: #e9ecef; color: #adb5bd;" disabled>Bloqueado</button>
+                    @endif
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 @endsection

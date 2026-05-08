@@ -90,66 +90,22 @@
 
         <div class="row g-4">
             @foreach($negocio->productos as $p)
-                <div class="col-6 col-md-4 col-lg-3">
-                    <div class="product-minimal card h-100 border-0 bg-transparent" 
-                         style="cursor: pointer;" 
-                         data-bs-toggle="modal" 
-                         data-bs-target="#modalProd{{ $p->id }}">
-                        
-                        <div class="position-relative rounded-4 overflow-hidden mb-3 shadow-sm aspect-ratio-1">
-                            <img src="{{ $p->imagen ? asset('storage/'.$p->imagen) : 'https://via.placeholder.com/300' }}" class="w-100 h-100 object-fit-cover transition-img">
-                            <div class="price-minimal shadow-sm">{{ number_format($p->precio, 2) }}€</div>
-                        </div>
-                        <div class="px-2">
-                            <h6 class="fw-bold mb-1 text-dark text-truncate">{{ $p->nombre }}</h6>
-                            <p class="text-muted small mb-2 text-truncate">{{ $p->descripcion }}</p>
-                            <button class="btn btn-outline-dark btn-sm rounded-pill w-100 fw-bold">Ver detalles</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="modal fade" id="modalProd{{ $p->id }}" tabindex="-1" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered">
-                        <div class="modal-content border-0 rounded-5 overflow-hidden">
-                            <div class="modal-body p-0 text-center">
-                                <img src="{{ $p->imagen ? asset('storage/'.$p->imagen) : 'https://via.placeholder.com/500' }}" class="w-100" style="height: 300px; object-fit: cover;">
-                                <div class="p-4">
-                                    <h3 class="fw-bold mb-1">{{ $p->nombre }}</h3>
-                                    <div class="text-sage fw-bold fs-4 mb-3">{{ number_format($p->precio, 2) }}€</div>
-                                    <p class="text-muted mb-4">{{ $p->descripcion }}</p>
-                                    <p class="fw-bold mb-3" style="color: #6b7a63;">Stock disponible: <span id="stock-text-{{ $p->id }}">{{ $p->stock }}</span></p>
-
-                                    @auth
-                                        <div class="d-flex justify-content-center gap-2 mb-3">
-                                            <form action="{{ route('productos.favorito', $p->id) }}" method="POST" class="form-favorito" data-id="{{ $p->id }}">
-                                                @csrf
-                                                <button type="submit" id="btn-fav-{{ $p->id }}" class="btn {{ Auth::user()->favoritos->contains($p->id) ? 'btn-danger' : 'btn-outline-danger' }} rounded-circle" style="width: 45px; height: 45px;">
-                                                    <i class="fas fa-heart"></i>
-                                                </button>
-                                            </form>
-                                        </div>
-
-                                        <form action="{{ route('productos.reservar', $p->id) }}" method="POST" class="form-reservar d-flex flex-column gap-2 {{ $p->stock > 0 ? '' : 'd-none' }}" data-id="{{ $p->id }}" id="form-reservar-container-{{ $p->id }}">
-                                            @csrf
-                                            <div class="input-group">
-                                                <span class="input-group-text bg-light border-0">Cantidad</span>
-                                                <input type="number" name="cantidad" id="input-cantidad-{{ $p->id }}" class="form-control bg-light border-0 text-center" value="1" min="1" max="{{ $p->stock }}">
-                                            </div>
-                                            <button type="submit" class="btn btn-dark rounded-pill py-2 fw-bold" id="btn-reservar-{{ $p->id }}">
-                                                <i class="fas fa-calendar-check me-2"></i> Reservar Producto
-                                            </button>
-                                        </form>
-                                        <button id="btn-agotado-{{ $p->id }}" class="btn btn-secondary rounded-pill py-2 fw-bold w-100 {{ $p->stock <= 0 ? '' : 'd-none' }}" disabled>Agotado</button>
-                                    @else
-                                        <div class="alert alert-warning small">
-                                            Inicia sesión para reservar o guardar favoritos.
-                                        </div>
-                                    @endauth
-                                </div>
+               <div class="col-6 col-md-4 col-lg-3">
+                    <a href="{{ route('productos.show', $p->id) }}" class="text-decoration-none">
+                        <div class="product-minimal card h-100 border-0 bg-transparent">
+                            <div class="position-relative rounded-4 overflow-hidden mb-3 shadow-sm aspect-ratio-1">
+                                <img src="{{ $p->imagen ? asset('storage/'.$p->imagen) : 'https://via.placeholder.com/300' }}" 
+                                    class="w-100 h-100 object-fit-cover transition-img">
+                                <div class="price-minimal shadow-sm">{{ number_format($p->precio, 2) }}€</div>
+                            </div>
+                            <div class="px-2">
+                                <h6 class="fw-bold mb-1 text-dark text-truncate">{{ $p->nombre }}</h6>
+                                <p class="text-muted small mb-2 text-truncate">{{ $p->descripcion }}</p>
+                                <div class="btn btn-outline-dark btn-sm rounded-pill w-100 fw-bold">Ver detalles</div>
                             </div>
                         </div>
-                    </div>
-                </div>
+                    </a>
+                </div> 
             @endforeach
         </div>
     </div>

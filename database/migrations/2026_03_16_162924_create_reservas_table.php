@@ -16,9 +16,10 @@ return new class extends Migration {
             $table->date('fecha_creacion');
             $table->enum('estado', ['pendiente', 'completada', 'cancelada'])->default('pendiente');
             $table->decimal('coste_total', 10, 2);
+            $table->text('variante_elegida')->nullable();
+            $table->integer('cantidad')->default(1);
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('producto_id')->constrained('productos')->onDelete('cascade');
-            $table->integer('cantidad')->default(1);
             $table->timestamps();
         });
     }
