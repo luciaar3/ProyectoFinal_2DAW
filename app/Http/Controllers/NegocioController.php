@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Reserva;
 use App\Models\Negocio;
+use App\Models\Etiqueta;
 use Illuminate\Http\Request;
 
 class NegocioController extends Controller
@@ -22,13 +23,11 @@ class NegocioController extends Controller
         $query = Negocio::with(['horarios', 'imagenes']);
 
         // 3. Aplicamos Filtro por nombre o población
-        if ($request->filled('search')) {
-            $search = $request->search;
-            $query->where(function($q) use ($search) {
-                $q->where('nombre_negocio', 'like', "%$search%")
-                ->orWhereHas('horarios', function($q2) use ($search) {
-                    $q2->where('poblacion', 'like', "%$search%");
-                });
+        if ($request->filled('categoria')) {
+            $categoriaNombre = $request->categoria;
+            $query->whereHas('productos.etiquetas', function($q) use ($categoriaNombre) {
+                // Buscamos por el nombre en la tabla 'etiquetas'
+                $q->where('nombre', $categoriaNombre);
             });
         }
 
@@ -38,25 +37,32 @@ class NegocioController extends Controller
         });
 
         // 5. OBTENEMOS DATOS PARA EL MAPA (Todos los que cumplen el filtro, sin paginar)
-        // Usamos clone para no ensuciar la query original que luego paginaremos
         $puntosMapa = (clone $query)->get()->map(function($n) use ($diaFiltro) {
+            // Buscamos el horario del día que estamos filtrando
             $h = $n->horarios->where('dia', $diaFiltro)->first();
+            
+            // Si por algún error ese día no tiene horario (aunque no debería pasar), evitamos que rompa
+            if (!$h) return null;
+
             return [
-                'id'     => $n->id,
+                'id'             => $n->id,
                 'nombre_negocio' => $n->nombre_negocio,
-                'lat'    => $h->latitud,
-                'lng'    => $h->longitud,
-                'pob'    => $h->poblacion,
-                'ubi'    => $h->ubicacion,
-                'url'    => route('negocios.show', $n->id),
-                'logo'   => $n->imagen ? asset('storage/'.$n->imagen) : 'https://via.placeholder.com/50'
+                'lat'            => $h->latitud,
+                'lng'            => $h->longitud,
+                'pob'            => $h->poblacion,
+                'ubi'            => $h->ubicacion,
+                'url'            => route('negocios.show', $n->id),
+                // Si tienes una carpeta 'img' dentro de 'public', asegúrate de que la ruta sea correcta
+                'logo'           => $n->imagen ? asset('storage/'.$n->imagen) : asset('img/default-logo.png')
             ];
-        });
+        })->filter();
 
         // 6. EJECUTAMOS LA PAGINACIÓN PARA LA LISTA
         $negocios = $query->paginate(10)->withQueryString(); 
 
-        return view('comerciante.negocio.index', compact('negocios', 'puntosMapa', 'diaHoy', 'diaFiltro'));
+        $etiquetas = Etiqueta::all();
+
+        return view('comerciante.negocio.index', compact('negocios', 'puntosMapa', 'diaHoy', 'diaFiltro', 'etiquetas'));
     }
 
     public function show(Negocio $negocio)

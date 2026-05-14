@@ -1,8 +1,11 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-white py-3 shadow-sm">
-    <div class="container">
-        <a class="navbar-brand fw-bolder fs-4 d-flex align-items-center" href="/">
-            <span style="color: #7b52d9;" class="me-2">◈</span> 
-            Market Manager
+<nav class="navbar navbar-expand-lg navbar-light bg-white py-3 shadow-sm sticky-top" style="border-bottom: 2px solid #f53003;">
+    <div class="container-fluid px-4 px-md-5">
+        <a class="navbar-brand fw-bolder fs-4 d-flex align-items-center" href="/" style="letter-spacing: -1.5px;">
+            <div class="me-2 d-flex align-items-center justify-content-center" 
+                 style="background-color: #f53003; width: 40px; height: 40px; border-radius: 12px; transform: rotate(-5deg);">
+                <i class="bi bi-shop-window text-white" style="font-size: 1.4rem; transform: rotate(5deg);"></i>
+            </div>
+            <span class="text-dark">Merca</span><span style="color: #f53003;">Zone</span>
         </a>
         
         <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -11,36 +14,46 @@
         
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto align-items-center fw-medium">
+                
+                <li class="nav-item me-lg-4">
+                    <a class="nav-link text-secondary nav-link-hover" href="#nuestra-historia">
+                        <i class="bi bi-info-circle me-1"></i> Nuestra Historia
+                    </a>
+                </li>
+
                 @guest
                     <li class="nav-item me-lg-3 mt-3 mt-lg-0">
-                        <a class="nav-link text-primary fw-semibold" href="{{ route('login') }}">Inicia sesión </a>
+                        <a class="nav-link fw-semibold text-dark nav-link-hover" href="{{ route('login') }}">Inicia sesión</a>
                     </li>
                     <li class="nav-item mt-2 mt-lg-0">
-                        <a class="btn rounded-pill px-4 py-2 text-white fw-bold shadow-sm" style="background-color: #7b52d9; transition: opacity 0.3s;" href="{{ route('registro') }}" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
-                            Regístrate gratis <i class="bi bi-chevron-down" style="font-size: 0.8em;"></i>
+                        <a class="btn rounded-pill px-4 py-2 text-white fw-bold shadow-sm btn-main-action" 
+                           style="background: linear-gradient(135deg, #f53003 0%, #ff6b4a 100%); border: none;" 
+                           href="{{ route('registro') }}">
+                             Únete a la Zona
                         </a>
                     </li>
                 @else
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle d-flex align-items-center gap-2 text-dark" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <div class="text-white rounded-circle d-flex justify-content-center align-items-center fw-bold" style="width: 35px; height: 35px; font-size: 1rem; background-color: #7b52d9;">
+                        <a class="nav-link dropdown-toggle d-flex align-items-center gap-2 text-dark p-1 pe-3 rounded-pill user-dropdown-pill" 
+                           href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
+                            
+                            <div class="text-white rounded-circle d-flex justify-content-center align-items-center fw-bold shadow-sm" 
+                                 style="width: 35px; height: 35px; background: #1b1b18;">
                                 {{ strtoupper(substr(Auth::user()->nombre, 0, 1)) }}
                             </div>
-                            <span>Hola, <strong>{{ explode(' ', Auth::user()->nombre)[0] }}</strong></span>
+                            <span>{{ explode(' ', Auth::user()->nombre)[0] }}</span>
                         </a>
                         
-                        <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0 mt-2" aria-labelledby="navbarDropdown">
-                            <li>
-                                <a class="dropdown-item py-2 fw-semibold" href="{{ Auth::user()->rol === 'Cliente' ? route('cliente.account') : (Auth::user()->rol === 'Comerciante' ? route('comerciante.account') : route('admin.account')) }}">
-                                    Mi Panel
-                                </a>
+                        <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-3 animate-slide" style="border-radius: 18px;">
+                            <li><a class="dropdown-item py-2 fw-semibold" href="{{ route(Auth::user()->rol == 'Cliente' ? 'cliente.account' : 'comerciante.account') }}">
+                                <i class="bi bi-grid-1x2 me-2"></i> Mi Panel</a>
                             </li>
                             <li><hr class="dropdown-divider"></li>
                             <li>
                                 <form action="{{ route('logout') }}" method="POST">
                                     @csrf
                                     <button type="submit" class="dropdown-item py-2 text-danger fw-bold">
-                                        Cerrar Sesión
+                                        <i class="bi bi-door-open me-2"></i> Salir
                                     </button>
                                 </form>
                             </li>
@@ -51,3 +64,37 @@
         </div>
     </div>
 </nav>
+
+<style>
+    /* Tus estilos se mantienen intactos */
+    .nav-link-hover:hover {
+        color: #f53003 !important;
+        transform: translateY(-1px);
+        transition: 0.2s;
+    }
+
+    .btn-main-action:hover {
+        transform: scale(1.05);
+        box-shadow: 0 8px 20px rgba(245, 48, 3, 0.3) !important;
+        transition: 0.3s;
+    }
+
+    .user-dropdown-pill {
+        border: 1px solid #eee;
+        transition: 0.3s;
+    }
+
+    .user-dropdown-pill:hover {
+        background-color: #f8f9fa;
+        border-color: #f53003;
+    }
+
+    .animate-slide {
+        animation: slideUp 0.3s ease-out;
+    }
+
+    @keyframes slideUp {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+</style>

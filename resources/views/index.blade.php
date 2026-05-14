@@ -1,160 +1,199 @@
 @extends('layouts.layout')
 
-@section('title', 'Inicio - Market Manager')
+@section('title', 'MercaZone - Tu Mercado de Proximidad Digital')
 
 @section('content')
 <style>
+    :root {
+        --rojo-mercazone: #f53003;
+        --rojo-hover: #d42902;
+    }
+
+    /* --- FONDO DINÁMICO --- */
     body {
-        background: #ffffff;
+        background-color: #f4f4f7;
         background-image: 
-            radial-gradient(circle at 10% 20%, rgba(123, 82, 217, 0.05) 0%, transparent 40%),
-            radial-gradient(circle at 90% 80%, rgba(0, 210, 255, 0.05) 0%, transparent 40%);
+            linear-gradient(to bottom, rgba(255, 255, 255, 0.8) 0%, rgba(244, 244, 247, 0.9) 100%),
+            url('https://images.unsplash.com/photo-1533900298318-6b8da08a523e?q=80&w=1920&auto=format&fit=crop&blur=50'); 
+        background-attachment: fixed;
+        background-size: cover;
+        background-position: center;
+        min-height: 100vh;
     }
 
-    /*Contenedor de la Tarjeta Giratoria */
-    .flip-card {
-        background-color: transparent;
-        height: 420px;
-        perspective: 1000px; /* Le da el efecto de profundidad 3D */
+    /* --- CONTENEDOR GLASSMORPHISM --- */
+    .main-wrapper {
+        background: rgba(255, 255, 255, 0.6);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border-radius: 40px;
+        border: 1px solid rgba(255, 255, 255, 0.4);
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.05);
+        padding: 5rem 2rem;
+        margin-top: 2rem;
+        margin-bottom: 5rem;
     }
 
-    .flip-card-inner {
-        position: relative;
-        width: 100%;
-        height: 100%;
-        text-align: center;
-        transition: transform 0.8s cubic-bezier(0.4, 0.2, 0.2, 1);
-        transform-style: preserve-3d;
+    /* --- BUSCADOR EVOLUCIONADO --- */
+    .search-container {
+        max-width: 850px;
+        margin: 0 auto;
+        transition: transform 0.3s ease;
     }
 
-    /* Al pasar el ratón, la tarjeta gira 180 grados */
-    .flip-card:hover .flip-card-inner {
-        transform: rotateY(180deg);
+    .search-container:focus-within {
+        transform: translateY(-5px);
     }
 
-    /*Caras de la Tarjeta */
-    .flip-card-front, .flip-card-back {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        -webkit-backface-visibility: hidden;
-        backface-visibility: hidden;
-        border-radius: 24px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.04);
-        border: 1px solid #f0f0f0;
-        overflow: hidden;
-    }
-
-    /* Parte Delantera */
-    .flip-card-front {
-        background-color: #ffffff;
-        display: flex;
-        flex-direction: column;
-    }
-
-    .card-header-front { padding: 24px 24px 10px 24px; text-align: left; }
-    
-    .zen-graphic {
-        height: 200px;
-        margin-top: auto;
-        position: relative;
+    .custom-search-bar {
+        background: white;
+        border-radius: 100px;
+        padding: 8px;
         display: flex;
         align-items: center;
-        justify-content: center;
+        box-shadow: 0 15px 30px rgba(0,0,0,0.08);
+        border: 1px solid #eee;
     }
 
-    .zen-blob-1, .zen-blob-2 {
-        position: absolute;
-        border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+    .category-select {
+        border: none;
+        background: transparent;
+        font-weight: 700;
+        color: var(--rojo-mercazone);
+        padding: 0 25px;
+        cursor: pointer;
+        outline: none;
+        min-width: 140px;
     }
 
-    /* Parte Trasera*/
-    .flip-card-back {
-        background-color: #ffffff;
-        transform: rotateY(180deg);
+    .search-input {
+        border: none;
+        padding: 12px 20px;
+        width: 100%;
+        outline: none;
+        font-size: 1.1rem;
+    }
+
+    .btn-search {
+        background: var(--rojo-mercazone);
+        color: white;
+        border: none;
+        padding: 12px 30px;
+        border-radius: 100px;
+        font-weight: 700;
+        transition: 0.3s;
+    }
+
+    .btn-search:hover {
+        background: var(--rojo-hover);
+        box-shadow: 0 5px 15px rgba(245, 48, 3, 0.3);
+    }
+
+    /* --- ETIQUETAS/PILLS BAJO EL BUSCADOR --- */
+    .tags-container {
         display: flex;
-        flex-direction: column;
+        flex-wrap: wrap;
         justify-content: center;
+        gap: 10px;
+        margin-top: 25px;
+    }
+
+    .tag-pill {
+        background: white;
+        color: #555;
+        padding: 8px 20px;
+        border-radius: 50px;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 0.85rem;
+        border: 1px solid rgba(0,0,0,0.05);
+        transition: all 0.3s ease;
+        display: flex;
         align-items: center;
-        padding: 2rem;
-        text-align: center;
+        gap: 6px;
     }
 
-    /* --- Destacar la Tarjeta Central --- */
-    @media (min-width: 992px) {
-        .card-destacada .flip-card {
-            height: 460px; /* Las normales miden 420px, esta es 40px más alta */
-            margin-top: -20px; /* La desplazamos un poco hacia arriba para que sobresalga */
-            z-index: 10;
-        }
-        
-        /* Mantenemos el borde morado y la sombra más fuerte */
-        .card-destacada .flip-card-front, .card-destacada .flip-card-back {
-            box-shadow: 0 20px 50px rgba(123, 82, 217, 0.15);
-            border: 2px solid #7b52d9;
-        }
-        /* Ajuste para qu al girar no pierda el tamaño grande */
-        .card-destacada:hover .flip-card-inner {
-            transform: rotateY(180deg);
-        }
-        .card-destacada .flip-card-front, .card-destacada .flip-card-back {
-            box-shadow: 0 20px 50px rgba(123, 82, 217, 0.15);
-            border: 2px solid #7b52d9;
-        }
+    .tag-pill:hover {
+        background: var(--rojo-mercazone);
+        color: white !important;
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(245, 48, 3, 0.2);
     }
 
-    /*colores de las burbujas */
-    .zen-purple .zen-blob-1 { width: 140%; height: 140%; bottom: -50%; background: radial-gradient(circle, #b388ff 0%, #7b52d9 80%); }
-    .zen-purple .zen-blob-2 { width: 80%; height: 120%; bottom: -30%; background: radial-gradient(circle, #00d2ff 0%, #3a7bd5 100%); opacity: 0.8; }
+    /* --- ESTILOS FLIP CARDS --- */
+    .flip-card { background-color: transparent; height: 420px; perspective: 1500px; }
+    .flip-card-inner { position: relative; width: 100%; height: 100%; text-align: center; transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1); transform-style: preserve-3d; }
+    .flip-card:hover .flip-card-inner { transform: rotateY(180deg) translateY(-10px); }
+    .flip-card-front, .flip-card-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 30px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 1px solid rgba(0,0,0,0.03); }
+    .flip-card-front { background: white; display: flex; flex-direction: column; }
+    .flip-card-back { transform: rotateY(180deg); display: flex; flex-direction: column; justify-content: center; padding: 2rem; background: white; }
     
-    .zen-green .zen-blob-1 { width: 140%; height: 140%; bottom: -50%; background: radial-gradient(circle, #81c784 0%, #388e3c 80%); }
-    .zen-green .zen-blob-2 { width: 80%; height: 120%; bottom: -30%; background: radial-gradient(circle, #a1ffce 0%, #faffd1 100%); opacity: 0.8; }
+    .card-header-front { padding: 30px; text-align: left; }
+    .zen-graphic { height: 220px; margin-top: auto; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
+    .zen-blob-1, .zen-blob-2 { position: absolute; border-radius: 50%; filter: blur(20px); opacity: 0.6; }
+    
+    .zen-orange .zen-blob-1 { width: 150%; height: 150%; background: #f53003; bottom: -60%; }
+    .card-destacada .flip-card { height: 460px; }
 
-    .zen-blue .zen-blob-1 { width: 140%; height: 140%; bottom: -50%; background: radial-gradient(circle, #64b5f6 0%, #1976d2 80%); }
-    .zen-blue .zen-blob-2 { width: 80%; height: 120%; bottom: -30%; background: radial-gradient(circle, #00c6ff 0%, #0072ff 100%); opacity: 0.8; }
+    .scroll-indicator { font-size: 2.5rem; color: var(--rojo-mercazone); animation: bounce 2s infinite; display: inline-block; }
+    @keyframes bounce { 0%, 20%, 50%, 80%, 100% {transform: translateY(0);} 40% {transform: translateY(-10px);} }
 </style>
 
-<div class="container text-center mt-5 pt-4 mb-5 pb-5">
-    
-    <h1 class="display-4 fw-bolder text-dark mb-3" style="letter-spacing: -1px;">
-        Digitaliza y Conecta tu Comercio Local
-    </h1>
-    <p class="fs-5 text-secondary mx-auto mb-5" style="max-width: 800px; font-weight: 400;">
-        Market Manager es la plataforma definitiva que une a los clientes con las tiendas de su barrio. 
-        Descubre productos cerca de ti o gestiona el inventario de tu negocio desde un solo lugar.
-    </p>
+<div class="container main-wrapper shadow-sm">
+    <div class="text-center mb-5">
+        <h1 class="display-3 fw-bolder text-dark mb-3" style="letter-spacing: -2.5px;">
+            Merca<span style="color: var(--rojo-mercazone);">Zone</span>
+        </h1>
+        <p class="fs-5 text-secondary mx-auto mb-5" style="max-width: 700px;">
+            Encuentra tus puestos favoritos, descubre nuevas rutas y apoya al comercio de tu barrio con un solo clic.
+        </p>
 
-    <div class="mx-auto mb-5" style="max-width: 600px;">
-        <form action="{{ route('negocios.index') }}" method="GET" class="input-group input-group-lg shadow-sm rounded-pill overflow-hidden border">
-            <input type="text" name="search" class="form-control border-0 px-4" placeholder="¿Qué buscas? (Ej: Frutería, Madrid, Pan...)" aria-label="Buscar negocios">
-            <button class="btn btn-primary px-4" type="submit" style="background-color: #7b52d9; border: none;">
-                <i class="bi bi-search"></i>
-            </button>
-        </form>
-        <div class="mt-2 text-start ms-4">
-            <small class="text-muted italic">Prueba con: "Panadería", "Valencia" o "Frutas Paco"</small>
+        <div class="search-container">
+            <form action="{{ route('negocios.index') }}" method="GET">
+                <div class="custom-search-bar">
+                    <select name="categoria" class="category-select d-none d-md-block">
+                        <option value="">Categorías</option>
+                        @foreach($etiquetas as $et)
+                            <option value="{{ $et->nombre }}">{{ ucfirst(str_replace('_', ' y ', $et->nombre)) }}</option>
+                        @endforeach
+                    </select>
+                    <div class="vr d-none d-md-block" style="height: 30px; align-self: center; background-color: #ccc;"></div>
+                    <input type="text" name="search" class="search-input" value="{{ request('search') }}" placeholder="¿Qué estás buscando?">
+                    <button type="submit" class="btn-search">
+                        <i class="bi bi-search me-2"></i> Buscar
+                    </button>
+                </div>
+            </form>
+
+            <div class="tags-container">
+                @foreach($etiquetas->take(6) as $et)
+                    <a href="{{ route('negocios.index', ['categoria' => $et->nombre]) }}" class="tag-pill">
+                        <i class="bi bi-lightning-charge-fill" style="color: var(--rojo-mercazone); font-size: 0.7rem;"></i>
+                        {{ ucfirst(str_replace('_', ' y ', $et->nombre)) }}
+                    </a>
+                @endforeach
+            </div>
         </div>
     </div>
 
-    <div class="row g-4 mt-4 justify-content-center align-items-center">
-        
-        <div class="col-lg-4 col-md-6 z-1">
+    <div class="row g-4 mt-5 justify-content-center align-items-center">
+        <div class="col-lg-4 col-md-6">
             <div class="flip-card">
                 <div class="flip-card-inner">
                     <div class="flip-card-front">
                         <div class="card-header-front">
-                            <h5 class="fw-bold mb-1 fs-4 text-dark">Para Clientes</h5>
-                            <p class="text-secondary small">Explora y descubre las tiendas de tu ciudad.</p>
+                            <h5 class="fw-bold mb-1 fs-4">Explorar Mapa</h5>
+                            <p class="text-secondary small">Localiza puestos en tiempo real.</p>
                         </div>
-                        <div class="zen-graphic zen-blue bg-light">
-                            <div class="zen-blob-1"></div><div class="zen-blob-2"></div>
-                            <i class="bi bi-search text-white position-relative z-3" style="font-size: 5rem; filter: drop-shadow(0px 4px 10px rgba(0,0,0,0.2));"></i>
+                        <div class="zen-graphic" style="background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);">
+                            <i class="bi bi-geo-alt-fill text-primary" style="font-size: 5rem;"></i>
                         </div>
                     </div>
-                    <div class="flip-card-back bg-light">
-                        <i class="bi bi-geo-alt fs-1 text-primary mb-3"></i>
-                        <h5 class="fw-bold text-dark">Encuentra lo que buscas</h5>
-                        <p class="text-secondary">Busca productos, compara comercios, guarda tus tiendas favoritas y apoya el comercio de proximidad sin salir de casa.</p>
+                    <div class="flip-card-back">
+                        <i class="bi bi-map fs-1 text-primary mb-3"></i>
+                        <h5 class="fw-bold">Encuentra la Ruta</h5>
+                        <p class="text-secondary small">Mira dónde están tus comerciantes favoritos hoy mismo.</p>
+                        <a href="{{ route('negocios.index') }}" class="btn btn-dark rounded-pill px-4 mt-2">Ver Mapa</a>
                     </div>
                 </div>
             </div>
@@ -163,49 +202,55 @@
         <div class="col-lg-4 col-md-8 card-destacada">
             <div class="flip-card">
                 <div class="flip-card-inner">
-                    <div class="flip-card-front">
-                        <div class="card-header-front text-center pt-4">
-                            <span class="badge bg-primary mb-2 px-3 py-2 rounded-pill">Función Principal</span>
-                            <h4 class="fw-bolder mb-1 text-dark" style="color: #7b52d9;">Para Comerciantes</h4>
-                            <p class="text-secondary small">El panel de control definitivo para tu negocio.</p>
+                    <div class="flip-card-front" style="border: 2px solid var(--rojo-mercazone);">
+                        <div class="card-header-front text-center">
+                            <span class="badge bg-danger mb-2 px-3 py-2 rounded-pill" style="background-color: var(--rojo-mercazone) !important;">PRO</span>
+                            <h4 class="fw-bolder">Soy Comerciante</h4>
                         </div>
-                        <div class="zen-graphic zen-purple" style="background: #f4edff;">
-                            <div class="zen-blob-1"></div><div class="zen-blob-2"></div>
-                            <i class="bi bi-shop text-white position-relative z-3" style="font-size: 6rem; filter: drop-shadow(0px 4px 10px rgba(0,0,0,0.3));"></i>
+                        <div class="zen-graphic zen-orange" style="background: #fff5f2;">
+                            <div class="zen-blob-1"></div>
+                            <i class="bi bi-shop text-white position-relative z-3" style="font-size: 6rem; filter: drop-shadow(0 5px 15px rgba(245,48,3,0.4));"></i>
                         </div>
                     </div>
-                    <div class="flip-card-back" style="background: #f4edff;">
-                        <i class="bi bi-bar-chart-line fs-1 mb-3" style="color: #7b52d9;"></i>
-                        <h4 class="fw-bold text-dark">Gestión Total</h4>
-                        <p class="text-secondary mb-4">Administra tu inventario, actualiza tu escaparate digital, recibe pedidos y analiza tus ventas desde un panel intuitivo.</p>
-                        <a href="{{ route('registro') }}" class="btn btn-primary rounded-pill px-4 fw-bold shadow-sm" style="background-color: #7b52d9; border:none;">Empieza a vender</a>
+                    <div class="flip-card-back" style="background: #fff5f2; border: 2px solid var(--rojo-mercazone);">
+                        <i class="bi bi-graph-up-arrow fs-1 mb-3" style="color: var(--rojo-mercazone);"></i>
+                        <h4 class="fw-bold">Digitaliza tu Puesto</h4>
+                        <p class="text-secondary small">Publica tus productos y recibe pedidos online fácilmente.</p>
+                        <a href="{{ route('registro') }}" class="btn btn-danger rounded-pill px-4 fw-bold" style="background-color: var(--rojo-mercazone);">Empezar Ahora</a>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="col-lg-4 col-md-6 z-1">
+        <div class="col-lg-4 col-md-6">
             <div class="flip-card">
                 <div class="flip-card-inner">
                     <div class="flip-card-front">
                         <div class="card-header-front">
-                            <h5 class="fw-bold mb-1 fs-4 text-dark">Conexión Directa</h5>
-                            <p class="text-secondary small">Comunícate sin intermediarios.</p>
+                            <h5 class="fw-bold mb-1 fs-4">Comunidad</h5>
+                            <p class="text-secondary small">Confianza y vecindad.</p>
                         </div>
-                        <div class="zen-graphic zen-green bg-light">
-                            <div class="zen-blob-1"></div><div class="zen-blob-2"></div>
-                            <i class="bi bi-chat-dots text-white position-relative z-3" style="font-size: 5rem; filter: drop-shadow(0px 4px 10px rgba(0,0,0,0.2));"></i>
+                        <div class="zen-graphic" style="background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);">
+                            <i class="bi bi-people-fill text-success" style="font-size: 5rem;"></i>
                         </div>
                     </div>
-                    <div class="flip-card-back bg-light">
-                        <i class="bi bi-people fs-1 text-success mb-3"></i>
-                        <h5 class="fw-bold text-dark">Crea Comunidad</h5>
-                        <p class="text-secondary">Los clientes pueden chatear directamente con los comerciantes para consultar stock, tallas o hacer encargos personalizados.</p>
+                    <div class="flip-card-back">
+                        <i class="bi bi-stars fs-1 text-success mb-3"></i>
+                        <h5 class="fw-bold">Opiniones Reales</h5>
+                        <p class="text-secondary small">Descubre los mejores productos según tus vecinos.</p>
+                        <a href="#" class="btn btn-dark rounded-pill px-4 mt-2">Leer Foros</a>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
 
+    <div class="text-center mt-5">
+        <a href="#nuestra-historia" class="scroll-indicator"><i class="bi bi-chevron-compact-down"></i></a>
+    </div>
+
+    <div id="nuestra-historia">
+        @include('layouts.partials.history')
     </div>
 </div>
 @endsection

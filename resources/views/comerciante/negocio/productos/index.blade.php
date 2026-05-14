@@ -251,7 +251,7 @@
                         </tr>
                     </thead>
                     <tbody id="tabla-variantes-body">
-                        {{-- El JS rellenará esto --}}
+                        {{-- JS  --}}
                     </tbody>
                 </table>
             </div>
