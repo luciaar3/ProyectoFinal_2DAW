@@ -2,8 +2,7 @@
     /* Sección Historia */
     .leading-relaxed { line-height: 1.8; }
     .shadow-inner { box-shadow: inset 0 2px 10px rgba(0,0,0,0.05); }
-    
-    /* Animación de entrada para las fotos al hacer scroll */
+
     #nuestra-historia img {
         transition: all 0.5s ease;
     }
@@ -20,7 +19,7 @@
     }
 
     .btn-mercazone:hover {
-        background-color: #d42902 !important; /* Un tono un pelín más oscuro al pasar el cursor */
+        background-color: #d42902 !important;
         border-color: #d42902 !important;
         color: #ffffff !important;
         transform: translateY(-3px);

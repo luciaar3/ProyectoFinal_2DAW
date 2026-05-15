@@ -3,6 +3,24 @@
 @section('title', 'Mi Perfil - MercaZone')
 
 @section('content')
+<style>
+    .shadow-inner { box-shadow: inset 0 2px 6px rgba(0,0,0,0.03); }
+    .shadow-hover:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 24px rgba(245, 48, 3, 0.05) !important;
+    }
+    .btn-guardar-cambios:hover {
+        transform: scale(1.01);
+        box-shadow: 0 8px 20px rgba(245, 48, 3, 0.25) !important;
+    }
+    .hover-link:hover { color: #f53003 !important; }
+    .btn-volver:hover {
+        background-color: #f8f9fa !important;
+        color: #f53003 !important;
+        transform: translateX(-2px);
+        transition: all 0.2s ease;
+    }
+</style>
 <div class="container mt-5 pt-4 mb-5">
     <div class="row justify-content-center">
         <div class="col-md-10 col-lg-8">
@@ -137,23 +155,4 @@
         </div>
     </div>
 </div>
-
-<style>
-    .shadow-inner { box-shadow: inset 0 2px 6px rgba(0,0,0,0.03); }
-    .shadow-hover:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 12px 24px rgba(245, 48, 3, 0.05) !important;
-    }
-    .btn-guardar-cambios:hover {
-        transform: scale(1.01);
-        box-shadow: 0 8px 20px rgba(245, 48, 3, 0.25) !important;
-    }
-    .hover-link:hover { color: #f53003 !important; }
-    .btn-volver:hover {
-        background-color: #f8f9fa !important;
-        color: #f53003 !important;
-        transform: translateX(-2px);
-        transition: all 0.2s ease;
-    }
-</style>
 @endsection

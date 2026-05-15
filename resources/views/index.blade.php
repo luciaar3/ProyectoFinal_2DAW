@@ -9,7 +9,7 @@
         --rojo-hover: #d42902;
     }
 
-    /* --- FONDO DINÁMICO --- */
+    /* --- FONDO --- */
     body {
         background-color: #f4f4f7;
         background-image: 
@@ -21,7 +21,6 @@
         min-height: 100vh;
     }
 
-    /* --- CONTENEDOR GLASSMORPHISM --- */
     .main-wrapper {
         background: rgba(255, 255, 255, 0.6);
         backdrop-filter: blur(12px);
@@ -34,7 +33,7 @@
         margin-bottom: 5rem;
     }
 
-    /* --- BUSCADOR EVOLUCIONADO --- */
+    /* --- BUSCADOR --- */
     .search-container {
         max-width: 850px;
         margin: 0 auto;
@@ -89,7 +88,7 @@
         box-shadow: 0 5px 15px rgba(245, 48, 3, 0.3);
     }
 
-    /* --- ETIQUETAS/PILLS BAJO EL BUSCADOR --- */
+    /* --- ETIQUETAS --- */
     .tags-container {
         display: flex;
         flex-wrap: wrap;
@@ -120,7 +119,7 @@
         box-shadow: 0 8px 20px rgba(245, 48, 3, 0.2);
     }
 
-    /* --- ESTILOS FLIP CARDS MODIFICADOS --- */
+    /* --- CARDS --- */
     .flip-card { background-color: transparent; height: 420px; perspective: 1500px; }
     
     .flip-card-inner { 
@@ -134,7 +133,6 @@
     
     .flip-card:hover .flip-card-inner { transform: rotateY(180deg) translateY(-10px); }
     
-    /* Agregamos transform e insolación de capas para corregir la transparencia en el giro */
     .flip-card-front, .flip-card-back { 
         position: absolute; 
         width: 100%; 
@@ -166,7 +164,6 @@
         z-index: 1;
     }
     
-    /* CARA TRASERA MEJORADA (Garantiza opacidad y diseño premium) */
     .flip-card-back { 
         transform: rotateY(180deg); 
         display: flex; 
@@ -174,11 +171,10 @@
         justify-content: center; 
         align-items: center; 
         padding: 2.5rem; 
-        background: #ffffff !important; /* Forzamos color sólido anti-transparencia */
+        background: #ffffff !important;
         border: 1px solid rgba(0,0,0,0.06);
     }
 
-    /* Mini contenedores estilizados para los iconos traseros */
     .icon-box {
         width: 70px;
         height: 70px;
@@ -246,7 +242,7 @@
                             <h5 class="fw-bold mb-1 fs-4">Explorar Mapa</h5>
                             <p class="text-secondary small">Localiza puestos en tiempo real.</p>
                         </div>
-                        <div class="tarjeta-foto" style="background-image: url('https://images.unsplash.com/photo-1524661135-423995f22d0b?q=80&w=600&auto=format&fit=crop');"></div>
+                        <div class="tarjeta-foto" style="background-image: url('{{ asset('storage/img/mapa.webp') }}');"></div>
                     </div>
                     <div class="flip-card-back">
                         <div class="icon-box icon-box-blue">
@@ -268,7 +264,7 @@
                             <span class="badge bg-danger mb-2 px-3 py-2 rounded-pill" style="background-color: var(--rojo-mercazone) !important;">PRO</span>
                             <h4 class="fw-bolder">Soy Comerciante</h4>
                         </div>
-                        <div class="tarjeta-foto" style="background-image: url('https://images.unsplash.com/photo-1542838132-92c53300491e?q=80&w=600&auto=format&fit=crop');"></div>
+                        <div class="tarjeta-foto" style="background-image: url('{{ asset('storage/img/comerciante.webp') }}');"></div>
                     </div>
                     <div class="flip-card-back" style="border: 2px solid var(--rojo-mercazone);">
                         <div class="icon-box icon-box-red">
@@ -290,7 +286,7 @@
                             <h5 class="fw-bold mb-1 fs-4">Comunidad</h5>
                             <p class="text-secondary small">Confianza y vecindad.</p>
                         </div>
-                        <div class="tarjeta-foto" style="background-image: url('https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?q=80&w=600&auto=format&fit=crop');"></div>
+                        <div class="tarjeta-foto" style="background-image: url('{{ asset('storage/img/comunidad.webp') }}');"></div>
                     </div>
                     <div class="flip-card-back">
                         <div class="icon-box icon-box-green">

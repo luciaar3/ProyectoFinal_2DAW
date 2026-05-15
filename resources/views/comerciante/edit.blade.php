@@ -127,7 +127,7 @@
                     </div>
                 </div>
 
-                {{-- SECCIÓN DE HORARIOS Y RUTA (Dentro del Form) --}}
+                {{-- SECCIÓN DE HORARIOS Y RUTA--}}
                 <div class="card border-0 shadow-sm" style="border-radius: 20px;">
                     <div class="card-body p-4">
                         <div class="d-flex align-items-center mb-4">
@@ -142,15 +142,11 @@
                         <div class="row g-2 timeline">
                             @foreach(['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo'] as $dia)
                                 @php
-                                    // Buscamos el horario para este día
                                     $h = $negocio->horarios->where('dia', $dia)->first();
                                 @endphp
                                 <div class="col-12 p-3 rounded-4 border border-light-subtle shadow-sm bg-white hover-shadow transition mb-2">
                                     <div class="row align-items-center g-3">
-                                        {{-- Día --}}
                                         <div class="col-md-2 fw-bold text-capitalize text-primary small">{{ $dia }}</div>
-
-                                        {{-- Ubicación --}}
                                         <div class="col-md-5">
                                             <div class="row g-2">
                                                 <div class="col-6">
@@ -168,17 +164,14 @@
                                                            value="{{ old("horarios.$dia.ubicacion", $h->ubicacion ?? '') }}">
                                                 </div>
                                             </div>
-                                            {{-- Campos ocultos para coordenadas --}}
                                             <input type="hidden" name="horarios[{{ $dia }}][latitud]" id="lat-{{ $dia }}" value="{{ old("horarios.$dia.latitud", $h->latitud ?? '') }}">
                                             <input type="hidden" name="horarios[{{ $dia }}][longitud]" id="lng-{{ $dia }}" value="{{ old("horarios.$dia.longitud", $h->longitud ?? '') }}">
-                                            
-                                            {{-- Botón Mapa --}}
+
                                             <button type="button" class="btn btn-link btn-sm p-0 mt-1 text-decoration-none small" onclick="abrirMapa('{{ $dia }}')">
                                                 <i class="fas fa-map-marker-alt me-1 text-danger"></i> 
                                                 <span id="status-{{ $dia }}">{{ (isset($h->latitud) && $h->latitud) ? 'Ubicación fijada' : 'Fijar en mapa' }}</span>
                                             </button>
                                         </div>
-
                                         {{-- Horas --}}
                                         <div class="col-md-3">
                                             <div class="input-group input-group-sm">
@@ -191,7 +184,6 @@
                                                        value="{{ old("horarios.$dia.cierre", $h ? \Carbon\Carbon::parse($h->cierre)->format('H:i') : '') }}">
                                             </div>
                                         </div>
-
                                         {{-- Festivo --}}
                                         <div class="col-md-2 text-end">
                                             <div class="form-check form-switch ms-2 d-inline-block">
@@ -205,7 +197,7 @@
                             @endforeach
                         </div>
 
-                        {{-- Botón Guardar Principal --}}
+                        {{-- Botón Guardar--}}
                         <div class="d-grid mt-5">
                             <button type="submit" class="btn btn-primary btn-lg rounded-pill shadow">
                                 <i class="fas fa-save me-2"></i> Guardar Todos los Cambios
@@ -238,7 +230,7 @@
                                 </div>
                             </div>
 
-                            {{-- Logo Preview --}}
+                            {{-- Logo--}}
                             <div class="position-absolute start-50 translate-middle" style="top: 220px; z-index: 10;">
                                 <div class="rounded-circle border border-4 border-white shadow bg-white" style="width: 100px; height: 100px; overflow: hidden;">
                                     <img src="{{ $negocio->imagen ? asset('storage/' . $negocio->imagen) : '' }}" id="previewLogo" class="w-100 h-100 {{ $negocio->imagen ? '' : 'd-none' }}" style="object-fit: cover;">
@@ -249,7 +241,7 @@
                             </div>
                         </div>
                         
-                        {{-- Textos Preview --}}
+                        {{-- Textos --}}
                         <div style="margin-top: 55px;"></div>
                         <div class="card-body p-4 text-center">
                             <h3 class="fw-bold mb-1" id="previewNombre">{{ old('nombre', $negocio->nombre) }}</h3>
@@ -267,13 +259,13 @@
     </form>
 </div>
 
-{{-- Formulario oculto para borrar imágenes (DELETE) --}}
+{{-- borrar imágenes--}}
 <form id="delete-image-form" method="POST" style="display:none;">
     @csrf
     @method('DELETE')
 </form>
 
-{{-- MODAL PARA EL MAPA (Selector de ubicación) --}}
+{{-- MODAL PARA EL MAPA --}}
 <div class="modal fade" id="mapModal" tabindex="-1" aria-labelledby="mapModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content" style="border-radius: 25px; border: none;">
@@ -315,7 +307,6 @@
         if (inputEl && previewEl) {
             inputEl.addEventListener('input', () => {
                 let value = inputEl.value;
-                // Para la descripción, limitamos texto en preview
                 if (inputId === 'inputDesc' && value.length > 120) {
                     value = value.substring(0, 120) + '...';
                 }
@@ -350,59 +341,49 @@
         }
     }
 
-    // --- LÓGICA DEL MAPA (Leaflet.js) ---
+    // --- LÓGICA DEL MAPA ---
     let map, marker, currentDia;
 
-    // Función para abrir el modal e inicializar/mover mapa
     function abrirMapa(dia) {
         currentDia = dia;
         const modalElement = document.getElementById('mapModal');
         const modal = new bootstrap.Modal(modalElement);
         modal.show();
 
-        // Esperar a que el modal se muestre para inicializar Leaflet (evita errores de tamaño)
         modalElement.addEventListener('shown.bs.modal', function () {
             if (!map) {
-                // Crear mapa centrado por defecto en España
                 map = L.map('mapContainer').setView([40.4167, -3.7037], 6);
                 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                     attribution: '© OpenStreetMap'
                 }).addTo(map);
-
-                // Evento clic en el mapa
                 map.on('click', function(e) {
                     actualizarPosicion(e.latlng.lat, e.latlng.lng);
                 });
             }
 
-            // Comprobar si ya hay coordenadas guardadas para este día
             const latExistente = document.getElementById(`lat-${currentDia}`).value;
             const lngExistente = document.getElementById(`lng-${currentDia}`).value;
 
             if (latExistente && lngExistente) {
-                actualizarPosicion(latExistente, lngExistente, false); // false = no buscar dirección de nuevo al cargar
-                map.setView([latExistente, lngExistente], 16); // Zoom cerca
+                actualizarPosicion(latExistente, lngExistente, false);
+                map.setView([latExistente, lngExistente], 16);
             } else {
                 if (marker) marker.remove();
-                map.setView([40.4167, -3.7037], 6); // Reset vista
+                map.setView([40.4167, -3.7037], 6);
             }
 
-            // Forzar a Leaflet a recalcular tamaño (soluciona cuadros grises)
             map.invalidateSize();
-        }, { once: true }); // Usar once:true para no duplicar eventos
+        }, { once: true });
     }
 
-    // Función para mover chincheta, guardar coordenadas y buscar dirección (Geocodificación inversa)
+    // Función para mover chincheta, guardar coordenadas y buscar dirección
     async function actualizarPosicion(lat, lng, buscarDireccion = true) {
         // Mover o crear marcador
         if (marker) marker.remove();
         marker = L.marker([lat, lng]).addTo(map);
 
-        // Guardar coordenadas en inputs ocultos
         document.getElementById(`lat-${currentDia}`).value = lat;
         document.getElementById(`lng-${currentDia}`).value = lng;
-        
-        // Actualizar estado visual
         document.getElementById(`status-${currentDia}`).innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i>Buscando dirección...';
 
         if (!buscarDireccion) {
@@ -411,7 +392,7 @@
         }
 
         try {
-            // Llamada a la API gratuita Nominatim de OpenStreetMap (Reverse Geocoding)
+            // Llamada a la API gratuita Nominatim de OpenStreetMap
             const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lng}&zoom=18&addressdetails=1`, {
                 headers: {
                     'Accept-Language': 'es' // Forzar idioma español
@@ -420,15 +401,13 @@
             const data = await response.json();
 
             if (data && data.address) {
-                // 1. Extraer Población (Nominatim usa jerarquías city, town, village, municipality...)
+                // 1. Extraer Población
                 const poblacion = data.address.city || data.address.town || data.address.village || data.address.municipality || data.address.hamlet || "";
                 
-                // 2. Extraer Dirección (Calle + Número)
+                // 2. Extraer Dirección
                 const calle = data.address.road || data.address.pedestrian || "";
                 const numero = data.address.house_number || "";
                 const direccionFormateada = calle + (numero ? " " + numero : "");
-
-                // Rellenar los inputs correspondientes de la vista
                 if (poblacion) {
                     document.getElementById(`pob-${currentDia}`).value = poblacion;
                 }

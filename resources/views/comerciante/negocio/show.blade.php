@@ -8,7 +8,6 @@
         --mint-mercazone: #e8f3ee;  
         --negro-text: #333333;
     }
-    /* --- BOTÓN VOLVER --- */
     .btn-volver {
         position: absolute;
         top: 30px;
@@ -41,7 +40,7 @@
 
     .main-wrapper { background-color: var(--crema-mercazone); min-height: 100vh; }
 
-    /* --- ESTILOS DEL CARRUSEL --- */
+    /* --- CARRUSEL --- */
     .hero-banner {
         height: 550px;
         position: relative;
@@ -67,7 +66,7 @@
     /* --- CARD PRINCIPAL --- */
     .profile-card { margin-top: -200px; z-index: 10; position: relative; }
     
-    /* Panel Derecho (Rojo) */
+    /* Panel Derecho*/
     .route-panel { background-color: var(--rojo-mercazone); color: white; border-radius: 0 30px 30px 0; }
     
     .status-badge {
@@ -75,7 +74,7 @@
         color: white; padding: 8px 18px; border-radius: 50px; font-weight: 700; font-size: 0.85rem;
     }
 
-    /* --- NUEVO DISEÑO HORARIO --- */
+    /* --- HORARIO --- */
     .horario-list { display: flex; flex-direction: column; gap: 10px; }
     
     .horario-item {

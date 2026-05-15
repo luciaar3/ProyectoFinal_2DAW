@@ -7,12 +7,12 @@
     /* Contenedor principal */
     .view-container { position: relative; min-height: 100vh; background: #f8f9fa; overflow: hidden; }
 
-    /* --- MODO LISTA (Grilla tipo Airbnb) --- */
+    /* --- MODO LISTA--- */
     #vistaLista { 
         padding: 2rem; 
         max-width: 1300px; 
         margin: 0 auto;
-        display: block; /* Por defecto se ve la lista */
+        display: block;
         height: 100vh;
         overflow-y: auto;
     }
@@ -28,9 +28,9 @@
     .business-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.05); }
     .business-card img { width: 100%; height: 200px; object-fit: cover; }
 
-    /* --- MODO MAPA (Pantalla completa con panel) --- */
+    /* --- MODO MAPA --- */
     #vistaMapa { 
-        display: none; /* Oculto por defecto */
+        display: none;
         height: 100vh;
         width: 100%;
         position: relative; 
@@ -205,7 +205,6 @@
 
 @section('scripts')
 <script>
-    // --- LÓGICA DE INTERCAMBIO ---
     function toggleView() {
         const lista = document.getElementById('vistaLista');
         const mapa = document.getElementById('vistaMapa');

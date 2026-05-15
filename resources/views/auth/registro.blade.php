@@ -3,7 +3,7 @@
 
 @section('content')
 <style>
-    /* --- FONDO COHERENTE --- */
+    /* --- FONDO --- */
     body {
         background-color: #f4f4f7;
         background-image: 
@@ -14,7 +14,7 @@
         min-height: 100vh;
     }
 
-    /* --- TARJETA DE REGISTRO (SIN HISTORIA) --- */
+    /* --- TARJETA DE REGISTRO--- */
     .register-container {
         padding-top: 5rem;
         padding-bottom: 5rem;

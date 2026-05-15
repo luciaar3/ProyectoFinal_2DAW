@@ -307,7 +307,6 @@
 </div>
 
 <style>
-    /* Clases de Layout de Producto */
     .text-truncate-2 {
         display: -webkit-box;
         -webkit-line-clamp: 2;
@@ -338,7 +337,7 @@
 </style>
 
 <script>
-    // --- MANEJO DINÁMICO DEL MENSAJE DE ADVERTENCIA ---
+    // --- MENSAJE DE ADVERTENCIA ---
     document.getElementById('select-etiqueta-add').addEventListener('change', function() {
         const val = this.value;
         const aviso = document.getElementById('aviso-ropa-add');
@@ -351,7 +350,7 @@
 
     let currentProductoId = null;
 
-    // --- TRANSFERENCIA DE ATRIBUTOS PARA EDICIÓN ---
+    // --- ATRIBUTOS PARA EDICIÓN ---
     document.querySelectorAll('.edit-button').forEach(button => {
         button.addEventListener('click', function() {
             const id = this.getAttribute('data-id');
@@ -458,24 +457,20 @@
     });
 
     async function eliminarVariante(id) {
-        // 1. Confirmación de seguridad
         if(!confirm('¿Seguro que deseas eliminar esta variante de forma permanente?')) return;
         
         try {
-            // 2. Petición HTTP en segundo plano al servidor
             const response = await fetch(`/comerciante/productos/variantes/${id}`, {
                 method: 'DELETE',
                 headers: {
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}', // Requerido por Laravel por seguridad
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
                     'Content-Type': 'application/json'
                 }
             });
 
             const data = await response.json();
 
-            // 3. Si el servidor dice que todo ok, refrescamos la lista en la pantalla
             if (response.ok && data.success) {
-                // Volvemos a llamar a la función que recarga la tabla de variantes del modal
                 cargarVariantes(currentProductoId); 
             } else {
                 alert("No se pudo eliminar: " + (data.message || "Error desconocido"));

@@ -14,7 +14,7 @@
         min-height: 100vh;
     }
 
-    /* --- TARJETA LOGIN ESTILO CRISTAL --- */
+    /* --- TARJETA LOGIN --- */
     .login-container {
         padding-top: 6rem;
         padding-bottom: 6rem;

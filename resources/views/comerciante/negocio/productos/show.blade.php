@@ -13,19 +13,22 @@
         padding-top: 80px;
     }
 
-    /* Imagen con efecto de profundidad */
     .product-visual-container {
-        position: sticky;
-        top: 100px;
+        position: relative;
+        height: 100%;       
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
     .product-img-main {
         border-radius: 40px;
         box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
         transition: transform 0.5s ease;
+        aspect-ratio: 1 / 1;      /* Fuerza a que sea un cuadrado perfecto */
+        object-fit: cover;
     }
 
-    /* Contenedor de información tipo panel flotante */
     .info-panel {
         background: var(--glass-bg);
         backdrop-filter: blur(15px);
@@ -33,9 +36,12 @@
         border: 1px solid rgba(255,255,255,0.4);
         border-radius: 40px;
         padding: 40px;
+        height: 100%;          
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
     }
 
-    /* Estilo de variantes innovador */
     .variant-pill {
         cursor: pointer;
         padding: 12px 24px;
@@ -61,7 +67,6 @@
         text-decoration: line-through;
     }
 
-    /* Botón de reserva animado */
     .btn-reserve {
         background: #222;
         color: white;
@@ -79,7 +84,6 @@
         box-shadow: 0 15px 30px rgba(245, 48, 3, 0.3);
     }
 
-    /* Input de cantidad minimalista */
     .qty-input {
         background: #f1f1f1;
         border: none;
@@ -130,11 +134,11 @@
             </div>
         </div>
 
-        <div class="row g-5">
+        <div class="row g-5 align-items-center">
             {{-- Columna Imagen --}}
             <div class="col-lg-6">
                 <div class="product-visual-container position-relative"> {{-- Asegúrate de que tenga position-relative --}}
-                    <img src="{{ $producto->imagen ? asset('storage/'.$producto->imagen) : 'https://via.placeholder.com/800' }}" 
+                    <img src="{{ $producto->imagen ? asset('storage/' . $producto->imagen) : 'https://via.placeholder.com/800' }}" 
                         class="w-100 product-img-main" 
                         alt="{{ $producto->nombre }}">
      
@@ -161,7 +165,7 @@
             </div>
 
             {{-- Columna Información --}}
-            <div class="col-lg-6">
+            <div class="col-lg-6" >
                 <div class="info-panel shadow-sm">
                     <span class="text-uppercase tracking-widest text-muted small fw-bold">Producto Local</span>
                     <h1 class="display-4 fw-bold mt-2 mb-3" style="letter-spacing: -1px;">{{ $producto->nombre }}</h1>
