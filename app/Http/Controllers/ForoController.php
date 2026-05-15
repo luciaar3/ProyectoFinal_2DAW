@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Foro;
+use App\Models\Negocio;
 use Illuminate\Http\Request;
 
 class ForoController extends Controller
@@ -12,7 +13,7 @@ class ForoController extends Controller
      */
     public function index()
     {
-        $negocios = \App\Models\Negocio::all();
+        $negocios = Negocio::all();
         return view('foros.index', compact('negocios'));
     }
 
@@ -39,12 +40,9 @@ class ForoController extends Controller
         return back()->with('success', 'Mensaje publicado correctamente.');
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show($id)
     {
-        $negocio = \App\Models\Negocio::with(['foros' => function($query) {
+        $negocio = Negocio::with(['foros' => function($query) {
             $query->whereNull('parent_id')->with(['usuario', 'respuestas.usuario']);
         }])->findOrFail($id);
         

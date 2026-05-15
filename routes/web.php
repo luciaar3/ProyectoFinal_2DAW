@@ -24,8 +24,7 @@ Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.post');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-// RUTAS DE CONSULTA (Ahora accesibles sin login)
-// Esto permite que los clientes busquen y vean los puestos y sus productos
+// RUTAS DE CONSULTA (accesibles sin login)
 Route::get('/buscar', [NegocioController::class, 'index'])->name('negocios.index');
 Route::get('/negocio/{negocio}', [NegocioController::class, 'show'])->name('negocios.show');
 Route::get('/panel-negocio/reservas', [NegocioController::class, 'misReservas'])->name('negocios.reservas');
@@ -43,14 +42,14 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/mis-reservas', [ClienteController::class, 'misReservas'])->name('cliente.reservas');
     Route::get('/mis-favoritos', [ClienteController::class, 'misFavoritos'])->name('cliente.favoritos');
 
-    // Gestión del Comerciante (Solo el dueño puede tocar esto)
+    // Gestión del Comerciante
     Route::delete('/comerciante/imagen/{imagen}', [ComercianteController::class, 'destroyImagen'])->name('comerciante.imagen.destroy');
     Route::post('/comerciante/guardar-galeria', [ComercianteController::class, 'storeImagenes'])->name('comerciante.galeria.store');
     Route::get('/comerciante/editar-negocio', [ComercianteController::class, 'edit'])->name('comerciante.edit');
     Route::put('/comerciante/editar-negocio', [ComercianteController::class, 'update'])->name('comerciante.update');
     Route::get('/comerciante/account', [ComercianteController::class, 'account'])->name('comerciante.account');
 
-    // Gestión del Catálogo (Solo el dueño crea/edita/borra)
+    // Gestión del Catálogo
     Route::get('/comerciante/catalogo', [ProductoController::class, 'index'])->name('productos.index');
     Route::get('/producto/{id}', [ProductoController::class, 'show'])->name('productos.show');
     Route::post('/comerciante/catalogo', [ProductoController::class, 'store'])->name('productos.store');
@@ -58,7 +57,7 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/comerciante/catalogo/{producto}', [ProductoController::class, 'destroy'])->name('productos.destroy');
     Route::delete('/comerciante/productos/variantes/{id}', [ProductoController::class, 'destroyVariante'])->name('productos.variante.destroy');
 
-    // Rutas para la gestión de variantes (Tallas/Colores) mediante AJAX
+    // Rutas para la gestión de variantes
     Route::get('/comerciante/productos/{producto}/variantes', [ProductoController::class, 'getVariantes']);
     Route::post('/comerciante/productos/variantes', [ProductoController::class, 'addVariante']);
 
@@ -66,7 +65,9 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('notificaciones', NotificacionController::class);
 
     //Foros
-    Route::resource('foros', ForoController::class);
+    Route::get('/foros', [ForoController::class, 'index'])->name('foros.index');
+    Route::get('/foros/comercio/{id}', [ForoController::class, 'show'])->name('foros.show');
+    Route::post('/foros/store', [ForoController::class, 'store'])->name('foros.store');
 
     Route::get('/mi-perfil', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::put('/mi-perfil', [ProfileController::class, 'update'])->name('profile.update');

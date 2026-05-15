@@ -65,4 +65,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Notificacion::class, 'user_id');
     }
+    
+    public function foros()
+    {
+        return $this->hasMany(Foro::class, 'user_id');
+    }
 }

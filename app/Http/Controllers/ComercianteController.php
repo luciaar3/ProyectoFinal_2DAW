@@ -14,7 +14,16 @@ class ComercianteController extends Controller
         // Cargamos al usuario junto con su negocio relacionado
         $user = Auth::user()->load('negocio');
         
-        return view('comerciante.account', compact('user'));
+        $negocio = $user->negocio;
+        $mensajesNuevos = 0;
+
+        if ($negocio) {
+            $mensajesNuevos = \App\Models\Foro::where('negocio_id', $negocio->id)
+                ->where('user_id', '!=', $user->id)
+                ->where('created_at', '>=', now()->subDay())
+                ->count();
+        }
+        return view('comerciante.account', compact('user', 'mensajesNuevos'));
     }
 
     // Muestra el formulario para editar la info del negocio

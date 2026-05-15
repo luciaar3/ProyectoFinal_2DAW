@@ -137,6 +137,39 @@
                 </div>
             </div>
         </div>
+
+        <div class="col-md-6 col-lg-4">
+            <div class="card h-100 border-0 shadow-sm position-relative {{ $estado !== 'aprobado' ? 'opacity-75' : '' }}" 
+                style="border-radius: 24px; transition: transform 0.3s; {{ $estado !== 'aprobado' ? 'cursor: not-allowed;' : '' }}"
+                @if($estado === 'aprobado') onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'" @endif>
+                
+                @if($estado === 'aprobado' && $mensajesNuevos > 0)
+                    <span class="position-absolute badge rounded-pill border border-2 border-white shadow-sm" 
+                          style="top: 20px; right: 20px; background-color: #f53003; color: white; font-size: 0.85rem; padding: 6px 10px;">
+                        {{ $mensajesNuevos }} nuevos
+                    </span>
+                @endif
+
+                <div class="card-body p-5 text-center">
+                    <div class="d-inline-flex align-items-center justify-content-center rounded-circle mb-4" 
+                        style="width: 80px; height: 80px; background-color: #e8f3ee; color: #2e7d32;">
+                        <i class="bi bi-chat-square-text fs-1"></i>
+                    </div>
+                    <h4 class="fw-bold mb-3 text-dark">Foro Consultas</h4>
+                    <p class="text-secondary mb-4">Atiende y responde las dudas de tus clientes de las últimas 24 horas.</p>
+                    
+                    @if($estado === 'aprobado')
+                        <a href="{{ route('foros.show', $user->negocio->id) }}" class="btn w-100 rounded-pill fw-bold py-2" 
+                        style="background-color: #e8f3ee; color: #2e7d32; border: none;">
+                        Ver Foro
+                        </a>
+                    @else
+                        <button class="btn w-100 rounded-pill fw-bold py-2 border-0" 
+                                style="background-color: #e9ecef; color: #adb5bd;" disabled>Bloqueado</button>
+                    @endif
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 @endsection

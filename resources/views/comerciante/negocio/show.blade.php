@@ -210,6 +210,28 @@
                             </div>
                         </div>
                     </div>
+                    <div class="col-12 mt-3">
+                        <a href="{{ route('foros.show', $negocio->id) }}" class="text-decoration-none">
+                            <div class="d-flex align-items-center justify-content-between p-4 rounded-4 transition-hover border border-2 shadow-sm" 
+                                style="background-color: var(--mint-mercazone); border-color: rgba(245, 48, 3, 0.15) !important;">
+                                
+                                <div class="d-flex align-items-center">
+                                    <div class="p-3 rounded-circle bg-white d-flex align-items-center justify-content-center me-4 shadow-sm" style="width: 55px; height: 55px;">
+                                        <i class="bi bi-chat-square-text-fill fs-3 text-mercazone"></i>
+                                    </div>
+                                    <div>
+                                        <span class="badge mb-1 text-white px-2 py-1 rounded-pill" style="background-color: var(--rojo-mercazone); font-size: 0.7rem; font-weight: 700; letter-spacing: 0.5px;">COMUNIDAD</span>
+                                        <h4 class="fw-bold mb-0 text-dark" style="letter-spacing: -0.5px;">Foro de Consultas y Preguntas</h4>
+                                        <p class="text-muted small mb-0 d-none d-md-block">Habla directamente con el comerciante y resuelve tus dudas sobre productos o stock.</p>
+                                    </div>
+                                </div>
+
+                                <div class="text-mercazone d-flex align-items-center fs-4 fw-bold me-2">
+                                    <i class="bi bi-arrow-right-circle-fill"></i>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
                 </div>
                 
                 <div class="col-lg-5 p-4 p-md-5 route-panel">

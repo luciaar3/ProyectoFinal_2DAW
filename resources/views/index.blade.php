@@ -294,7 +294,7 @@
                         </div>
                         <h5 class="fw-bold mb-2">Opiniones Reales</h5>
                         <p class="text-secondary small text-center mb-4">Descubre los mejores productos según tus vecinos.</p>
-                        <a href="#" class="btn btn-dark rounded-pill px-4 shadow-sm">Leer Foros</a>
+                        <a href="{{route('foros.index') }}" class="btn btn-dark rounded-pill px-4 shadow-sm">Leer Foros</a>
                     </div>
                 </div>
             </div>
