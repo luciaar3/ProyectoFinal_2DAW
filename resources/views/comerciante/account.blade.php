@@ -7,20 +7,25 @@
     
     <div class="row mb-4">
         <div class="col-12">
-            <div class="p-4 p-md-5 shadow-sm d-flex align-items-center justify-content-between" style="background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%); border-radius: 24px; border: 1px solid rgba(0,0,0,0.05);">
+            <div class="p-4 p-md-5 shadow-sm d-flex flex-column flex-sm-row align-items-sm-center justify-content-between gap-3" style="background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%); border-radius: 24px; border: 1px solid rgba(0,0,0,0.05);">
                 <div>
                     <h2 class="fw-bolder text-dark mb-1">¡Hola, {{ Auth::user()->nombre }}! 👋</h2>
                     <p class="text-secondary mb-0 fs-5">Este es el panel de control de tu negocio.</p>
                 </div>
                 
                 @php $estado = Auth::user()->negocio->estado_validacion; @endphp
+                
                 @if($estado === 'pendiente')
-                    <span class="badge rounded-pill bg-warning text-dark px-3 py-2">
+                    <span class="badge rounded-pill bg-warning text-dark px-3 py-2 align-self-start align-self-sm-center fw-bold">
                         <i class="bi bi-clock-history me-1"></i> Revisión Pendiente
                     </span>
                 @elseif($estado === 'aprobado')
-                    <span class="badge rounded-pill bg-success px-3 py-2">
+                    <span class="badge rounded-pill bg-success px-3 py-2 align-self-start align-self-sm-center fw-bold text-white">
                         <i class="bi bi-check-circle me-1"></i> Validado
+                    </span>
+                @elseif($estado === 'rechazado')
+                    <span class="badge rounded-pill bg-danger px-3 py-2 align-self-start align-self-sm-center fw-bold text-white">
+                        <i class="bi bi-x-circle me-1"></i> Solicitud Rechazada
                     </span>
                 @endif
             </div>
@@ -28,17 +33,29 @@
     </div>
 
     @if($estado === 'pendiente')
-    <div class="row mb-4">
-        <div class="col-12">
-            <div class="alert alert-warning border-0 shadow-sm d-flex align-items-center mb-0" style="border-radius: 20px; background-color: #fff3cd;">
-                <i class="bi bi-exclamation-triangle-fill fs-4 me-3 text-warning"></i>
-                <div>
-                    <strong class="text-dark">Cuenta en espera de revisión:</strong> 
-                    Tu negocio está siendo verificado por el administrador. Podrás gestionar productos y rutas en cuanto recibas la aprobación.
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="alert alert-warning border-0 shadow-sm d-flex align-items-center mb-0" style="border-radius: 20px; background-color: #fff3cd;">
+                    <i class="bi bi-exclamation-triangle-fill fs-4 me-3 text-warning"></i>
+                    <div>
+                        <strong class="text-dark">Cuenta en espera de revisión:</strong> 
+                        Tu negocio está siendo verificado por el administrador. Podrás gestionar productos y rutas en cuanto recibas la aprobación.
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    @elseif($estado === 'rechazado')
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="alert alert-danger border-0 shadow-sm d-flex align-items-center mb-0" style="border-radius: 20px; background-color: #f8d7da; color: #842029;">
+                    <i class="bi bi-x-octagon-fill fs-4 me-3 text-danger"></i>
+                    <div>
+                        <strong style="color: #b02a37;">Acceso Denegado:</strong> 
+                        La documentación presentada no cumple con los requisitos de la plataforma. Ponte en contacto con soporte si crees que se trata de un error.
+                    </div>
+                </div>
+            </div>
+        </div>
     @endif
 
     <div class="row g-4"> 
@@ -95,6 +112,7 @@
                 </div>
             </div>
         </div>
+
         <div class="col-md-6 col-lg-4">
             <div class="card h-100 border-0 shadow-sm {{ $estado !== 'aprobado' ? 'opacity-75' : '' }}" 
                 style="border-radius: 24px; transition: transform 0.3s; {{ $estado !== 'aprobado' ? 'cursor: not-allowed;' : '' }}"

@@ -21,6 +21,7 @@
                             <th class="py-3">Opciones (Variantes)</th>
                             <th class="py-3 text-center">Cantidad</th>
                             <th class="py-3">Total</th>
+                            <th class="py-3">Punto de Recogida</th>
                             <th class="py-3">Estado</th>
                             <th class="py-3 pe-4">Acciones</th>
                         </tr>
@@ -43,7 +44,22 @@
                                     @endif
                                 </td>
                                 <td class="text-center">{{ $reserva->cantidad }}</td>
-                                <td class="fw-bold">{{ number_format($reserva->coste_total, 2) }}€</td>
+                                <td class="fw-bold">{{ number_format($reserva->coste_total, 2, ',', '.') }}€</td>
+                                
+                                {{-- NUEVA CELDA: Información logística para el comerciante --}}
+                                <td>
+                                    @if($reserva->lugarRecogida)
+                                        <div class="fw-bold text-dark" style="font-size: 0.9rem;">
+                                            {{ $reserva->lugarRecogida->ubicacion }}
+                                        </div>
+                                        <small class="text-muted d-block" style="font-size: 0.8rem;">
+                                            {{ $reserva->lugarRecogida->poblacion }} — <span class="text-sage fw-semibold text-capitalize">{{ $reserva->lugarRecogida->dia }}s</span>
+                                        </small>
+                                    @else
+                                        <span class="text-muted small fst-italic">No especificado</span>
+                                    @endif
+                                </td>
+
                                 <td>
                                     <span class="badge rounded-pill 
                                         {{ $reserva->estado == 'pendiente' ? 'bg-warning text-dark' : '' }}
@@ -58,7 +74,6 @@
                                             Gestionar
                                         </button>
                                         <ul class="dropdown-menu shadow border-0" style="border-radius: 15px;">
-                                            {{-- Opción Completar --}}
                                             <li>
                                                 <form action="{{ route('reservas.actualizarEstado', $reserva->id) }}" method="POST">
                                                     @csrf
@@ -69,8 +84,6 @@
                                                     </button>
                                                 </form>
                                             </li>
-
-                                            {{-- Opción Pendiente (por si quieres volver atrás) --}}
                                             <li>
                                                 <form action="{{ route('reservas.actualizarEstado', $reserva->id) }}" method="POST">
                                                     @csrf
@@ -81,10 +94,7 @@
                                                     </button>
                                                 </form>
                                             </li>
-
                                             <li><hr class="dropdown-divider"></li>
-
-                                            {{-- Opción Cancelar --}}
                                             <li>
                                                 <form action="{{ route('reservas.actualizarEstado', $reserva->id) }}" method="POST">
                                                     @csrf
@@ -101,7 +111,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="7" class="text-center py-5 text-muted">
+                                <td colspan="8" class="text-center py-5 text-muted"> {{-- Aumentado a colspan="8" --}}
                                     No hay reservas registradas todavía.
                                 </td>
                             </tr>

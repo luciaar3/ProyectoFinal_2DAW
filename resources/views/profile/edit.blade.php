@@ -1,28 +1,39 @@
 @extends('layouts.layout')
 
-@section('title', 'Mi Perfil - Market Manager')
+@section('title', 'Mi Perfil - MercaZone')
 
 @section('content')
 <div class="container mt-5 pt-4 mb-5">
     <div class="row justify-content-center">
         <div class="col-md-10 col-lg-8">
 
-            @if(session('success'))
-                <div class="alert alert-success alert-dismissible fade show rounded-4 shadow-sm" role="alert" style="background-color: #e6f8f3; border-color: #b0eed3; color: #0f5132;">
-                    <i class="bi bi-check-circle-fill me-2"></i> {{ session('success') }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            @endif
+            <div class="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center mb-4 gap-2">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb mb-0 py-1" style="background: transparent;">
+                        <li class="breadcrumb-item"><a href="{{ route('index') }}" class="text-decoration-none fw-medium text-secondary hover-link">Inicio</a></li>
+                        <li class="breadcrumb-item">
+                            <a href="{{ route($user->rol === 'Comerciante' ? 'comerciante.account' : 'cliente.account') }}" class="text-decoration-none fw-medium text-secondary hover-link">
+                                Mi Cuenta
+                            </a>
+                        </li>
+                        <li class="breadcrumb-item active fw-bold" aria-current="page" style="color: #f53003;">Configuración</li>
+                    </ol>
+                </nav>
+                
+                <button onclick="window.history.back();" class="btn btn-light rounded-pill px-3 py-2 btn-volver border d-flex align-items-center gap-2 bg-white text-secondary small fw-bold shadow-sm">
+                    <i class="bi bi-arrow-left fs-6 text-dark"></i> Volver atrás
+                </button>
+            </div>
 
-            <div class="card border-0 shadow-sm" style="border-radius: 24px;">
+            <div class="card border-0 shadow-sm mb-4 shadow-hover" style="border-radius: 24px; transition: transform 0.3s ease;">
                 <div class="card-body p-4 p-md-5">
                     <div class="text-center mb-5">
-                        <div class="d-inline-flex align-items-center justify-content-center bg-light rounded-circle mb-3" style="width: 80px; height: 80px;">
-                            <span class="fs-1 fw-bold" style="color: #7b52d9;">{{ substr($user->nombre, 0, 1) }}</span>
+                        <div class="d-inline-flex align-items-center justify-content-center rounded-circle mb-3 shadow-inner" style="width: 80px; height: 80px; background-color: rgba(245, 48, 3, 0.08);">
+                            <span class="fs-1 fw-bold" style="color: #f53003;">{{ substr($user->nombre, 0, 1) }}</span>
                         </div>
-                        <h3 class="fw-bolder text-dark">Mis Datos Personales</h3>
-                        <p class="text-secondary small">
-                            Rol actual: <span class="badge rounded-pill" style="background-color: rgba(123, 82, 217, 0.1); color: #7b52d9;">{{ $user->rol ?? 'Usuario' }}</span>
+                        <h3 class="fw-bolder text-dark" style="letter-spacing: -1px;">Mis Datos Personales</h3>
+                        <p class="text-secondary small mb-0">
+                            Rol actual: <span class="badge rounded-pill px-3 py-2" style="background-color: rgba(245, 48, 3, 0.1); color: #f53003; font-weight: 600;">{{ $user->rol ?? 'Usuario' }}</span>
                         </p>
                     </div>
 
@@ -32,53 +43,117 @@
 
                         <div class="row">
                             <div class="col-md-4 mb-3">
-                                <label for="nombre" class="form-label text-secondary">Nombre</label>
-                                <input type="text" class="form-control @error('nombre') is-invalid @enderror" id="nombre" name="nombre" value="{{ old('nombre', $user->nombre) }}" required style="border-radius: 12px;">
+                                <label for="nombre" class="form-label text-secondary small fw-bold">Nombre</label>
+                                <input type="text" class="form-control @error('nombre') is-invalid @enderror" id="nombre" name="nombre" value="{{ old('nombre', $user->nombre) }}" required style="border-radius: 12px; border: 1px solid #eee; padding: 10px 15px;">
                                 @error('nombre') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
 
                             <div class="col-md-4 mb-3">
-                                <label for="primer_apellido" class="form-label text-secondary">Primer Apellido</label>
-                                <input type="text" class="form-control @error('primer_apellido') is-invalid @enderror" id="primer_apellido" name="primer_apellido" value="{{ old('primer_apellido', $user->primer_apellido) }}" required style="border-radius: 12px;">
+                                <label for="primer_apellido" class="form-label text-secondary small fw-bold">Primer Apellido</label>
+                                <input type="text" class="form-control @error('primer_apellido') is-invalid @enderror" id="primer_apellido" name="primer_apellido" value="{{ old('primer_apellido', $user->primer_apellido) }}" required style="border-radius: 12px; border: 1px solid #eee; padding: 10px 15px;">
                                 @error('primer_apellido') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
 
                             <div class="col-md-4 mb-3">
-                                <label for="segundo_apellido" class="form-label text-secondary">Segundo Apellido</label>
-                                <input type="text" class="form-control @error('segundo_apellido') is-invalid @enderror" id="segundo_apellido" name="segundo_apellido" value="{{ old('segundo_apellido', $user->segundo_apellido) }}" style="border-radius: 12px;">
+                                <label for="segundo_apellido" class="form-label text-secondary small fw-bold">Segundo Apellido</label>
+                                <input type="text" class="form-control @error('segundo_apellido') is-invalid @enderror" id="segundo_apellido" name="segundo_apellido" value="{{ old('segundo_apellido', $user->segundo_apellido) }}" style="border-radius: 12px; border: 1px solid #eee; padding: 10px 15px;">
                                 @error('segundo_apellido') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
                         </div>
 
                         <div class="mb-4">
-                            <label for="email" class="form-label text-secondary">Correo Electrónico</label>
-                            <input type="email" class="form-control @error('email') is-invalid @enderror" id="email" name="email" value="{{ old('email', $user->email) }}" required style="border-radius: 12px;">
+                            <label for="email" class="form-label text-secondary small fw-bold">Correo Electrónico</label>
+                            <input type="email" class="form-control @error('email') is-invalid @enderror" id="email" name="email" value="{{ old('email', $user->email) }}" required style="border-radius: 12px; border: 1px solid #eee; padding: 10px 15px;">
                             @error('email') <div class="invalid-feedback">{{ $message }}</div> @enderror
                         </div>
 
-                        <hr class="text-muted my-4">
-                        <h6 class="fw-bold mb-3 text-dark">Cambiar Contraseña <span class="text-secondary fw-normal fs-6">(dejar en blanco si no quieres cambiarla)</span></h6>
+                        <hr class="text-muted my-4 opacity-25">
+                        <h6 class="fw-bold mb-3 text-dark d-flex align-items-center"><i class="bi bi-shield-lock me-2 text-secondary"></i>Seguridad de la Cuenta</h6>
 
                         <div class="row">
                             <div class="col-md-6 mb-3">
-                                <label for="password" class="form-label text-secondary">Nueva Contraseña</label>
-                                <input type="password" class="form-control @error('password') is-invalid @enderror" id="password" name="password" style="border-radius: 12px;">
+                                <label for="password" class="form-label text-secondary small">Nueva Contraseña <span class="text-muted small">(opcional)</span></label>
+                                <input type="password" class="form-control @error('password') is-invalid @enderror" id="password" name="password" style="border-radius: 12px; border: 1px solid #eee; padding: 10px 15px;">
                                 @error('password') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
 
                             <div class="col-md-6 mb-4">
-                                <label for="password_confirmation" class="form-label text-secondary">Confirmar Contraseña</label>
-                                <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" style="border-radius: 12px;">
+                                <label for="password_confirmation" class="form-label text-secondary small">Confirmar Contraseña</label>
+                                <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" style="border-radius: 12px; border: 1px solid #eee; padding: 10px 15px;">
                             </div>
                         </div>
 
-                        <button type="submit" class="btn w-100 py-3 text-white fw-bold shadow-sm mt-2" style="background-color: #7b52d9; border-radius: 12px; transition: opacity 0.3s;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
-                            Guardar Cambios
+                        <button type="submit" class="btn w-100 py-3 text-white fw-bold shadow-sm mt-2 btn-guardar-cambios" style="background: linear-gradient(135deg, #f53003 0%, #ff6b4a 100%); border-radius: 14px; border: none; transition: all 0.3s ease;">
+                            <i class="bi bi-save me-2"></i> Guardar Cambios
                         </button>
                     </form>
                 </div>
             </div>
+
+            <div class="card border-0 shadow-sm border-start border-4 border-danger" style="border-radius: 24px; background-color: #fffcfc;">
+                <div class="card-body p-4 p-md-5 d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-3">
+                    <div>
+                        <h5 class="fw-bold text-danger mb-1"><i class="bi bi-exclamation-triangle-fill me-2"></i>Zona de Peligro</h5>
+                        <p class="text-secondary small mb-0" style="max-width: 450px;">Una vez que elimines tu cuenta, no habrá marcha atrás. Se borrarán de forma permanente todos tus datos, favoritos y registros asociados.</p>
+                    </div>
+                    <div>
+                        <button type="button" class="btn btn-outline-danger fw-bold rounded-pill px-4 py-2 small" data-bs-toggle="modal" data-bs-target="#deleteAccountModal">
+                            Eliminar Cuenta
+                        </button>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="deleteAccountModal" data-bs-backdrop="static" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg" style="border-radius: 28px; overflow: hidden;">
+            <div class="modal-body p-4 p-md-5 text-center">
+                <div class="d-inline-flex align-items-center justify-content-center bg-danger bg-opacity-10 text-danger rounded-circle mb-4" style="width: 70px; height: 70px;">
+                    <i class="bi bi-trash3-fill fs-2"></i>
+                </div>
+                <h4 class="fw-bolder text-dark mb-2">¿Estás completamente seguro?</h4>
+                <p class="text-secondary small mb-4 px-lg-3">
+                    Esta acción es irreversible. Si decides continuar, perderás el acceso a la zona de **MercaZone** de manera permanente.
+                </p>
+                
+                <form action="{{ route('profile.destroy') }}" method="POST">
+                    @csrf
+                    @method('DELETE')
+                    
+                    <div class="d-flex gap-2 justify-content-center">
+                        <button type="button" class="btn btn-light rounded-pill px-4 fw-semibold py-2 w-50" data-bs-dismiss="modal">
+                            No, Cancelar
+                        </button>
+                        <button type="submit" class="btn btn-danger rounded-pill px-4 fw-bold py-2 w-50 shadow-sm">
+                            Sí, Eliminar Cuenta
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .shadow-inner { box-shadow: inset 0 2px 6px rgba(0,0,0,0.03); }
+    .shadow-hover:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 24px rgba(245, 48, 3, 0.05) !important;
+    }
+    .btn-guardar-cambios:hover {
+        transform: scale(1.01);
+        box-shadow: 0 8px 20px rgba(245, 48, 3, 0.25) !important;
+    }
+    .hover-link:hover { color: #f53003 !important; }
+    .btn-volver:hover {
+        background-color: #f8f9fa !important;
+        color: #f53003 !important;
+        transform: translateX(-2px);
+        transition: all 0.2s ease;
+    }
+</style>
 @endsection

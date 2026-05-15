@@ -56,6 +56,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/comerciante/catalogo', [ProductoController::class, 'store'])->name('productos.store');
     Route::put('/comerciante/catalogo/{producto}', [ProductoController::class, 'update'])->name('productos.update');
     Route::delete('/comerciante/catalogo/{producto}', [ProductoController::class, 'destroy'])->name('productos.destroy');
+    Route::delete('/comerciante/productos/variantes/{id}', [ProductoController::class, 'destroyVariante'])->name('productos.variante.destroy');
 
     // Rutas para la gestión de variantes (Tallas/Colores) mediante AJAX
     Route::get('/comerciante/productos/{producto}/variantes', [ProductoController::class, 'getVariantes']);
@@ -66,17 +67,18 @@ Route::middleware(['auth'])->group(function () {
 
     //Foros
     Route::resource('foros', ForoController::class);
-    // Admin y Perfil
-    Route::get('/admin/account', [AuthController::class, 'accountAdmin'])->name('admin.account');
 
-    Route::get('/mi-perfil', [ProfileController::class, 'editProfile'])->name('profile.edit');
-    Route::put('/mi-perfil', [ProfileController::class, 'updateProfile'])->name('profile.update');
+    Route::get('/mi-perfil', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::put('/mi-perfil', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/mi-perfil', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
 // Rutas admin
 Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::get('/account', [AdminController::class, 'account'])->name('admin.account');
     Route::get('/validaciones', [AdminController::class, 'index'])->name('admin.validaciones');
+    Route::get('/usuarios', [AdminController::class, 'usersIndex'])->name('admin.users.index');
+    Route::delete('/usuarios/{id}', [AdminController::class, 'userDestroy'])->name('admin.users.destroy');
     Route::post('/validaciones/{id}/aprobar', [AdminController::class, 'aprobar'])->name('admin.aprobar');
     Route::post('/validaciones/{id}/rechazar', [AdminController::class, 'rechazar'])->name('admin.rechazar');
 });

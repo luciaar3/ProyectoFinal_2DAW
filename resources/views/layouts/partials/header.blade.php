@@ -16,7 +16,7 @@
             <ul class="navbar-nav ms-auto align-items-center fw-medium">
                 
                 <li class="nav-item me-lg-4">
-                    <a class="nav-link text-secondary nav-link-hover" href="#nuestra-historia">
+                    <a class="nav-link text-secondary nav-link-hover" href="{{ route('index') }}#nuestra-historia">
                         <i class="bi bi-info-circle me-1"></i> Nuestra Historia
                     </a>
                 </li>
@@ -45,7 +45,7 @@
                         </a>
                         
                         <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-3 animate-slide" style="border-radius: 18px;">
-                            <li><a class="dropdown-item py-2 fw-semibold" href="{{ route(Auth::user()->rol == 'Cliente' ? 'cliente.account' : 'comerciante.account') }}">
+                            <li><a class="dropdown-item py-2 fw-semibold" href="{{ route(Auth::user()->rol === 'Cliente' ? 'cliente.account' : (Auth::user()->rol === 'Admin' ? 'admin.account' : 'comerciante.account')) }}">
                                 <i class="bi bi-grid-1x2 me-2"></i> Mi Panel</a>
                             </li>
                             <li><hr class="dropdown-divider"></li>

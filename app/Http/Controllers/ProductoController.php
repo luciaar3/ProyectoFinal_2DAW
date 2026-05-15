@@ -28,11 +28,12 @@ class ProductoController extends Controller
     {
         // Buscamos el producto con sus variantes y el negocio
         $producto = Producto::with(['variantes', 'negocio.horarios'])->findOrFail($id);
+        $horarios = $producto->negocio->horarios;
         
         // Necesitamos el día de hoy para el layout o información de entrega
         $diaHoy = now()->locale('es')->dayName; 
 
-        return view('comerciante.negocio.productos.show', compact('producto', 'diaHoy'));
+        return view('comerciante.negocio.productos.show', compact('producto','horarios', 'diaHoy'));
     }
 
     public function store(ProductoRequest $request)
@@ -158,6 +159,27 @@ class ProductoController extends Controller
             return response()->json(['success' => true, 'variante' => $variante]);
         } catch (\Exception $e) {
             return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+        }
+    }
+
+    public function destroyVariante($id)
+    {
+        try {
+
+            $variante = ProductoVariante::findOrFail($id);
+
+            $variante->delete();
+ 
+            return response()->json([
+                'success' => true,
+                'message' => 'Variante eliminada correctamente.'
+            ], 200);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'No se pudo eliminar la variante.'
+            ], 500);
         }
     }
 }

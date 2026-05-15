@@ -11,6 +11,21 @@
         transform: scale(1.03) translateY(-5px);
         box-shadow: 0 20px 40px rgba(245, 48, 3, 0.2) !important;
     }
+    .btn-mercazone {
+        background-color: #f53003 !important;
+        color: #ffffff !important;
+        border: 2px solid #f53003 !important;
+        font-weight: 600;
+        transition: all 0.3s ease-in-out;
+    }
+
+    .btn-mercazone:hover {
+        background-color: #d42902 !important; /* Un tono un pelín más oscuro al pasar el cursor */
+        border-color: #d42902 !important;
+        color: #ffffff !important;
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px rgba(245, 48, 3, 0.3) !important;
+    }
 </style>
 
 <section id="nuestra-historia" class="py-5">
@@ -70,9 +85,26 @@
                     Por los que estuvieron, por los que están y por los que vendrán: MercaZone es vuestra casa digital.
                 </p>
                 <div class="mt-4">
+                    @guest
                     <a href="{{ route('registro') }}" class="btn btn-mercazone btn-lg rounded-pill px-5 py-3 shadow-lg">
                         <i class="bi bi-shop-window me-2"></i> Unirme a la Zona
                     </a>
+                    @endguest
+                    @auth
+                        @if(auth()->user()->rol === 'Cliente')
+                            <a href="{{ route('cliente.account') }}" class="btn btn-mercazone btn-lg rounded-pill px-5 py-3 shadow-lg">
+                                <i class="bi bi-speedometer2 me-2"></i> Ir a mi Panel
+                            </a>
+                        @elseif(auth()->user()->rol === 'Comerciante')
+                            <a href="{{ route('comerciante.account') }}" class="btn btn-mercazone btn-lg rounded-pill px-5 py-3 shadow-lg">
+                                <i class="bi bi-shop me-2"></i> Gestionar mi Comercio
+                            </a>
+                        @elseif(auth()->user()->rol === 'Admin')
+                            <a href="{{ route('admin.account') }}" class="btn btn-mercazone btn-lg rounded-pill px-5 py-3 shadow-lg">
+                                <i class="bi bi-shield-lock me-2"></i> Panel de Control
+                            </a>
+                        @endif
+                    @endauth
                 </div>
             </div>
             <div class="col-lg-6 mt-4 mt-lg-0">

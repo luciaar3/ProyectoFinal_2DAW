@@ -6,12 +6,13 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\ProfileRequest;
+use App\Models\User;
 use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
 
 class ProfileController extends Controller
 {
-    public function editProfile(): View
+    public function edit(): View
     {
         // Cargamos al usuario junto con su negocio relacionado
         return view('profile.edit', [
@@ -20,7 +21,7 @@ class ProfileController extends Controller
     }
 
     // Procesa el formulario y actualiza los datos
-    public function updateProfile(ProfileRequest $request): RedirectResponse
+    public function update(ProfileRequest $request): RedirectResponse
     {
         $user = Auth::user();
 
@@ -35,20 +36,19 @@ class ProfileController extends Controller
         }
         $user->save();
 
-        // 2. Actualización de la tabla NEGOCIO
-        // Solo si el usuario es Comerciante
         if ($user->rol === 'Comerciante') {
-            $user->negocio()->updateOrCreate(
-                ['user_id' => $user->id], // Buscamos por el ID del usuario
-                [
-                    'nombre'         => $request->get('nombre'),
-                    'descripcion'    => $request->get('descripcion'),
-                    'nif'            => $request->get('nif'),         // Nuevo campo obligatorio
-                    'numero_permiso' => $request->get('numero_permiso'), // Nuevo campo
-                    'telefono'       => $request->get('telefono'),
-                ]
-            );
+            return redirect()->route('comerciante.account')->with('success');
         }
-        return back();
+
+        // Si no es comerciante, lo mandamos a la cuenta de cliente
+        return redirect()->route('cliente.account')->with('success');
+    }
+
+    public function destroy()
+    {
+        $user = Auth::user();
+        Auth::logout();
+        $user->delete();
+        return redirect()->route('index');
     }
 }

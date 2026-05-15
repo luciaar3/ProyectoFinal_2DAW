@@ -35,6 +35,7 @@ class ClienteController extends Controller
     {
         $request->validate([
             'cantidad' => 'required|integer|min:1|max:' . $producto->stock,
+            'horario_negocio_id' => 'required|exists:horario_negocio,id', // Validamos que el mercado exista
         ]);
 
         $cantidad = $request->input('cantidad');
@@ -66,8 +67,8 @@ class ClienteController extends Controller
             'user_id'          => auth()->id(),
             'producto_id'      => $producto->id,
             'cantidad'         => $cantidad,
-            // Guardamos el texto final para el comerciante
             'variante_elegida' => $varianteTexto ?: 'Sin variantes', 
+            'horario_negocio_id' => $request->input('horario_negocio_id'),
         ]);
 
         $message = 'Reserva realizada con éxito.';
@@ -82,7 +83,7 @@ class ClienteController extends Controller
     public function misReservas()
     {
         // Obtener las reservas del usuario con el producto y el negocio asociado
-        $reservas = auth()->user()->reservas()->with(['producto.negocio'])->orderBy('created_at', 'desc')->get();
+        $reservas = auth()->user()->reservas()->with(['producto.negocio', 'lugarRecogida']) ->orderBy('fecha_creacion', 'desc')->get();
         return view('cliente.reservas', compact('reservas'));
     }
 

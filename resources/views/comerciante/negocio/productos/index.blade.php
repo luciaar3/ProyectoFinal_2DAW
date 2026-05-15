@@ -1,89 +1,117 @@
 @extends('layouts.layout')
 
-@section('title', 'Gestión de Catálogo - Market Manager')
+@section('title', 'Gestión de Catálogo - MercaZone')
 
 @section('content')
 <div class="container mt-5 pt-4 mb-5">
-    {{-- ENCABEZADO --}}
-    <div class="row mb-4 align-items-center">
-        <div class="col-md-8">
+    
+    {{-- ENCABEZADO MEJORADO --}}
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4 pb-3 border-bottom gap-3">
+        <div>
             <nav aria-label="breadcrumb">
-                <ol class="breadcrumb mb-2">
-                    <li class="breadcrumb-item"><a href="{{ route('comerciante.account') }}" class="text-decoration-none">Panel</a></li>
-                    <li class="breadcrumb-item active">Catálogo</li>
+                <ol class="breadcrumb mb-1" style="background: transparent;">
+                    <li class="breadcrumb-item"><a href="{{ route('comerciante.account') }}" class="text-decoration-none text-secondary hover-link fw-medium">Panel</a></li>
+                    <li class="breadcrumb-item active fw-bold text-dark">Catálogo</li>
                 </ol>
             </nav>
-            <h2 class="fw-bolder text-dark">Mi Catálogo de Productos</h2>
-            <p class="text-secondary">Añade, edita o elimina los productos que ofreces en tu puesto.</p>
+            <h3 class="fw-bolder text-dark mb-1" style="letter-spacing: -1px;">Mi Puesto de Productos</h3>
+            <p class="text-secondary small mb-0">Gestiona existencias, precios y variaciones de stock en tiempo real.</p>
         </div>
-        <div class="col-md-4 text-md-end">
-            <button class="btn btn-primary rounded-pill px-4 py-2 fw-bold shadow-sm" data-bs-toggle="modal" data-bs-target="#modalAddProducto" style="background-color: #7b52d9; border: none;">
-                <i class="bi bi-plus-lg me-2"></i> Nuevo Producto
+        <div>
+            <button class="btn text-white rounded-pill px-4 py-2.5 fw-bold shadow-sm d-flex align-items-center gap-2" 
+                    data-bs-toggle="modal" data-bs-target="#modalAddProducto" 
+                    style="background: linear-gradient(135deg, #7b52d9 0%, #6336c7 100%); border: none;">
+                <i class="bi bi-plus-lg fs-6"></i> Nuevo Producto
             </button>
         </div>
     </div>
 
     @if(session('success'))
-        <div class="alert alert-success border-0 shadow-sm rounded-4 mb-4">
-            <i class="bi bi-check-circle-fill me-2"></i> {{ session('success') }}
+        <div class="alert alert-success border-0 shadow-sm mb-4" style="background: linear-gradient(135deg, #e6f8f3 0%, #d2f7ea 100%); border-left: 5px solid #198754 !important; color: #0f5132; border-radius: 16px;">
+            <div class="d-flex align-items-center gap-2 fw-semibold p-1">
+                <i class="bi bi-check-circle-fill fs-5" style="color: #198754;"></i>
+                <span>{{ session('success') }}</span>
+            </div>
         </div>
     @endif
 
     {{-- LISTADO DE PRODUCTOS --}}
     <div class="row g-4">
         @forelse($productos as $producto)
-            <div class="col-sm-6 col-lg-4 col-xl-3">
-                <div class="card h-100 border-0 shadow-sm card-producto" style="border-radius: 20px; overflow: hidden;">
-                    <div style="height: 200px; overflow: hidden; position: relative; background-color: #f8f9fa;">
+            @php
+                // Comprobamos de manera limpia si tiene etiquetas de variantes
+                $nombresEtiquetas = $producto->etiquetas->pluck('nombre')->map(fn($n) => strtolower($n))->toArray();
+                $esModa = in_array('ropa', $nombresEtiquetas) || in_array('calzado', $nombresEtiquetas);
+            @endphp
+            
+            <div class="col-sm-6 col-md-4 col-lg-3">
+                <div class="card h-100 border-0 shadow-sm card-producto position-relative" style="border-radius: 20px; overflow: hidden; background: #fff;">
+                    
+                    {{-- Contenedor de Imagen + Precio --}}
+                    <div style="height: 220px; overflow: hidden; position: relative; background-color: #fdfdfd;">
                         @if($producto->imagen)
-                            <img src="{{ asset('storage/' . $producto->imagen) }}" class="w-100 h-100" style="object-fit: cover;">
+                            <img src="{{ asset('storage/' . $producto->imagen) }}" class="w-100 h-100 img-zoom" style="object-fit: cover;">
                         @else
-                            <div class="d-flex align-items-center justify-content-center h-100 text-muted">
-                                <i class="bi bi-image fs-1 opacity-25"></i>
+                            <div class="d-flex flex-column align-items-center justify-content-center h-100 text-muted bg-light bg-opacity-50">
+                                <i class="bi bi-image fs-2 opacity-50 mb-1"></i>
+                                <small class="text-uppercase tracking-wider text-muted font-monospace" style="font-size: 0.65rem;">Sin Imagen</small>
                             </div>
                         @endif
-                        <span class="position-absolute top-0 end-0 m-3 badge rounded-pill bg-white text-dark shadow-sm">
-                            {{ $producto->precio }}€
+                        <span class="position-absolute bottom-0 start-0 m-3 badge bg-dark text-white fw-bold shadow-sm px-3 py-2" style="font-size: 0.85rem; border-radius: 10px;">
+                            {{ number_format($producto->precio, 2) }}€
                         </span>
                     </div>
 
-                    <div class="card-body p-4">
-                        <div class="d-flex justify-content-between align-items-start mb-2">
-                            <h5 class="fw-bold text-dark mb-0 text-truncate" style="max-width: 60%;">{{ $producto->nombre }}</h5>
-                            <div class="d-flex gap-1 flex-wrap justify-content-end">
-                                @foreach($producto->etiquetas as $etiqueta)
-                                    <span class="badge bg-primary-subtle text-primary rounded-pill" style="font-size: 0.65rem; background-color: #eef2ff !important;">{{ $etiqueta->nombre }}</span>
-                                @endforeach
+                    {{-- Cuerpo de la Tarjeta --}}
+                    <div class="card-body p-3 d-flex flex-column justify-content-between">
+                        <div>
+                            <div class="d-flex justify-content-between align-items-start gap-2 mb-2">
+                                <h6 class="fw-bold text-dark mb-0 text-truncate" title="{{ $producto->nombre }}">{{ $producto->nombre }}</h6>
+                                
+                                {{-- Renderizado controlado de Etiquetas --}}
+                                <div class="d-flex gap-1 flex-wrap justify-content-end">
+                                    @foreach($producto->etiquetas as $etiqueta)
+                                        <span class="badge rounded-pill px-2 py-1 fw-semibold text-capitalize style-badge-tag">
+                                            {{ str_replace('_', ' ', $etiqueta->nombre) }}
+                                        </span>
+                                    @endforeach
+                                </div>
                             </div>
+                            <p class="text-secondary small mb-3 text-truncate-2 lh-sm" style="min-height: 36px;">{{ $producto->descripcion }}</p>
                         </div>
-                        <p class="text-secondary small mb-3 text-truncate-2" style="height: 40px;">{{ $producto->descripcion }}</p>
                         
-                        <div class="d-flex align-items-center text-muted small">
-                            <i class="bi bi-box-seam me-2"></i> Stock: 
-                            <span class="ms-1 fw-bold {{ $producto->stock < 5 ? 'text-danger' : 'text-dark' }}">
+                        <div class="d-flex align-items-center justify-content-between text-muted border-top pt-2 mt-2">
+                            <span class="small font-monospace"><i class="bi bi-box-seam me-1"></i> Stock</span>
+                            <span class="badge rounded-pill px-2.5 py-1.5 fw-bold {{ $producto->stock < 5 ? 'bg-danger bg-opacity-10 text-danger' : 'bg-light text-dark border' }}">
                                 {{ $producto->stock }} uds.
                             </span>
                         </div>
                     </div>
 
-                    <div class="card-footer bg-white border-0 p-4 pt-0 d-flex gap-2">
-                        <button class="btn btn-outline-secondary btn-sm rounded-pill flex-grow-1 edit-button"
+                    {{-- Footer con Botonera Condicional --}}
+                    <div class="card-footer bg-white border-0 p-3 pt-0 d-flex gap-2">
+                        <button class="btn btn-light border btn-sm rounded-pill flex-grow-1 edit-button fw-bold text-secondary text-center py-2"
                             data-bs-toggle="modal" data-bs-target="#modalEditProducto"
                             data-id="{{ $producto->id }}" data-nombre="{{ $producto->nombre }}"
                             data-precio="{{ $producto->precio }}" data-stock="{{ $producto->stock }}"
-                            data-categoria="{{ $producto->categoria }}" data-descripcion="{{ $producto->descripcion }}">
-                            <i class="bi bi-pencil"></i>
+                            data-categoria="{{ $producto->etiquetas->first()->nombre ?? '' }}" data-descripcion="{{ $producto->descripcion }}">
+                            <i class="bi bi-pencil me-1 text-dark"></i> Editar
                         </button>
 
-                        <button class="btn btn-outline-primary btn-sm rounded-pill flex-grow-1 btn-variantes" 
-                            data-bs-toggle="modal" data-bs-target="#modalVariantes"
-                            data-id="{{ $producto->id }}" data-nombre="{{ $producto->nombre }}">
-                            <i class="bi bi-layers-half"></i> Tallas
-                        </button>
+                        {{-- SOLUCIÓN: Solo aparece si el tag es ropa o calzado --}}
+                        @if($esModa)
+                            <button class="btn btn-outline-primary btn-sm rounded-pill flex-grow-1 btn-variantes fw-bold text-center py-2" 
+                                data-bs-toggle="modal" data-bs-target="#modalVariantes"
+                                data-id="{{ $producto->id }}" data-nombre="{{ $producto->nombre }}">
+                                <i class="bi bi-layers-half me-1"></i> Tallas
+                            </button>
+                        @endif
 
-                        <form action="{{ route('productos.destroy', $producto->id) }}" method="POST" class="d-inline">
+                        <form action="{{ route('productos.destroy', $producto->id) }}" method="POST" class="d-inline m-0">
                             @csrf @method('DELETE')
-                            <button type="submit" class="btn btn-outline-danger btn-sm rounded-circle" onclick="return confirm('¿Seguro que quieres eliminar este producto?')">
+                            <button type="submit" class="btn btn-outline-danger btn-sm rounded-circle d-flex align-items-center justify-content-center" 
+                                    style="width: 36px; height: 36px; padding: 0;"
+                                    onclick="return confirm('¿Seguro que quieres eliminar este producto?')">
                                 <i class="bi bi-trash"></i>
                             </button>
                         </form>
@@ -92,8 +120,11 @@
             </div>
         @empty
             <div class="col-12 text-center py-5">
-                <i class="bi bi-basket text-muted opacity-25" style="font-size: 5rem;"></i>
-                <h4 class="text-secondary mt-3">No tienes productos todavía</h4>
+                <div class="d-inline-flex align-items-center justify-content-center bg-light text-muted rounded-circle mb-3 shadow-inner" style="width: 80px; height: 80px;">
+                    <i class="bi bi-basket fs-2"></i>
+                </div>
+                <h5 class="fw-bold text-dark">Tu catálogo está vacío</h5>
+                <p class="text-secondary small">Empieza haciendo clic en "Nuevo Producto" para llenar tu puesto virtual.</p>
             </div>
         @endforelse
     </div>
@@ -104,30 +135,29 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content border-0 shadow" style="border-radius: 24px;">
             <div class="modal-header border-0 pt-4 px-4">
-                <h5 class="fw-bold mb-0">Añadir Nuevo Producto</h5>
+                <h5 class="fw-bold mb-0 text-dark">Añadir Nuevo Registro</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <form action="{{ route('productos.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
-                <div class="modal-body p-4">
+                <div class="modal-body p-4 pt-2">
                     <div class="mb-3">
-                        <label class="form-label small fw-bold">Nombre</label>
-                        <input type="text" name="nombre" class="form-control rounded-pill border-light-subtle" required>
+                        <label class="form-label small fw-bold">Nombre del Producto</label>
+                        <input type="text" name="nombre" class="form-control rounded-pill border-light-subtle" placeholder="Ej: Camiseta Básica Algodón" required>
                     </div>
                     <div class="row mb-3">
                         <div class="col-md-6">
-                            <label class="form-label small fw-bold">Precio (€)</label>
-                            <input type="number" step="0.01" name="precio" class="form-control rounded-pill border-light-subtle" required>
+                            <label class="form-label small fw-bold">Precio Unitario (€)</label>
+                            <input type="number" step="0.01" name="precio" class="form-control rounded-pill border-light-subtle" placeholder="0.00" required>
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label small fw-bold">Stock</label>
-                            <input type="number" name="stock" class="form-control rounded-pill border-light-subtle" required>
+                            <label class="form-label small fw-bold">Unidades Totales</label>
+                            <input type="number" name="stock" class="form-control rounded-pill border-light-subtle" placeholder="0" required>
                         </div>
                     </div>
 
-                    {{-- NUEVO: DESPLEGABLE DE ETIQUETAS --}}
                     <div class="mb-3">
-                        <label class="form-label small fw-bold">Etiqueta Principal</label>
+                        <label class="form-label small fw-bold">Categoría / Etiqueta Clave</label>
                         <select name="etiqueta_nombre" id="select-etiqueta-add" class="form-select rounded-pill border-light-subtle" required>
                             <option value="">Selecciona una...</option>
                             <option value="ropa">Ropa</option>
@@ -143,22 +173,21 @@
                         </select>
                     </div>
 
-                    {{-- AVISO DINÁMICO --}}
-                    <div id="aviso-ropa-add" class="alert alert-info border-0 rounded-4 d-none mb-3" style="background-color: #eef2ff;">
-                        <small class="text-primary fw-bold"><i class="bi bi-info-circle-fill me-1"></i> Modo Ropa: Podrás añadir tallas después de crear el producto.</small>
+                    <div id="aviso-ropa-add" class="alert alert-primary border-0 rounded-4 d-none mb-3" style="background-color: #f5f3ff; color: #6336c7;">
+                        <small class="fw-bold"><i class="bi bi-info-circle-fill me-1"></i> Categoría con Atributos: Al activar Ropa/Calzado, podrás configurar las variantes de tallas desde el listado.</small>
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label small fw-bold">Descripción corta</label>
-                        <textarea name="descripcion" class="form-control" style="border-radius: 15px;" rows="2"></textarea>
+                        <label class="form-label small fw-bold">Ficha Descriptiva</label>
+                        <textarea name="descripcion" class="form-control" style="border-radius: 16px;" rows="3" placeholder="Detalla los materiales, procedencia, etc."></textarea>
                     </div>
                     <div class="mb-0">
-                        <label class="form-label small fw-bold">Foto del producto</label>
+                        <label class="form-label small fw-bold">Archivo de Imagen</label>
                         <input type="file" name="imagen" class="form-control rounded-pill border-light-subtle">
                     </div>
                 </div>
                 <div class="modal-footer border-0 pb-4 px-4">
-                    <button type="submit" class="btn btn-primary w-100 rounded-pill fw-bold shadow-sm" style="background-color: #7b52d9; border: none;">Guardar Producto</button>
+                    <button type="submit" class="btn text-white w-100 rounded-pill fw-bold py-2.5" style="background-color: #7b52d9; border: none;">Guardar Producto</button>
                 </div>
             </form>
         </div>
@@ -170,12 +199,12 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content border-0 shadow" style="border-radius: 24px;">
             <div class="modal-header border-0 pt-4 px-4">
-                <h5 class="fw-bold mb-0">Editar Producto</h5>
+                <h5 class="fw-bold mb-0 text-dark">Editar Ficha Técnico-Comercial</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <form id="formEditProducto" method="POST" enctype="multipart/form-data">
                 @csrf @method('PUT')
-                <div class="modal-body p-4">
+                <div class="modal-body p-4 pt-2">
                     <div class="mb-3">
                         <label class="form-label small fw-bold">Nombre</label>
                         <input type="text" name="nombre" id="edit_nombre" class="form-control rounded-pill" required>
@@ -190,95 +219,130 @@
                             <input type="number" name="stock" id="edit_stock" class="form-control rounded-pill" required>
                         </div>
                     </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold">Categoría / Etiqueta Principal</label>
+                        <select name="etiqueta_nombre" id="edit_categoria" class="form-select rounded-pill border-light-subtle" required>
+                            <option value="ropa">Ropa</option>
+                            <option value="calzado">Calzado</option>
+                            <option value="complementos">Complementos</option>
+                            <option value="comida">Comida / Gourmet</option>
+                            <option value="fruta_verdura">Fruta y Verdura</option>
+                            <option value="aroma">Aroma y Cosmética</option>
+                            <option value="artesania">Artesanía</option>
+                            <option value="hogar">Hogar y Decoración</option>
+                            <option value="bisuteria">Bisutería / Joyería</option>
+                            <option value="juguetes">Juguetes / Infantil</option>
+                        </select>
+                    </div>
+
                     <div class="mb-3">
                         <label class="form-label small fw-bold">Descripción</label>
-                        <textarea name="descripcion" id="edit_descripcion" class="form-control" style="border-radius: 15px;" rows="2"></textarea>
+                        <textarea name="descripcion" id="edit_descripcion" class="form-control" style="border-radius: 16px;" rows="3"></textarea>
                     </div>
                     <div class="mb-2">
-                        <label class="form-label small fw-bold">Nueva Foto (opcional)</label>
+                        <label class="form-label small fw-bold">Reemplazar Fotografía (Opcional)</label>
                         <input type="file" name="imagen" class="form-control rounded-pill">
                     </div>
                 </div>
                 <div class="modal-footer border-0 pb-4 px-4">
-                    <button type="submit" class="btn btn-primary w-100 rounded-pill fw-bold" style="background-color: #7b52d9; border: none;">Actualizar Cambios</button>
+                    <button type="submit" class="btn text-white w-100 rounded-pill fw-bold py-2.5" style="background-color: #7b52d9; border: none;">Actualizar Cambios</button>
                 </div>
             </form>
         </div>
     </div>
 </div>
 
-{{-- MODAL VARIANTES (Mantenlo igual pero con el span de nombre) --}}
+{{-- MODAL VARIANTES --}}
 <div class="modal fade" id="modalVariantes" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-dialog modal-dialog-centered modal-md">
         <div class="modal-content border-0 shadow" style="border-radius: 24px;">
             <div class="modal-header border-0 pt-4 px-4">
-                <h5 class="fw-bold mb-0 text-primary">Gestionar Variantes: <span id="span-nombre-producto" class="text-dark"></span></h5>
+                <h5 class="fw-bold mb-0 text-dark"><i class="bi bi-sliders2-vertical text-muted me-2"></i>Variantes de: <span id="span-nombre-producto" class="fw-normal text-secondary fs-6"></span></h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
-            <div class="modal-body p-4">
-                <div class="row g-2 mb-4 p-3 bg-light rounded-4">
+            <div class="modal-body p-4 pt-2">
+                <div class="row g-2 mb-3 p-3 bg-light rounded-4 border">
                     <div class="col-md-4">
-                        <label class="form-label small fw-bold">Tipo</label>
-                        <select id="tipo-atributo" class="form-select rounded-pill">
-                            <option value="Color">Color</option>
+                        <label class="form-label small fw-bold">Atributo</label>
+                        <select id="tipo-atributo" class="form-select rounded-pill border-light-subtle">
                             <option value="Talla">Talla</option>
+                            <option value="Color">Color</option>
                             <option value="Estampado">Estampado</option>
                             <option value="Material">Material</option>
                         </select>
                     </div>
-
                     <div class="col-md-5">
-                        <label class="form-label small fw-bold">Nombre/Valor</label>
-                        <input type="text" id="valor-atributo" class="form-control rounded-pill" placeholder="Ej: Azul Marino o XL">
+                        <label class="form-label small fw-bold">Valor</label>
+                        <input type="text" id="valor-atributo" class="form-control rounded-pill border-light-subtle" placeholder="Ej: XL, 42, Azul">
                     </div>
-
                     <div class="col-md-3">
-                        <label class="form-label small fw-bold">Stock</label>
-                        <input type="number" id="stock-atributo" class="form-control rounded-pill" value="1">
+                        <label class="form-label small fw-bold">Cant.</label>
+                        <input type="number" id="stock-atributo" class="form-control rounded-pill border-light-subtle" value="1" min="1">
                     </div>
-            </div>
-            <button type="button" id="btn-confirmar-variante" class="btn btn-primary w-100 mt-3 rounded-pill" style="background-color: #7b52d9; border: none;">
-                <i class="bi bi-plus-circle me-2"></i> Añadir Opción
-            </button>
-            <hr class="my-4 opacity-25">
-            <div class="table-responsive">
-                <table class="table table-hover align-middle">
-                    <thead class="table-light">
-                        <tr>
-                            <th class="small fw-bold">Variante</th>
-                            <th class="small fw-bold">Stock</th>
-                            <th class="small fw-bold">Acción</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tabla-variantes-body">
-                        {{-- JS  --}}
-                    </tbody>
-                </table>
+                </div>
+                <button type="button" id="btn-confirmar-variante" class="btn text-white w-100 rounded-pill fw-bold" style="background-color: #1b1b18; border: none;">
+                    <i class="bi bi-plus-circle me-1"></i> Insertar Variante
+                </button>
+                
+                <hr class="my-3 opacity-25">
+                
+                <div class="table-responsive" style="max-height: 250px; overflow-y: auto;">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="bg-light sticky-top">
+                            <tr>
+                                <th class="small fw-bold border-0 text-secondary" style="font-size: 0.75rem;">Variante Cargada</th>
+                                <th class="small fw-bold border-0 text-secondary" style="font-size: 0.75rem;">Stock Atribuido</th>
+                                <th class="small fw-bold border-0 text-secondary text-end" style="font-size: 0.75rem;">Remover</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabla-variantes-body">
+                            {{-- Inyección JS --}}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
 <style>
+    /* Clases de Layout de Producto */
     .text-truncate-2 {
         display: -webkit-box;
         -webkit-line-clamp: 2;
         -webkit-box-orient: vertical;
         overflow: hidden;
     }
-    .card-producto:hover {
-        transform: translateY(-5px);
-        transition: all 0.3s ease;
-        box-shadow: 0 1rem 3rem rgba(0,0,0,.1) !important;
+    .card-producto {
+        border: 1px solid rgba(0,0,0,0.05) !important;
+        transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
     }
+    .card-producto:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 24px rgba(123, 82, 217, 0.08) !important;
+    }
+    .img-zoom {
+        transition: transform 0.4s ease;
+    }
+    .card-producto:hover .img-zoom {
+        transform: scale(1.04);
+    }
+    .style-badge-tag {
+        font-size: 0.65rem;
+        background-color: #f3f0ff;
+        color: #7b52d9;
+    }
+    .shadow-inner { box-shadow: inset 0 2px 4px rgba(0,0,0,0.04); }
+    .hover-link:hover { color: #7b52d9 !important; }
 </style>
 
 <script>
-    // --- LÓGICA DE AVISO ROPA ---
+    // --- MANEJO DINÁMICO DEL MENSAJE DE ADVERTENCIA ---
     document.getElementById('select-etiqueta-add').addEventListener('change', function() {
-        const texto = this.options[this.selectedIndex].text.toLowerCase();
+        const val = this.value;
         const aviso = document.getElementById('aviso-ropa-add');
-        if(texto.includes('ropa') || texto.includes('calzado')) {
+        if(val === 'ropa' || val === 'calzado') {
             aviso.classList.remove('d-none');
         } else {
             aviso.classList.add('d-none');
@@ -287,7 +351,7 @@
 
     let currentProductoId = null;
 
-    // --- EDICIÓN ---
+    // --- TRANSFERENCIA DE ATRIBUTOS PARA EDICIÓN ---
     document.querySelectorAll('.edit-button').forEach(button => {
         button.addEventListener('click', function() {
             const id = this.getAttribute('data-id');
@@ -296,10 +360,16 @@
             document.getElementById('edit_precio').value = this.getAttribute('data-precio');
             document.getElementById('edit_stock').value = this.getAttribute('data-stock');
             document.getElementById('edit_descripcion').value = this.getAttribute('data-descripcion');
+            
+            const categoria = this.getAttribute('data-categoria');
+            const selectCat = document.getElementById('edit_categoria');
+            if (selectCat && categoria) {
+                selectCat.value = categoria.toLowerCase();
+            }
         });
     });
 
-    // --- ABRIR MODAL VARIANTES ---
+    // --- CARGA DE VARIANTES ---
     document.querySelectorAll('.btn-variantes').forEach(btn => {
         btn.addEventListener('click', function() {
             currentProductoId = this.dataset.id;
@@ -308,12 +378,11 @@
         });
     });
 
-    // --- CARGAR LISTA DE VARIANTES ---
     async function cargarVariantes(productoId) {
         const tbody = document.getElementById('tabla-variantes-body');
-        if(!tbody) return; // Seguridad por si falta el ID en el HTML
+        if(!tbody) return;
         
-        tbody.innerHTML = '<tr><td colspan="3" class="text-center text-muted">Cargando...</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="3" class="text-center text-muted py-3 small">Buscando variantes...</td></tr>';
 
         try {
             const response = await fetch(`/comerciante/productos/${productoId}/variantes`);
@@ -321,41 +390,39 @@
             tbody.innerHTML = '';
             
             if(variantes.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="3" class="text-center text-muted">No hay variantes añadidas</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="3" class="text-center text-muted py-3 small">Sin variantes registradas.</td></tr>';
                 return;
             }
 
             variantes.forEach(v => {
                 tbody.innerHTML += `
                     <tr>
-                        <td class="fw-bold text-secondary text-start">${v.nombre_valor}</td>
-                        <td><span class="badge bg-light text-dark border px-3">${v.stock}</span></td>
-                        <td>
-                            <button class="btn btn-sm btn-outline-danger rounded-circle" onclick="eliminarVariante(${v.id})">
+                        <td class="fw-bold text-dark text-start small">${v.nombre_valor}</td>
+                        <td><span class="badge bg-light text-dark border px-2.5 py-1 font-monospace">${v.stock}</span></td>
+                        <td class="text-end">
+                            <button class="btn btn-sm btn-outline-danger rounded-circle p-0 d-inline-flex align-items-center justify-content-center" 
+                                    style="width:26px; height:26px;" onclick="eliminarVariante(${v.id})">
                                 <i class="bi bi-x"></i>
                             </button>
                         </td>
                     </tr>`;
             });
         } catch (error) {
-            tbody.innerHTML = '<tr><td colspan="3" class="text-center text-danger">Error al cargar datos</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="3" class="text-center text-danger py-3 small">Error de enlace asíncrono.</td></tr>';
         }
     }
 
-    // Usamos un Event Listener en lugar de onclick para que sea más estable
     document.addEventListener('DOMContentLoaded', function() {
         const btnGuardar = document.getElementById('btn-confirmar-variante');
         
         if (btnGuardar) {
             btnGuardar.addEventListener('click', async function() {
-                // Capturamos los elementos
                 const inputTipo = document.getElementById('tipo-atributo');
                 const inputValor = document.getElementById('valor-atributo');
                 const inputStock = document.getElementById('stock-atributo');
 
-                // Validamos que existan y tengan valor
                 if (!inputValor.value.trim() || !inputStock.value) {
-                    alert("Por favor, introduce un nombre (ej: XL) y el stock disponible.");
+                    alert("Inserta el valor nominal (Ej: M, XL, Verde).");
                     return;
                 }
 
@@ -377,26 +444,46 @@
                     const data = await response.json();
 
                     if (response.ok && data.success) {
-                        // Limpiar solo el valor y resetear stock a 1
                         inputValor.value = '';
                         inputStock.value = '1';
-                        // Refrescar la tabla
                         cargarVariantes(currentProductoId);
                     } else {
-                        alert("No se pudo guardar: " + (data.message || "Error desconocido"));
+                        alert("Error: " + (data.message || "No se completó la transacción"));
                     }
                 } catch (error) {
-                    console.error("Error en la petición:", error);
-                    alert("Error de conexión. Revisa la consola (F12).");
+                    alert("Error crítico en consola.");
                 }
             });
         }
     });
-    
-    // Función opcional por si quieres borrar variantes
+
     async function eliminarVariante(id) {
-        if(!confirm('¿Eliminar esta variante?')) return;
-        // Aquí iría el fetch de DELETE si lo programas
+        // 1. Confirmación de seguridad
+        if(!confirm('¿Seguro que deseas eliminar esta variante de forma permanente?')) return;
+        
+        try {
+            // 2. Petición HTTP en segundo plano al servidor
+            const response = await fetch(`/comerciante/productos/variantes/${id}`, {
+                method: 'DELETE',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}', // Requerido por Laravel por seguridad
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            const data = await response.json();
+
+            // 3. Si el servidor dice que todo ok, refrescamos la lista en la pantalla
+            if (response.ok && data.success) {
+                // Volvemos a llamar a la función que recarga la tabla de variantes del modal
+                cargarVariantes(currentProductoId); 
+            } else {
+                alert("No se pudo eliminar: " + (data.message || "Error desconocido"));
+            }
+        } catch (error) {
+            console.error("Error al eliminar:", error);
+            alert("Error de conexión con el servidor.");
+        }
     }
 </script>
 @endsection

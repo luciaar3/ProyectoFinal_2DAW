@@ -120,19 +120,79 @@
         box-shadow: 0 8px 20px rgba(245, 48, 3, 0.2);
     }
 
-    /* --- ESTILOS FLIP CARDS --- */
+    /* --- ESTILOS FLIP CARDS MODIFICADOS --- */
     .flip-card { background-color: transparent; height: 420px; perspective: 1500px; }
-    .flip-card-inner { position: relative; width: 100%; height: 100%; text-align: center; transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1); transform-style: preserve-3d; }
+    
+    .flip-card-inner { 
+        position: relative; 
+        width: 100%; 
+        height: 100%; 
+        text-align: center; 
+        transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1); 
+        transform-style: preserve-3d; 
+    }
+    
     .flip-card:hover .flip-card-inner { transform: rotateY(180deg) translateY(-10px); }
-    .flip-card-front, .flip-card-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 30px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 1px solid rgba(0,0,0,0.03); }
-    .flip-card-front { background: white; display: flex; flex-direction: column; }
-    .flip-card-back { transform: rotateY(180deg); display: flex; flex-direction: column; justify-content: center; padding: 2rem; background: white; }
     
-    .card-header-front { padding: 30px; text-align: left; }
-    .zen-graphic { height: 220px; margin-top: auto; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
-    .zen-blob-1, .zen-blob-2 { position: absolute; border-radius: 50%; filter: blur(20px); opacity: 0.6; }
+    /* Agregamos transform e insolación de capas para corregir la transparencia en el giro */
+    .flip-card-front, .flip-card-back { 
+        position: absolute; 
+        width: 100%; 
+        height: 100%; 
+        backface-visibility: hidden; 
+        -webkit-backface-visibility: hidden;
+        border-radius: 30px; 
+        overflow: hidden; 
+        box-shadow: 0 12px 35px rgba(0,0,0,0.06); 
+    }
     
-    .zen-orange .zen-blob-1 { width: 150%; height: 150%; background: #f53003; bottom: -60%; }
+    /* CARA FRONTAL */
+    .flip-card-front { background: #ffffff; display: flex; flex-direction: column; transform: rotateY(0deg); }
+    .card-header-front { padding: 30px 20px 15px 20px; text-align: center; position: relative; z-index: 2; background: #ffffff; }
+    
+    .tarjeta-foto { 
+        height: 240px; 
+        margin-top: auto; 
+        background-size: cover; 
+        background-position: center; 
+        position: relative; 
+    }
+    
+    .tarjeta-foto::before {
+        content: '';
+        position: absolute;
+        top: 0; left: 0; width: 100%; height: 60px; 
+        background: linear-gradient(to bottom, #ffffff 0%, rgba(255, 255, 255, 0) 100%);
+        z-index: 1;
+    }
+    
+    /* CARA TRASERA MEJORADA (Garantiza opacidad y diseño premium) */
+    .flip-card-back { 
+        transform: rotateY(180deg); 
+        display: flex; 
+        flex-direction: column; 
+        justify-content: center; 
+        align-items: center; 
+        padding: 2.5rem; 
+        background: #ffffff !important; /* Forzamos color sólido anti-transparencia */
+        border: 1px solid rgba(0,0,0,0.06);
+    }
+
+    /* Mini contenedores estilizados para los iconos traseros */
+    .icon-box {
+        width: 70px;
+        height: 70px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 20px;
+        margin-bottom: 1.5rem;
+        box-shadow: inset 0 -4px 0 rgba(0,0,0,0.04);
+    }
+    .icon-box-blue { background: #e0f2fe; color: #0284c7; }
+    .icon-box-red { background: #fff5f2; color: var(--rojo-mercazone); }
+    .icon-box-green { background: #dcfce7; color: #16a34a; }
+
     .card-destacada .flip-card { height: 460px; }
 
     .scroll-indicator { font-size: 2.5rem; color: var(--rojo-mercazone); animation: bounce 2s infinite; display: inline-block; }
@@ -177,6 +237,7 @@
     </div>
 
     <div class="row g-4 mt-5 justify-content-center align-items-center">
+        
         <div class="col-lg-4 col-md-6">
             <div class="flip-card">
                 <div class="flip-card-inner">
@@ -185,15 +246,15 @@
                             <h5 class="fw-bold mb-1 fs-4">Explorar Mapa</h5>
                             <p class="text-secondary small">Localiza puestos en tiempo real.</p>
                         </div>
-                        <div class="zen-graphic" style="background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);">
-                            <i class="bi bi-geo-alt-fill text-primary" style="font-size: 5rem;"></i>
-                        </div>
+                        <div class="tarjeta-foto" style="background-image: url('https://images.unsplash.com/photo-1524661135-423995f22d0b?q=80&w=600&auto=format&fit=crop');"></div>
                     </div>
                     <div class="flip-card-back">
-                        <i class="bi bi-map fs-1 text-primary mb-3"></i>
-                        <h5 class="fw-bold">Encuentra la Ruta</h5>
-                        <p class="text-secondary small">Mira dónde están tus comerciantes favoritos hoy mismo.</p>
-                        <a href="{{ route('negocios.index') }}" class="btn btn-dark rounded-pill px-4 mt-2">Ver Mapa</a>
+                        <div class="icon-box icon-box-blue">
+                            <i class="bi bi-map fs-3"></i>
+                        </div>
+                        <h5 class="fw-bold mb-2">Encuentra la Ruta</h5>
+                        <p class="text-secondary small text-center mb-4">Mira dónde están tus comerciantes favoritos hoy mismo.</p>
+                        <a href="{{ route('negocios.index') }}" class="btn btn-dark rounded-pill px-4 shadow-sm">Ver Mapa</a>
                     </div>
                 </div>
             </div>
@@ -203,20 +264,19 @@
             <div class="flip-card">
                 <div class="flip-card-inner">
                     <div class="flip-card-front" style="border: 2px solid var(--rojo-mercazone);">
-                        <div class="card-header-front text-center">
+                        <div class="card-header-front">
                             <span class="badge bg-danger mb-2 px-3 py-2 rounded-pill" style="background-color: var(--rojo-mercazone) !important;">PRO</span>
                             <h4 class="fw-bolder">Soy Comerciante</h4>
                         </div>
-                        <div class="zen-graphic zen-orange" style="background: #fff5f2;">
-                            <div class="zen-blob-1"></div>
-                            <i class="bi bi-shop text-white position-relative z-3" style="font-size: 6rem; filter: drop-shadow(0 5px 15px rgba(245,48,3,0.4));"></i>
-                        </div>
+                        <div class="tarjeta-foto" style="background-image: url('https://images.unsplash.com/photo-1542838132-92c53300491e?q=80&w=600&auto=format&fit=crop');"></div>
                     </div>
-                    <div class="flip-card-back" style="background: #fff5f2; border: 2px solid var(--rojo-mercazone);">
-                        <i class="bi bi-graph-up-arrow fs-1 mb-3" style="color: var(--rojo-mercazone);"></i>
-                        <h4 class="fw-bold">Digitaliza tu Puesto</h4>
-                        <p class="text-secondary small">Publica tus productos y recibe pedidos online fácilmente.</p>
-                        <a href="{{ route('registro') }}" class="btn btn-danger rounded-pill px-4 fw-bold" style="background-color: var(--rojo-mercazone);">Empezar Ahora</a>
+                    <div class="flip-card-back" style="border: 2px solid var(--rojo-mercazone);">
+                        <div class="icon-box icon-box-red">
+                            <i class="bi bi-graph-up-arrow fs-3"></i>
+                        </div>
+                        <h4 class="fw-bold mb-2">Digitaliza tu Puesto</h4>
+                        <p class="text-secondary small text-center mb-4">Publica tus productos y recibe pedidos online fácilmente.</p>
+                        <a href="{{ route('registro') }}" class="btn btn-danger rounded-pill px-4 fw-bold shadow-sm" style="background-color: var(--rojo-mercazone);">Empezar Ahora</a>
                     </div>
                 </div>
             </div>
@@ -230,15 +290,15 @@
                             <h5 class="fw-bold mb-1 fs-4">Comunidad</h5>
                             <p class="text-secondary small">Confianza y vecindad.</p>
                         </div>
-                        <div class="zen-graphic" style="background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);">
-                            <i class="bi bi-people-fill text-success" style="font-size: 5rem;"></i>
-                        </div>
+                        <div class="tarjeta-foto" style="background-image: url('https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?q=80&w=600&auto=format&fit=crop');"></div>
                     </div>
                     <div class="flip-card-back">
-                        <i class="bi bi-stars fs-1 text-success mb-3"></i>
-                        <h5 class="fw-bold">Opiniones Reales</h5>
-                        <p class="text-secondary small">Descubre los mejores productos según tus vecinos.</p>
-                        <a href="#" class="btn btn-dark rounded-pill px-4 mt-2">Leer Foros</a>
+                        <div class="icon-box icon-box-green">
+                            <i class="bi bi-stars fs-3"></i>
+                        </div>
+                        <h5 class="fw-bold mb-2">Opiniones Reales</h5>
+                        <p class="text-secondary small text-center mb-4">Descubre los mejores productos según tus vecinos.</p>
+                        <a href="#" class="btn btn-dark rounded-pill px-4 shadow-sm">Leer Foros</a>
                     </div>
                 </div>
             </div>

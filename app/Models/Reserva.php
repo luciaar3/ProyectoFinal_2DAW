@@ -16,7 +16,8 @@ class Reserva extends Model
         'user_id',
         'producto_id',
         'cantidad',
-        'variante_elegida'
+        'variante_elegida',
+        'horario_negocio_id'
     ];
 
     public function user()
@@ -33,5 +34,11 @@ class Reserva extends Model
     {
         // Multiplica la cantidad de la reserva por el precio del producto
         return $this->cantidad * ($this->producto->precio ?? 0);
+    }
+
+    public function lugarRecogida()
+    {
+        
+        return $this->belongsTo(HorarioNegocio::class, 'horario_negocio_id');
     }
 }

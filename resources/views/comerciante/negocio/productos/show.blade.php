@@ -102,11 +102,24 @@
         transition: 0.3s;
     }
     .back-btn:hover { transform: translateX(-5px); color: var(--mercazone-accent); }
+
+    .fav-btn:hover {
+        transform: scale(1.1);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+    }
+    .fav-btn i.fas.fa-heart {
+        animation: pulse 0.3s ease-in-out;
+    }
+    @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.2); }
+        100% { transform: scale(1); }
+    }
 </style>
 
 <div class="main-wrapper min-height: 100vh; pb-5">
     <div class="container">
-        {{-- Header con navegación limpia --}}
+        {{-- Header --}}
         <div class="d-flex align-items-center gap-3 mb-5">
             <a href="{{ route('negocios.show', $producto->negocio->id) }}" class="back-btn text-dark text-decoration-none">
                 <i class="fas fa-arrow-left"></i>
@@ -120,12 +133,25 @@
         <div class="row g-5">
             {{-- Columna Imagen --}}
             <div class="col-lg-6">
-                <div class="product-visual-container">
+                <div class="product-visual-container position-relative"> {{-- Asegúrate de que tenga position-relative --}}
                     <img src="{{ $producto->imagen ? asset('storage/'.$producto->imagen) : 'https://via.placeholder.com/800' }}" 
-                         class="w-100 product-img-main" 
-                         alt="{{ $producto->nombre }}">
-                    
-                    {{-- Badge flotante --}}
+                        class="w-100 product-img-main" 
+                        alt="{{ $producto->nombre }}">
+     
+                    <div class="position-absolute top-0 start-0 m-4">
+                        <form action="{{ route('productos.favorito', $producto->id) }}" method="POST">
+                            @csrf
+                            <button type="submit" class="btn bg-white rounded-circle shadow-sm d-flex align-items-center justify-content-center fav-btn" 
+                                    style="width: 55px; height: 55px; border: none; transition: 0.3s;">
+                                @if(auth()->check() && auth()->user()->favoritos->contains($producto->id))
+                                    <i class="fas fa-heart text-danger fs-4"></i>
+                                @else
+                                    <i class="far fa-heart text-secondary fs-4"></i>
+                                @endif
+                            </button>
+                        </form>
+                    </div>
+
                     <div class="position-absolute top-0 end-0 m-4">
                         <span class="badge bg-white text-dark shadow-sm p-3 rounded-4">
                             <i class="fas fa-check-circle text-success me-1"></i> Stock: {{ $producto->stock }}
@@ -153,7 +179,7 @@
                     <form action="{{ route('productos.reservar', $producto->id) }}" method="POST">
                         @csrf
                         
-                        {{-- Variantes con estética de boutique --}}
+                        {{-- Variantes --}}
                         @if($producto->variantes->count() > 0)
                             @foreach($producto->variantes->groupBy('tipo') as $tipo => $opciones)
                                 <div class="mb-5">
@@ -177,6 +203,27 @@
                             @endforeach
                         @endif
 
+                        {{-- SECCIÓN PUNTO DE RECOGIDA --}}
+                        <div class="mb-4 pt-4 border-top">
+                            <h5 class="fw-bold text-dark mb-3">
+                                <i class="fas fa-map-marker-alt text-sage me-2"></i>¿Dónde y cuándo lo recoges?
+                            </h5>
+
+                            <div class="mb-3">
+                                <select name="horario_negocio_id" class="form-select rounded-4 p-3 border-light-subtle shadow-sm" required>
+                                    <option value="" selected disabled>Selecciona el mercadillo/puesto...</option>
+                                    @foreach($horarios as $h)
+                                        <option value="{{ $h->id }}">
+                                            {{ $h->ubicacion }} ({{ $h->poblacion }}) — Cada {{ ucfirst($h->dia) }} de {{ \Carbon\Carbon::parse($h->apertura)->format('H:i') }} a {{ \Carbon\Carbon::parse($h->cierre)->format('H:i') }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                <div class="form-text text-muted small mt-2">
+                                    <i class="fas fa-info-circle me-1"></i> El comerciante preparará tu pedido para el próximo día que monte este puesto.
+                                </div>
+                            </div>
+                        </div>
+
                         {{-- Footer del Formulario --}}
                         <div class="d-flex gap-3 pt-4 border-top mt-5">
                             <div class="text-center">
@@ -192,7 +239,7 @@
                         </div>
                     </form>
 
-                    {{-- Garantías MercaZone --}}
+                    {{-- Garantías --}}
                     <div class="row mt-5 pt-4">
                         <div class="col-6">
                             <div class="d-flex align-items-center gap-2 small text-muted">

@@ -91,7 +91,7 @@ class NegocioController extends Controller
         // Usamos 'with' para cargar el producto y el cliente de golpe (evita lentitud)
         $reservas = Reserva::whereHas('producto', function($query) use ($negocio) {
             $query->where('negocio_id', $negocio->id);
-        })->with(['producto', 'user'])->orderBy('created_at', 'desc')->get();
+        })->with(['producto', 'user', 'lugarRecogida'])->orderBy('created_at', 'desc')->get();
 
         return view('comerciante.negocio.reservas', compact('reservas', 'negocio'));
     }
