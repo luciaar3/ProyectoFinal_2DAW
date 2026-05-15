@@ -2,7 +2,10 @@
 @section('title', 'Administración - Market Manager')
 @section('content')
 <div class="container py-5">
-    <h2 class="mb-4 fw-bold">Panel de Validación de Comercios</h2>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="mb-0 fw-bold">Panel de Validación de Comercios</h2>
+        <a href="{{ route('admin.account') }}" class="btn btn-outline-secondary rounded-pill">Volver al Panel</a>
+    </div>
 
     @if(session('success'))
         <div class="alert alert-success rounded-pill shadow-sm border-0 mb-4">

@@ -4,8 +4,11 @@
 <div class="container mt-5">
     <!-- Título -->
     <div class="row justify-content-center mb-4">
+        <div class="col-12 d-flex justify-content-between align-items-center mb-3">
+            <h2 class="mb-0">Notificaciones recientes</h2>
+            <a href="{{ Auth::user()->rol === 'Cliente' ? route('cliente.account') : (Auth::user()->rol === 'Comerciante' ? route('comerciante.account') : route('admin.account')) }}" class="btn btn-outline-secondary rounded-pill">Volver al Panel</a>
+        </div>
         <div class="col-12">
-            <h2 class="mb-3">Notificaciones recientes</h2>
             <div class="alert alert-info">
                 Aquí puedes ver y gestionar tus notificaciones.
             </div>

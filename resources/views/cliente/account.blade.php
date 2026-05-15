@@ -37,7 +37,7 @@
                 <div class="card shadow-sm text-center p-3">
                     <h4>Foros</h4>
                     <p>Navega en los foros con otros usuarios.</p>
-                    <button class="btn btn-outline-primary">Ver foros</button>
+                    <a href="{{ route('foros.index') }}" class="btn btn-outline-primary">Ver foros</a>
                 </div>
             </div>
             <div class="col-md-4">

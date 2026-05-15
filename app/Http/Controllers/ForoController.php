@@ -12,15 +12,8 @@ class ForoController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        $negocios = \App\Models\Negocio::all();
+        return view('foros.index', compact('negocios'));
     }
 
     /**
@@ -28,38 +21,33 @@ class ForoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'titulo' => 'required|max:100',
+            'contenido' => 'required',
+            'negocio_id' => 'required|exists:negocio,id',
+            'parent_id' => 'nullable|exists:foros,id'
+        ]);
+
+        Foro::create([
+            'titulo' => $request->titulo,
+            'contenido' => $request->contenido,
+            'user_id' => auth()->id(),
+            'negocio_id' => $request->negocio_id,
+            'parent_id' => $request->parent_id
+        ]);
+
+        return back()->with('success', 'Mensaje publicado correctamente.');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Forum $forum)
+    public function show($id)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Forum $forum)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Forum $forum)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Forum $forum)
-    {
-        //
+        $negocio = \App\Models\Negocio::with(['foros' => function($query) {
+            $query->whereNull('parent_id')->with(['usuario', 'respuestas.usuario']);
+        }])->findOrFail($id);
+        
+        return view('foros.show', compact('negocio'));
     }
 }

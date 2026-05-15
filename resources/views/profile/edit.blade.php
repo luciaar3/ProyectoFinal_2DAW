@@ -16,7 +16,11 @@
 
             <div class="card border-0 shadow-sm" style="border-radius: 24px;">
                 <div class="card-body p-4 p-md-5">
-                    <div class="text-center mb-5">
+                    <div class="text-center mb-5 position-relative">
+                        <a href="{{ Auth::user()->rol === 'Cliente' ? route('cliente.account') : (Auth::user()->rol === 'Comerciante' ? route('comerciante.account') : route('admin.account')) }}" 
+                           class="btn btn-outline-secondary rounded-pill position-absolute top-0 end-0">
+                            Volver al Panel
+                        </a>
                         <div class="d-inline-flex align-items-center justify-content-center bg-light rounded-circle mb-3" style="width: 80px; height: 80px;">
                             <span class="fs-1 fw-bold" style="color: #7b52d9;">{{ substr($user->nombre, 0, 1) }}</span>
                         </div>

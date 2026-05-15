@@ -16,6 +16,7 @@
             <p class="text-secondary">Añade, edita o elimina los productos que ofreces en tu puesto.</p>
         </div>
         <div class="col-md-4 text-md-end">
+            <a href="{{ route('comerciante.account') }}" class="btn btn-outline-secondary rounded-pill px-4 py-2 fw-bold me-2">Volver al Panel</a>
             <button class="btn btn-primary rounded-pill px-4 py-2 fw-bold shadow-sm" data-bs-toggle="modal" data-bs-target="#modalAddProducto" style="background-color: #7b52d9; border: none;">
                 <i class="bi bi-plus-lg me-2"></i> Nuevo Producto
             </button>

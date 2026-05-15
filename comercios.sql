@@ -5,9 +5,9 @@ INSERT INTO `users` (`id`, `nombre`, `primer_apellido`, `segundo_apellido`, `ema
 (2, 'María', 'López', 'Martínez', 'maria@panaderia.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'Comerciante', NOW(), NOW());
 
 -- Inserción de Negocios
-INSERT INTO `negocio` (`id`, `user_id`, `reservation_id`, `nombre_negocio`, `descripcion`, `numero_permiso`, `nif`, `telefono`, `imagen`, `created_at`, `updated_at`) VALUES
-(1, 1, NULL, 'Frutería Paco', 'Las mejores frutas y verduras de la huerta, directas a tu mesa.', 12345, '12345678A', 600123456, NULL, NOW(), NOW()),
-(2, 2, NULL, 'Panadería María', 'Pan artesanal hecho con masa madre y dulces tradicionales.', 67890, '87654321B', 600654321, NULL, NOW(), NOW());
+INSERT INTO `negocio` (`id`, `user_id`, `reservation_id`, `nombre_negocio`, `descripcion`, `numero_permiso`, `nif`, `telefono`, `imagen`, `estado_validacion`, `created_at`, `updated_at`) VALUES
+(1, 1, NULL, 'Frutería Paco', 'Las mejores frutas y verduras de la huerta, directas a tu mesa.', 12345, '12345678A', 600123456, NULL, 'aprobado', NOW(), NOW()),
+(2, 2, NULL, 'Panadería María', 'Pan artesanal hecho con masa madre y dulces tradicionales.', 67890, '87654321B', 600654321, NULL, 'aprobado', NOW(), NOW());
 
 -- Inserción de Horarios (todos los días para que siempre aparezcan)
 INSERT INTO `horario_negocio` (`negocio_id`, `dia`, `apertura`, `cierre`, `festivo_cerrado`, `poblacion`, `ubicacion`, `latitud`, `longitud`, `created_at`, `updated_at`) VALUES
