@@ -27,7 +27,10 @@
             <div class="col-lg-7">
                 <div class="card border-0 shadow-sm mb-4" style="border-radius: 20px;">
                     <div class="card-body p-4">
-                        <h4 class="mb-4 fw-bold text-primary">Configuración del Negocio</h4>
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h4 class="mb-0 fw-bold text-primary">Configuración del Negocio</h4>
+                            <a href="{{ route('comerciante.account') }}" class="btn btn-outline-secondary rounded-pill">Volver al Panel</a>
+                        </div>
                         
                         {{-- Nombre --}}
                         <div class="mb-3">

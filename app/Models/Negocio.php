@@ -39,9 +39,29 @@ class Negocio extends Model
     public function productos() {
         return $this->hasMany(Producto::class);
     }
+
+    public function foros() {
+        return $this->hasMany(Foro::class, 'negocio_id');
+    }
+
     // Filtro para obtener solo los aprobados
     public function scopeValidados($query)
     {
         return $query->where('estado_validacion', 'aprobado');
+    }
+
+    /**
+     * Boot function from Laravel.
+     */
+    protected static function booted()
+    {
+        static::created(function ($negocio) {
+            \App\Models\Foro::create([
+                'titulo' => '¡Bienvenidos al foro de ' . $negocio->nombre_negocio . '!',
+                'contenido' => 'Hola a todos. He abierto este foro para que podáis preguntarme cualquier duda sobre mis productos, disponibilidad o pedir ayuda. ¡Estaré encantado de responderos!',
+                'user_id' => $negocio->user_id,
+                'negocio_id' => $negocio->id
+            ]);
+        });
     }
 }

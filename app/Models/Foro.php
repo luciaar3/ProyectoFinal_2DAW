@@ -12,7 +12,8 @@ class Foro extends Model
         'titulo',
         'contenido',
         'user_id',
-        'negocio_id'
+        'negocio_id',
+        'parent_id'
     ];
 
     public function usuario()
@@ -23,5 +24,15 @@ class Foro extends Model
     public function negocio()
     {
         return $this->belongsTo(Negocio::class, 'negocio_id');
+    }
+
+    public function padre()
+    {
+        return $this->belongsTo(Foro::class, 'parent_id');
+    }
+
+    public function respuestas()
+    {
+        return $this->hasMany(Foro::class, 'parent_id')->oldest();
     }
 }
