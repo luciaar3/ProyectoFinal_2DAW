@@ -17,19 +17,32 @@
                 
                 <li class="nav-item me-lg-4">
                     <a class="nav-link text-secondary nav-link-hover" href="{{ route('index') }}#nuestra-historia">
-                        <i class="bi bi-info-circle me-1"></i> Nuestra Historia
+                        <i class="bi bi-info-circle me-1"></i> {{ __('messages.nav_history') }}
                     </a>
                 </li>
 
+                <li class="nav-item dropdown me-lg-3 my-2 my-lg-0">
+                    <a class="nav-link dropdown-toggle d-flex align-items-center gap-1 btn btn-sm btn-light rounded-pill px-3 shadow-sm border text-secondary" 
+                       href="#" id="langDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-translate text-danger"></i> 
+                        <span class="text-uppercase fw-bold small">{{ app()->getLocale() }}</span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2 animate-slide" style="border-radius: 12px; min-width: 130px;">
+                        <li><a class="dropdown-item py-2 fw-semibold @if(app()->getLocale() == 'es') active bg-danger text-white @endif" href="{{ route('lang.switch', 'es') }}">Castellano</a></li>
+                        <li><a class="dropdown-item py-2 fw-semibold @if(app()->getLocale() == 'ca') active bg-danger text-white @endif" href="{{ route('lang.switch', 'ca') }}">Valencià</a></li>
+                        <li><a class="dropdown-item py-2 fw-semibold @if(app()->getLocale() == 'en') active bg-danger text-white @endif" href="{{ route('lang.switch', 'en') }}">English</a></li>
+                    </ul>
+                </li>
+
                 @guest
-                    <li class="nav-item me-lg-3 mt-3 mt-lg-0">
-                        <a class="nav-link fw-semibold text-dark nav-link-hover" href="{{ route('login') }}">Inicia sesión</a>
+                    <li class="nav-item me-lg-3 mt-2 mt-lg-0">
+                        <a class="nav-link fw-semibold text-dark nav-link-hover" href="{{ route('login') }}">{{ __('messages.nav_login') }}</a>
                     </li>
                     <li class="nav-item mt-2 mt-lg-0">
                         <a class="btn rounded-pill px-4 py-2 text-white fw-bold shadow-sm btn-main-action" 
                            style="background: linear-gradient(135deg, #f53003 0%, #ff6b4a 100%); border: none;" 
                            href="{{ route('registro') }}">
-                             Únete a la Zona
+                             {{ __('messages.nav_register') }}
                         </a>
                     </li>
                 @else
@@ -46,14 +59,14 @@
                         
                         <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-3 animate-slide" style="border-radius: 18px;">
                             <li><a class="dropdown-item py-2 fw-semibold" href="{{ route(Auth::user()->rol === 'Cliente' ? 'cliente.account' : (Auth::user()->rol === 'Admin' ? 'admin.account' : 'comerciante.account')) }}">
-                                <i class="bi bi-grid-1x2 me-2"></i> Mi Panel</a>
+                                <i class="bi bi-grid-1x2 me-2"></i> {{ __('messages.nav_panel') }}</a>
                             </li>
                             <li><hr class="dropdown-divider"></li>
                             <li>
                                 <form action="{{ route('logout') }}" method="POST">
                                     @csrf
                                     <button type="submit" class="dropdown-item py-2 text-danger fw-bold">
-                                        <i class="bi bi-door-open me-2"></i> Salir
+                                        <i class="bi bi-door-open me-2"></i> {{ __('messages.nav_logout') }}
                                     </button>
                                 </form>
                             </li>
@@ -66,7 +79,6 @@
 </nav>
 
 <style>
-    /* Tus estilos se mantienen intactos */
     .nav-link-hover:hover {
         color: #f53003 !important;
         transform: translateY(-1px);

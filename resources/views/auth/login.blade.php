@@ -1,6 +1,6 @@
 @extends('layouts.layout')
 
-@section('title', 'Iniciar Sesión - MercaZone')
+@section('title', __('login.page_title'))
 
 @section('content')
 <style>
@@ -104,10 +104,10 @@
                     <div class="login-icon">
                         <i class="bi bi-person-lock"></i>
                     </div>
-                    <h2 class="fw-bolder text-dark mb-1" style="letter-spacing: -1.5px;">
+                    <h2 class="fw-bolder text-dark mb-1" style="letter-spacing: -1px;">
                         Merca<span class="text-mercazone">Zone</span>
                     </h2>
-                    <p class="text-secondary small">¡Hola de nuevo! Entra a tu cuenta.</p>
+                    <p class="text-secondary small">{{ __('login.welcome_back') }}</p>
                 </div>
 
                 <div class="card-body p-4 p-md-5">
@@ -122,16 +122,16 @@
                         @csrf
                         
                         <div class="mb-3">
-                            <label for="email" class="form-label">Correo Electrónico</label>
+                            <label for="email" class="form-label">{{ __('login.label_email') }}</label>
                             <input type="email" class="form-control @error('email') is-invalid @enderror" 
                                    id="email" name="email" value="{{ old('email') }}" 
-                                   placeholder="tu@email.com" required autofocus>
+                                   placeholder="{{ __('login.placeholder_email') }}" required autofocus>
                             @error('email') <div class="invalid-feedback">{{ $message }}</div> @enderror
                         </div>
 
                         <div class="mb-4">
                             <div class="d-flex justify-content-between align-items-center">
-                                <label for="password" class="form-label">Contraseña</label>
+                                <label for="password" class="form-label">{{ __('login.label_password') }}</label>
                             </div>
                             <input type="password" class="form-control @error('password') is-invalid @enderror" 
                                    id="password" name="password" placeholder="••••••••" required>
@@ -140,13 +140,13 @@
 
                         <div class="d-grid gap-2">
                             <button type="submit" class="btn btn-mercazone">
-                                Entrar a mi panel <i class="bi bi-box-arrow-in-right ms-2"></i>
+                                {{ __('login.btn_submit') }} <i class="bi bi-box-arrow-in-right ms-2"></i>
                             </button>
                         </div>
                         
                         <div class="text-center mt-4">
-                            <p class="mb-0 text-secondary">¿Aún no tienes cuenta? 
-                                <a href="{{ route('registro') }}" class="text-mercazone fw-bold text-decoration-none">Regístrate aquí</a>
+                            <p class="mb-0 text-secondary">{{ __('login.no_account') }} 
+                                <a href="{{ route('registro') }}" class="text-mercazone fw-bold text-decoration-none">{{ __('login.register_here') }}</a>
                             </p>
                         </div>
                     </form>
@@ -155,7 +155,7 @@
 
             <div class="text-center mt-4">
                 <a href="/" class="text-secondary text-decoration-none small">
-                    <i class="bi bi-arrow-left me-1"></i> Volver a la página principal
+                    <i class="bi bi-arrow-left me-1"></i> {{ __('login.back_to_home') }}
                 </a>
             </div>
 

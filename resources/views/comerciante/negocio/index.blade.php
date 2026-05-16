@@ -113,20 +113,20 @@
 <div class="view-container">
     
     <button class="view-toggle-btn" onclick="toggleView()" id="btnToggle">
-        <i class="bi bi-map"></i> Ver Mapa
+        <i class="bi bi-map"></i> {{ __('index.view_map') }}
     </button>
 
     <div id="vistaLista">
         <div class="d-flex justify-content-between align-items-end mb-4 px-2">
             <div>
-                <h2 class="fw-bold mb-0">Comercios Cercanos</h2>
-                <p class="text-muted">Descubre los mejores puestos de tu zona</p>
+                <h2 class="fw-bold mb-0">{{ __('index.title') }}</h2>
+                <p class="text-muted">{{ __('index.subtitle') }}</p>
             </div>
             <div style="width: 200px;">
                 <form action="{{ route('negocios.index') }}" method="GET">
                     <select name="dia" class="form-select rounded-pill" onchange="this.form.submit()">
                         @foreach(['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo'] as $d)
-                            <option value="{{ $d }}" {{ $diaFiltro == $d ? 'selected' : '' }}>{{ ucfirst($d) }}</option>
+                            <option value="{{ $d }}" {{ $diaFiltro == $d ? 'selected' : '' }}>{{ __('index.' . $d) }}</option>
                         @endforeach
                     </select>
                 </form>
@@ -142,9 +142,9 @@
                             <h6 class="fw-bold mb-1">{{ $negocio->nombre_negocio }}</h6>
                             <p class="text-muted small mb-3">
                                 <i class="bi bi-geo-alt text-mercazone"></i> 
-                                {{ $negocio->horarios->where('dia', $diaFiltro)->first()->poblacion ?? 'Ubicación' }}
+                                {{ $negocio->horarios->where('dia', $diaFiltro)->first()->poblacion ?? __('index.location_default') }}
                             </p>
-                            <a href="{{ route('negocios.show', $negocio->id) }}" class="btn btn-mercazone btn-sm w-100">Ver Puesto</a>
+                            <a href="{{ route('negocios.show', $negocio->id) }}" class="btn btn-mercazone btn-sm w-100">{{ __('index.view_stall') }}</a>
                         </div>
                     </div>
                 </div>
@@ -159,7 +159,7 @@
             <div class="panel-header">
                 <h5 class="fw-bold mb-3 text-mercazone"><i class="bi bi-geo-alt-fill"></i> MercaZone Map</h5>
                 <form action="{{ route('negocios.index') }}" method="GET">
-                    <input type="text" name="search" class="form-control rounded-pill mb-2" placeholder="Buscar puesto..." value="{{ request('search') }}">
+                    <input type="text" name="search" class="form-control rounded-pill mb-2" placeholder="{{ __('index.search_placeholder') }}" value="{{ request('search') }}">
                 </form>
             </div>
 
@@ -172,7 +172,7 @@
                         <div class="d-flex align-items-center">
                             <a href="{{ route('negocios.show', $negocio->id) }}">
                                 <img src="{{ $negocio->imagen ? asset('storage/'.$negocio->imagen) : asset('img/default-shop.png') }}" 
-                                    class="rounded-circle border" style="width: 45px; height: 45px; object-fit: cover;">
+                                     class="rounded-circle border" style="width: 45px; height: 45px; object-fit: cover;">
                             </a>
                             
                             <div class="ms-2 flex-grow-1">
@@ -185,7 +185,7 @@
                                     @if($h && $h->apertura)
                                         {{ \Carbon\Carbon::parse($h->apertura)->format('H:i') }} - {{ \Carbon\Carbon::parse($h->cierre)->format('H:i') }}
                                     @else
-                                        Cerrado
+                                        {{ __('index.closed') }}
                                     @endif
                                 </p>
                                 <p class="text-muted mb-0" style="font-size: 0.7rem;">{{ $h->poblacion ?? '' }}</p>
@@ -213,11 +213,11 @@
         if (lista.style.display === "none") {
             lista.style.display = "block";
             mapa.style.display = "none";
-            btn.innerHTML = '<i class="bi bi-map"></i> Ver Mapa';
+            btn.innerHTML = '<i class="bi bi-map"></i> {{ __('index.view_map') }}';
         } else {
             lista.style.display = "none";
             mapa.style.display = "block";
-            btn.innerHTML = '<i class="bi bi-list"></i> Ver Lista';
+            btn.innerHTML = '<i class="bi bi-list"></i> {{ __('index.view_list') }}';
             
             // Re-renderizar mapa para evitar cuadros grises
             setTimeout(() => { map.invalidateSize(); }, 300);
@@ -248,7 +248,7 @@
                     <p class="text-muted mb-2" style="font-size:11px;">${p.pob || ''}</p>
                     <a href="${p.url}" class="btn btn-danger btn-sm rounded-pill text-white w-100" 
                        style="background:#f53003; border:none; font-size:11px; padding: 5px 10px;">
-                       Ver Perfil
+                       ${'{{ __('index.js_view_profile') }}'}
                     </a>
                 </div>
             `);

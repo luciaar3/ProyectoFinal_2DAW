@@ -1,5 +1,6 @@
-@extends('layouts.layout') 
-@section('title', 'Únete a MercaZone - Registro')
+@extends('layouts.layout')
+
+@section('title', __('register.page_title'))
 
 @section('content')
 <style>
@@ -94,10 +95,10 @@
             <div class="register-card">
                 
                 <div class="register-header">
-                    <h2 class="fw-bolder text-dark mb-1" style="letter-spacing: -1.5px;">
+                    <h2 class="fw-bolder text-dark mb-1" style="letter-spacing: -1px;">
                         Merca<span class="text-mercazone">Zone</span>
                     </h2>
-                    <p class="text-secondary">Crea tu cuenta en un minuto y empieza a mover tu barrio.</p>
+                    <p class="text-secondary">{{ __('register.subtitle') }}</p>
                 </div>
 
                 <div class="card-body p-4 p-md-5">
@@ -106,48 +107,48 @@
 
                         <div class="row g-3 mb-4">
                             <div class="col-md-4">
-                                <label for="nombre" class="form-label">Nombre</label>
-                                <input type="text" name="nombre" id="nombre" class="form-control @error('nombre') is-invalid @enderror" value="{{ old('nombre') }}" placeholder="Tu nombre" required>
+                                <label for="nombre" class="form-label">{{ __('register.label_name') }}</label>
+                                <input type="text" name="nombre" id="nombre" class="form-control @error('nombre') is-invalid @enderror" value="{{ old('nombre') }}" placeholder="{{ __('register.placeholder_name') }}" required>
                                 @error('nombre') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
 
                             <div class="col-md-4">
-                                <label for="primer_apellido" class="form-label">Primer Apellido</label>
-                                <input type="text" name="primer_apellido" id="primer_apellido" class="form-control @error('primer_apellido') is-invalid @enderror" value="{{ old('primer_apellido') }}" placeholder="1er Apellido" required>
+                                <label for="primer_apellido" class="form-label">{{ __('register.label_first_lastname') }}</label>
+                                <input type="text" name="primer_apellido" id="primer_apellido" class="form-control @error('primer_apellido') is-invalid @enderror" value="{{ old('primer_apellido') }}" placeholder="{{ __('register.placeholder_first_lastname') }}" required>
                                 @error('primer_apellido') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
 
                             <div class="col-md-4">
-                                <label for="segundo_apellido" class="form-label">Segundo Apellido</label>
-                                <input type="text" name="segundo_apellido" id="segundo_apellido" class="form-control @error('segundo_apellido') is-invalid @enderror" value="{{ old('segundo_apellido') }}" placeholder="2º Apellido (opcional)">
+                                <label for="segundo_apellido" class="form-label">{{ __('register.label_second_lastname') }}</label>
+                                <input type="text" name="segundo_apellido" id="segundo_apellido" class="form-control @error('segundo_apellido') is-invalid @enderror" value="{{ old('segundo_apellido') }}" placeholder="{{ __('register.placeholder_second_lastname') }}">
                             </div>
                         </div>
 
                         <div class="mb-4">
-                            <label for="email" class="form-label">Correo Electrónico</label>
-                            <input type="email" name="email" id="email" class="form-control @error('email') is-invalid @enderror" value="{{ old('email') }}" placeholder="ejemplo@correo.com" required>
+                            <label for="email" class="form-label">{{ __('register.label_email') }}</label>
+                            <input type="email" name="email" id="email" class="form-control @error('email') is-invalid @enderror" value="{{ old('email') }}" placeholder="{{ __('register.placeholder_email') }}" required>
                             @error('email') <div class="invalid-feedback">{{ $message }}</div> @enderror
                         </div>
 
                         <div class="row g-3 mb-4">
                             <div class="col-md-6">
-                                <label for="password" class="form-label">Contraseña</label>
+                                <label for="password" class="form-label">{{ __('register.label_password') }}</label>
                                 <input type="password" name="password" id="password" class="form-control @error('password') is-invalid @enderror" placeholder="••••••••" required>
                                 @error('password') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
 
                             <div class="col-md-6">
-                                <label for="password_confirmation" class="form-label">Confirmar Contraseña</label>
+                                <label for="password_confirmation" class="form-label">{{ __('register.label_password_confirm') }}</label>
                                 <input type="password" name="password_confirmation" id="password_confirmation" class="form-control" placeholder="••••••••" required>
                             </div>
                         </div>
 
                         <div class="mb-4">
-                            <label for="rol" class="form-label">¿Qué buscas en MercaZone?</label>
+                            <label for="rol" class="form-label">{{ __('register.label_role') }}</label>
                             <select name="rol" id="rol" class="form-select @error('rol') is-invalid @enderror" required style="border-left: 5px solid #f53003;">
-                                <option value="" selected disabled>Elige tu perfil...</option>
-                                <option value="Cliente" {{ old('rol') == 'Cliente' ? 'selected' : '' }}>Cliente (Quiero comprar)</option>
-                                <option value="Comerciante" {{ old('rol') == 'Comerciante' ? 'selected' : '' }}>Comerciante (Tengo un puesto)</option>
+                                <option value="" selected disabled>{{ __('register.option_default') }}</option>
+                                <option value="Cliente" {{ old('rol') == 'Cliente' ? 'selected' : '' }}>{{ __('register.option_client') }}</option>
+                                <option value="Comerciante" {{ old('rol') == 'Comerciante' ? 'selected' : '' }}>{{ __('register.option_merchant') }}</option>
                             </select>
                             @error('rol') <div class="invalid-feedback">{{ $message }}</div> @enderror
                         </div>
@@ -157,54 +158,54 @@
                                 <div class="bg-mercazone p-2 rounded-circle me-3" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">
                                     <i class="bi bi-shop text-white"></i>
                                 </div>
-                                <h5 class="mb-0 fw-bold text-dark">Datos del Comercio</h5>
+                                <h5 class="mb-0 fw-bold text-dark">{{ __('register.merchant_section_title') }}</h5>
                             </div>
 
                             <div class="row g-3">
                                 <div class="col-md-6">
-                                    <label class="form-label">Nombre del Negocio</label>
-                                    <input type="text" name="nombre_negocio" class="form-control @error('nombre_negocio') is-invalid @enderror" value="{{ old('nombre_negocio') }}" placeholder="Ej: Frutas Paco">
+                                    <label class="form-label">{{ __('register.label_business_name') }}</label>
+                                    <input type="text" name="nombre_negocio" class="form-control @error('nombre_negocio') is-invalid @enderror" value="{{ old('nombre_negocio') }}" placeholder="{{ __('register.placeholder_business_name') }}">
                                     @error('nombre_negocio') <div class="invalid-feedback">{{ $message }}</div> @enderror
                                 </div>
                                 
                                 <div class="col-md-6">
-                                    <label class="form-label">NIF / DNI</label>
-                                    <input type="text" name="nif" class="form-control @error('nif') is-invalid @enderror" value="{{ old('nif') }}" placeholder="12345678X">
+                                    <label class="form-label">{{ __('register.label_nif') }}</label>
+                                    <input type="text" name="nif" class="form-control @error('nif') is-invalid @enderror" value="{{ old('nif') }}" placeholder="{{ __('register.placeholder_nif') }}">
                                     @error('nif') <div class="invalid-feedback">{{ $message }}</div> @enderror
                                 </div>
 
                                 <div class="col-md-6">
-                                    <label class="form-label">Número de Permiso</label>
-                                    <input type="number" name="numero_permiso" class="form-control @error('numero_permiso') is-invalid @enderror" value="{{ old('numero_permiso') }}" placeholder="Nº Licencia">
+                                    <label class="form-label">{{ __('register.label_permit') }}</label>
+                                    <input type="number" name="numero_permiso" class="form-control @error('numero_permiso') is-invalid @enderror" value="{{ old('numero_permiso') }}" placeholder="{{ __('register.placeholder_permit') }}">
                                 </div>
 
                                 <div class="col-md-6">
-                                    <label class="form-label">Teléfono</label>
-                                    <input type="text" name="telefono" class="form-control @error('telefono') is-invalid @enderror" value="{{ old('telefono') }}" placeholder="600000000">
+                                    <label class="form-label">{{ __('register.label_phone') }}</label>
+                                    <input type="text" name="telefono" class="form-control @error('telefono') is-invalid @enderror" value="{{ old('telefono') }}" placeholder="{{ __('register.placeholder_phone') }}">
                                 </div>
 
                                 <div class="col-md-12">
-                                    <label class="form-label">Breve descripción</label>
-                                    <textarea name="descripcion" class="form-control @error('descripcion') is-invalid @enderror" rows="2" placeholder="¿Qué vendes?">{{ old('descripcion') }}</textarea>
+                                    <label class="form-label">{{ __('register.label_description') }}</label>
+                                    <textarea name="descripcion" class="form-control @error('descripcion') is-invalid @enderror" rows="2" placeholder="{{ __('register.placeholder_description') }}">{{ old('descripcion') }}</textarea>
                                 </div>
                             </div>
                         </div>
 
                         <div class="d-grid gap-2 mt-5">
                             <button type="submit" class="btn btn-mercazone btn-lg">
-                                Registrar mi cuenta <i class="bi bi-check-circle ms-2"></i>
+                                {{ __('register.btn_submit') }} <i class="bi bi-check-circle ms-2"></i>
                             </button>
                         </div>
 
                         <div class="text-center mt-4">
-                            <p class="text-secondary">¿Ya eres parte de la familia? <a href="{{ route('login') }}" class="text-mercazone text-decoration-none fw-bold">Inicia sesión aquí</a></p>
+                            <p class="text-secondary">{{ __('register.already_member') }} <a href="{{ route('login') }}" class="text-mercazone text-decoration-none fw-bold">{{ __('register.login_here') }}</a></p>
                         </div>
                     </form>
                 </div>
             </div>
             <div class="text-center mt-4">
                 <a href="/" class="text-secondary text-decoration-none small">
-                    <i class="bi bi-arrow-left me-1"></i> Volver a la página principal
+                    <i class="bi bi-arrow-left me-1"></i> {{ __('register.back_to_home') }}
                 </a>
             </div>
         </div>

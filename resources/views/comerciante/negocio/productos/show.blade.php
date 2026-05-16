@@ -1,5 +1,7 @@
 @extends('layouts.layout')
 
+@section('title', __('shop.page_title'))
+
 @section('content')
 <style>
     :root { 
@@ -117,7 +119,7 @@
     @keyframes pulse {
         0% { transform: scale(1); }
         50% { transform: scale(1.2); }
-        100% { transform: scale(1); }
+      100% { transform: scale(1); }
     }
 </style>
 
@@ -129,7 +131,7 @@
                 <i class="fas fa-arrow-left"></i>
             </a>
             <div>
-                <p class="text-muted small mb-0">Volver a la tienda</p>
+                <p class="text-muted small mb-0">{{ __('shop.back_to_shop') }}</p>
                 <h5 class="fw-bold mb-0">{{ $producto->negocio->nombre_negocio }}</h5>
             </div>
         </div>
@@ -137,7 +139,7 @@
         <div class="row g-5 align-items-center">
             {{-- Columna Imagen --}}
             <div class="col-lg-6">
-                <div class="product-visual-container position-relative"> {{-- Asegúrate de que tenga position-relative --}}
+                <div class="product-visual-container position-relative">
                     <img src="{{ $producto->imagen ? asset('storage/' . $producto->imagen) : 'https://via.placeholder.com/800' }}" 
                         class="w-100 product-img-main" 
                         alt="{{ $producto->nombre }}">
@@ -167,13 +169,13 @@
             {{-- Columna Información --}}
             <div class="col-lg-6" >
                 <div class="info-panel shadow-sm">
-                    <span class="text-uppercase tracking-widest text-muted small fw-bold">Producto Local</span>
+                    <span class="text-uppercase tracking-widest text-muted small fw-bold">{{ __('shop.local_product') }}</span>
                     <h1 class="display-4 fw-bold mt-2 mb-3" style="letter-spacing: -1px;">{{ $producto->nombre }}</h1>
                     
                     <div class="d-flex align-items-center gap-3 mb-4">
                         <h2 class="text-mercazone fw-bold mb-0 fs-1">{{ number_format($producto->precio, 2) }}€</h2>
                         <div class="vr"></div>
-                        <span class="text-muted">IVA incluido</span>
+                        <span class="text-muted">{{ __('shop.vat_included') }}</span>
                     </div>
 
                     <p class="fs-5 text-secondary mb-5 leading-relaxed">
@@ -187,7 +189,7 @@
                         @if($producto->variantes->count() > 0)
                             @foreach($producto->variantes->groupBy('tipo') as $tipo => $opciones)
                                 <div class="mb-5">
-                                    <label class="fw-bold text-dark mb-3 d-block">Selecciona {{ $tipo }}</label>
+                                    <label class="fw-bold text-dark mb-3 d-block">{{ __('shop.select') }} {{ $tipo }}</label>
                                     <div class="d-flex gap-3 flex-wrap">
                                         @foreach($opciones as $v)
                                             <div class="variant-item">
@@ -210,20 +212,20 @@
                         {{-- SECCIÓN PUNTO DE RECOGIDA --}}
                         <div class="mb-4 pt-4 border-top">
                             <h5 class="fw-bold text-dark mb-3">
-                                <i class="fas fa-map-marker-alt text-sage me-2"></i>¿Dónde y cuándo lo recoges?
+                                <i class="fas fa-map-marker-alt text-sage me-2"></i>{{ __('shop.pickup_heading') }}
                             </h5>
 
                             <div class="mb-3">
                                 <select name="horario_negocio_id" class="form-select rounded-4 p-3 border-light-subtle shadow-sm" required>
-                                    <option value="" selected disabled>Selecciona el mercadillo/puesto...</option>
+                                    <option value="" selected disabled>{{ __('shop.select_stall_placeholder') }}</option>
                                     @foreach($horarios as $h)
                                         <option value="{{ $h->id }}">
-                                            {{ $h->ubicacion }} ({{ $h->poblacion }}) — Cada {{ ucfirst($h->dia) }} de {{ \Carbon\Carbon::parse($h->apertura)->format('H:i') }} a {{ \Carbon\Carbon::parse($h->cierre)->format('H:i') }}
+                                            {{ $h->ubicacion }} ({{ $h->poblacion }}) — {{ __('shop.every') }} {{ ucfirst($h->dia) }} {{ __('shop.from') }} {{ \Carbon\Carbon::parse($h->apertura)->format('H:i') }} {{ __('shop.to') }} {{ \Carbon\Carbon::parse($h->cierre)->format('H:i') }}
                                         </option>
                                     @endforeach
                                 </select>
                                 <div class="form-text text-muted small mt-2">
-                                    <i class="fas fa-info-circle me-1"></i> El comerciante preparará tu pedido para el próximo día que monte este puesto.
+                                    <i class="fas fa-info-circle me-1"></i> {{ __('shop.merchant_notice') }}
                                 </div>
                             </div>
                         </div>
@@ -231,14 +233,14 @@
                         {{-- Footer del Formulario --}}
                         <div class="d-flex gap-3 pt-4 border-top mt-5">
                             <div class="text-center">
-                                <label class="small fw-bold text-muted d-block mb-2">Uds.</label>
+                                <label class="small fw-bold text-muted d-block mb-2">{{ __('shop.qty_label') }}</label>
                                 <input type="number" name="cantidad" 
                                        class="qty-input" 
                                        value="1" min="1" max="{{ $producto->stock }}">
                             </div>
                             
                             <button type="submit" class="btn-reserve flex-grow-1 fs-5 fw-bold">
-                                <i class="fas fa-calendar-check me-2"></i> Confirmar Reserva
+                                <i class="fas fa-calendar-check me-2"></i> {{ __('shop.btn_confirm_reservation') }}
                             </button>
                         </div>
                     </form>
@@ -248,13 +250,13 @@
                         <div class="col-6">
                             <div class="d-flex align-items-center gap-2 small text-muted">
                                 <i class="fas fa-store-alt text-sage"></i>
-                                Recogida en puesto local
+                                {{ __('shop.pickup_guarantee') }}
                             </div>
                         </div>
                         <div class="col-6">
                             <div class="d-flex align-items-center gap-2 small text-muted">
                                 <i class="fas fa-shield-alt text-sage"></i>
-                                Pago seguro al recoger
+                                {{ __('shop.secure_payment_guarantee') }}
                             </div>
                         </div>
                     </div>

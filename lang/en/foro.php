@@ -1,0 +1,37 @@
+<?php
+
+return [
+    'title' => 'Community Forum - :puesto',
+    'badge_community' => 'MERCAZONE COMMUNITY',
+    'subtitle' => 'Direct communication space between customers and the shop to solve doubts, make suggestions or check stock availability.',
+    'section_title' => 'Community Conversations',
+    'asked_by' => 'Your question',
+    'no_questions' => 'There are no conversations in this forum yet. Be the first to ask something!',
+    'merchant_badge' => 'Official Merchant',
+    'view_replies' => 'Replies',
+    'reply_thread' => 'Reply to this thread',
+    'reply_placeholder' => 'Write your reply here...',
+    'new_question' => 'New inquiry for the merchant',
+    'form_helper' => 'Your inquiry will be visible to all users and the merchant.',
+    'field_title' => 'Subject or Message Title',
+    'field_title_placeholder' => 'e.g., Do you have table oranges in stock?',
+    'field_message' => 'Inquiry content',
+    'field_message_placeholder' => 'Write in detail here what you would like to ask the merchant...',
+    'btn_back' => 'Go Back',
+    'btn_view_all' => 'View all forums',
+    'btn_reply' => 'Send reply',
+    'btn_send' => 'Post to forum',
+    'success_store' => 'Message successfully posted to the forum.',
+
+    //(index)
+    'index_title' => 'Shop Forums',
+    'badge_community_short' => 'COMMUNITY',
+    'index_header_title' => 'Stall Forums',
+    'index_subtitle' => 'Resolve your doubts directly with the local market merchants.',
+    'btn_back_dashboard' => 'Back to Dashboard',
+    'status_active' => 'ACTIVE',
+    'no_description' => 'No description available for this market stall at the moment.',
+    'btn_enter_forum' => 'Enter Forum',
+    'no_forums_available' => 'No forums available',
+    'no_forums_available_helper' => 'Currently, no stalls with active discussion threads have been found in the market.',
+];

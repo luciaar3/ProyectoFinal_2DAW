@@ -40,6 +40,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/productos/{producto}/favorito', [ClienteController::class, 'toggleFavorito'])->name('productos.favorito');
     Route::post('/productos/{producto}/reservar', [ClienteController::class, 'reservar'])->name('productos.reservar');
     Route::get('/mis-reservas', [ClienteController::class, 'misReservas'])->name('cliente.reservas');
+    Route::put('/cliente/reservas/{id}/cancelar', [ClienteController::class, 'cancelarReserva'])->name('cliente.reservas.cancelar');
     Route::get('/mis-favoritos', [ClienteController::class, 'misFavoritos'])->name('cliente.favoritos');
 
     // Gestión del Comerciante
@@ -83,4 +84,11 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::post('/validaciones/{id}/aprobar', [AdminController::class, 'aprobar'])->name('admin.aprobar');
     Route::post('/validaciones/{id}/rechazar', [AdminController::class, 'rechazar'])->name('admin.rechazar');
 });
+
+Route::get('lang/{locale}', function ($locale) {
+    if (in_array($locale, ['es', 'ca', 'en'])) {
+        Session::put('locale', $locale);
+    }
+    return redirect()->back();
+})->name('lang.switch');
 

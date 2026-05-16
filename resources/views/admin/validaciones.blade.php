@@ -1,6 +1,6 @@
 @extends('layouts.layout')
 
-@section('title', 'Control de Validaciones - MercaZone')
+@section('title', __('admin_validations.page_title'))
 
 @section('content')
 <div class="container mt-5 pt-4 mb-5">
@@ -8,24 +8,24 @@
     <div class="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center mb-4 gap-3">
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb mb-0 px-0" style="background: transparent;">
-                <li class="breadcrumb-item"><a href="{{ route('index') }}" class="text-decoration-none fw-medium text-secondary hover-link">Inicio</a></li>
-                <li class="breadcrumb-item"><a href="#" onclick="window.history.back();" class="text-decoration-none fw-medium text-secondary hover-link">Panel Admin</a></li>
-                <li class="breadcrumb-item active fw-bold" aria-current="page" style="color: #f53003;">Validaciones</li>
+                <li class="breadcrumb-item"><a href="{{ route('index') }}" class="text-decoration-none fw-medium text-secondary hover-link">{{ __('admin_validations.breadcrumb_home') }}</a></li>
+                <li class="breadcrumb-item"><a href="#" onclick="window.history.back();" class="text-decoration-none fw-medium text-secondary hover-link">{{ __('admin_validations.breadcrumb_panel') }}</a></li>
+                <li class="breadcrumb-item active fw-bold" aria-current="page" style="color: #f53003;">{{ __('admin_validations.breadcrumb_active') }}</li>
             </ol>
         </nav>
         
         <button onclick="window.history.back();" class="btn btn-light rounded-pill px-3 py-2 btn-volver border d-flex align-items-center gap-2 bg-white text-secondary small fw-bold shadow-sm">
-            <i class="bi bi-arrow-left fs-6 text-dark"></i> Panel General
+            <i class="bi bi-arrow-left fs-6 text-dark"></i> {{ __('admin_validations.btn_back') }}
         </button>
     </div>
 
     <div class="d-flex align-items-center justify-content-between mb-4 pb-3 border-bottom">
         <div>
-            <h3 class="fw-bolder text-dark mb-1" style="letter-spacing: -1px;">Verificación de Establecimientos</h3>
-            <p class="text-secondary small mb-0">Audita la documentación legal de las nuevas cuentas comerciales de la plataforma.</p>
+            <h3 class="fw-bolder text-dark mb-1" style="letter-spacing: -1px;">{{ __('admin_validations.heading_title') }}</h3>
+            <p class="text-secondary small mb-0">{{ __('admin_validations.heading_desc') }}</p>
         </div>
         <span class="badge rounded-pill bg-dark px-3 py-2 fw-bold shadow-sm">
-            {{ count($pendientes) }} Solicitudes
+            {{ __('admin_validations.requests_count', ['count' => count($pendientes)]) }}
         </span>
     </div>
 
@@ -45,11 +45,11 @@
                 <table class="table table-hover align-middle mb-0">
                     <thead class="bg-light text-secondary uppercase-header">
                         <tr>
-                            <th class="ps-4 py-3" style="font-size: 0.8rem; font-weight: 700;">Establecimiento / Comerciante</th>
-                            <th class="py-3" style="font-size: 0.8rem; font-weight: 700;">Identificación (NIF)</th>
-                            <th class="py-3" style="font-size: 0.8rem; font-weight: 700;">Nº Permiso</th>
-                            <th class="py-3" style="font-size: 0.8rem; font-weight: 700; min-width: 150px;">Estado</th>
-                            <th class="pe-4 py-3 text-end" style="font-size: 0.8rem; font-weight: 700; width: 220px;">Acciones de Control</th>
+                            <th class="ps-4 py-3" style="font-size: 0.8rem; font-weight: 700;">{{ __('admin_validations.th_merchant') }}</th>
+                            <th class="py-3" style="font-size: 0.8rem; font-weight: 700;">{{ __('admin_validations.th_nif') }}</th>
+                            <th class="py-3" style="font-size: 0.8rem; font-weight: 700;">{{ __('admin_validations.th_permit') }}</th>
+                            <th class="py-3" style="font-size: 0.8rem; font-weight: 700; min-width: 150px;">{{ __('admin_validations.th_status') }}</th>
+                            <th class="pe-4 py-3 text-end" style="font-size: 0.8rem; font-weight: 700; width: 220px;">{{ __('admin_validations.th_actions') }}</th>
                         </tr>
                     </thead>
                     <tbody class="border-0">
@@ -63,7 +63,7 @@
                                         </div>
                                         <div>
                                             <span class="d-block fw-bold text-dark mb-0 fs-6">{{ $negocio->nombre_negocio }}</span>
-                                            <small class="text-secondary fs-7.5">Solicitante: <span class="fw-medium text-dark">{{ $negocio->user->nombre ?? $negocio->user->name }}</span></small>
+                                            <small class="text-secondary fs-7.5">{{ __('admin_validations.applicant') }} <span class="fw-medium text-dark">{{ $negocio->user->nombre ?? $negocio->user->name }}</span></small>
                                         </div>
                                     </div>
                                 </td>
@@ -75,19 +75,19 @@
                                 </td>
                                 <td class="py-3.5">
                                     <span class="badge rounded-pill px-2.5 py-1.5 fw-bold bg-warning bg-opacity-10 text-warning border border-warning border-opacity-10 style-badge">
-                                        <i class="bi bi-clock-history me-1"></i> En Espera
+                                        <i class="bi bi-clock-history me-1"></i> {{ __('admin_validations.status_pending') }}
                                     </span>
                                 </td>
                                 <td class="pe-4 py-3.5 text-end">
                                     <div class="d-flex justify-content-end gap-2">
                                         <button class="btn btn-sm btn-light border rounded-pill px-3 fw-bold text-secondary btn-inspect" 
                                                 type="button" data-bs-toggle="collapse" data-bs-target="#details-{{ $negocio->id }}">
-                                            <i class="bi bi-eye me-1 text-dark"></i> Detalles
+                                            <i class="bi bi-eye me-1 text-dark"></i> {{ __('admin_validations.btn_details') }}
                                         </button>
                                         
                                         <form action="{{ route('admin.aprobar', $negocio->id) }}" method="POST" class="d-inline">
                                             @csrf
-                                            <button type="submit" class="btn btn-sm btn-success rounded-circle shadow-sm btn-quick-action" title="Aprobar de inmediato">
+                                            <button type="submit" class="btn btn-sm btn-success rounded-circle shadow-sm btn-quick-action" title="{{ __('admin_validations.title_approve_now') }}">
                                                 <i class="bi bi-check2"></i>
                                             </button>
                                         </form>
@@ -99,24 +99,24 @@
                                 <td colspan="5" class="px-4 py-4 border-0" style="background-color: #fafafa; border-left: 4px solid #f53003 !important;">
                                     <div class="row g-3">
                                         <div class="col-md-8">
-                                            <h6 class="fw-bold text-dark mb-2"><i class="bi bi-file-earmark-text me-1 text-secondary"></i> Memoria Descriptiva del Negocio</h6>
+                                            <h6 class="fw-bold text-dark mb-2"><i class="bi bi-file-earmark-text me-1 text-secondary"></i> {{ __('admin_validations.details_heading') }}</h6>
                                             <p class="text-secondary small mb-0 lh-base bg-white p-3 border rounded-3 shadow-inner">
-                                                {{ $negocio->descripcion ?? 'El comerciante no ha aportado ninguna descripción comercial complementaria.' }}
+                                                {{ $negocio->descripcion ?? __('admin_validations.no_description') }}
                                             </p>
                                         </div>
                                         <div class="col-md-4 d-flex flex-column justify-content-end align-items-md-end gap-2">
-                                            <h6 class="fw-bold text-dark mb-2 w-100 text-md-end small text-uppercase text-muted" style="letter-spacing: 0.5px;">Resolución Final</h6>
+                                            <h6 class="fw-bold text-dark mb-2 w-100 text-md-end small text-uppercase text-muted" style="letter-spacing: 0.5px;">{{ __('admin_validations.resolution_heading') }}</h6>
                                             <div class="d-flex gap-2 w-100 justify-content-md-end">
-                                                <form action="{{ route('admin.rechazar', $negocio->id) }}" method="POST" onsubmit="return confirm('¿Seguro que deseas rechazar este comercio?');">
+                                                <form action="{{ route('admin.rechazar', $negocio->id) }}" method="POST" onsubmit="return confirm('{{ __('admin_validations.confirm_deny') }}');">
                                                     @csrf
                                                     <button type="submit" class="btn btn-outline-danger btn-sm rounded-pill px-4 py-2 fw-bold">
-                                                        <i class="bi bi-x-circle me-1"></i> Denegar Registro
+                                                        <i class="bi bi-x-circle me-1"></i> {{ __('admin_validations.btn_deny') }}
                                                     </button>
                                                 </form>
                                                 <form action="{{ route('admin.aprobar', $negocio->id) }}" method="POST">
                                                     @csrf
                                                     <button type="submit" class="btn btn-success btn-sm rounded-pill px-4 py-2 fw-bold shadow-sm" style="background: linear-gradient(135deg, #198754 0%, #157347 100%); border: none;">
-                                                        <i class="bi bi-check-circle me-1"></i> Autorizar Apertura
+                                                        <i class="bi bi-check-circle me-1"></i> {{ __('admin_validations.btn_authorize') }}
                                                     </button>
                                                 </form>
                                             </div>
@@ -135,8 +135,8 @@
                 <div class="d-inline-flex align-items-center justify-content-center bg-light text-muted rounded-circle mb-3 shadow-inner" style="width: 80px; height: 80px;">
                     <i class="bi bi-check-all fs-1 text-success"></i>
                 </div>
-                <h4 class="fw-bold text-dark mb-1">Bandeja de Entrada Limpia</h4>
-                <p class="text-secondary small mb-0">No quedan registros comerciales en cola de validación por el momento. ¡Buen trabajo!</p>
+                <h4 class="fw-bold text-dark mb-1">{{ __('admin_validations.empty_title') }}</h4>
+                <p class="text-secondary small mb-0">{{ __('admin_validations.empty_desc') }}</p>
             </div>
         </div>
     @endif

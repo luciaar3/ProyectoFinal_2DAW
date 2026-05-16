@@ -1,0 +1,37 @@
+<?php
+
+return [
+    'title' => 'Foro de la comunidad - :puesto',
+    'badge_community' => 'COMUNIDAD MERCAZONE',
+    'subtitle' => 'Espacio de communication directa entre los clientes y el comercio para resolver dudas, hacer sugerencias o consultar stock.',
+    'section_title' => 'Conversaciones de la comunidad',
+    'asked_by' => 'Tu pregunta',
+    'no_questions' => 'Aún no hay conversaciones en este fòrum. ¡Sé el primero en preguntar algo!',
+    'merchant_badge' => 'Comerciante Oficial',
+    'view_replies' => 'Respuestas',
+    'reply_thread' => 'Responder a este hilo',
+    'reply_placeholder' => 'Escribe tu respuesta aquí...',
+    'new_question' => 'Nueva consulta para el comercio',
+    'form_helper' => 'Tu duda será visible para todos los usuarios y el comerciante.',
+    'field_title' => 'Asunto o Título del mensaje',
+    'field_title_placeholder' => 'Ej: ¿Tenéis stock de naranjas de mesa?',
+    'field_message' => 'Contenido de tu consulta',
+    'field_message_placeholder' => 'Escribe aquí detalladamente lo que quieras preguntar al comerciante...',
+    'btn_back' => 'Volver',
+    'btn_view_all' => 'Ver todos los foros',
+    'btn_reply' => 'Enviar respuesta',
+    'btn_send' => 'Publicar en el foro',
+    'success_store' => 'Mensaje publicado correctamente en el foro.',
+
+    //(index)
+    'index_title' => 'Foros de Tiendas',
+    'badge_community_short' => 'COMUNIDAD',
+    'index_header_title' => 'Foros de los Puestos',
+    'index_subtitle' => 'Resuelve tus dudas directamente con los comerciantes del mercado local.',
+    'btn_back_dashboard' => 'Volver a mi Panel',
+    'status_active' => 'ACTIVO',
+    'no_description' => 'Sin descripción disponible del puesto comercial en este momento.',
+    'btn_enter_forum' => 'Entrar al Foro',
+    'no_forums_available' => 'No hay foros disponibles',
+    'no_forums_available_helper' => 'Actualmente no se han encontrado puestos con hilos de debate activos en el mercado.',
+];

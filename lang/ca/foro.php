@@ -1,0 +1,37 @@
+<?php
+
+return [
+    'title' => 'Fòrum de la comunitat - :puesto',
+    'badge_community' => 'COMUNITAT MERCAZONE',
+    'subtitle' => 'Espai de comunicació directa entre els clients i el comerç per a resoldre dubtes, fer suggeriments o consultar stock.',
+    'section_title' => 'Converses de la comunitat',
+    'asked_by' => 'La teua pregunta',
+    'no_questions' => 'Encara no hi ha converses en este fòrum. Sigues el primer en preguntar alguna cosa!',
+    'merchant_badge' => 'Comerciant Oficial',
+    'view_replies' => 'Respostes',
+    'reply_thread' => 'Respondre a este fil',
+    'reply_placeholder' => 'Escriu la teua resposta ací...',
+    'new_question' => 'Nova consulta per al comerç',
+    'form_helper' => 'El teu dubte serà visible per a tots els usuaris i el comerciant.',
+    'field_title' => 'Assumpte o Títol del missatge',
+    'field_title_placeholder' => 'Ex: Teniu stock de taronges de taula?',
+    'field_message' => 'Contingut de la teua consulta',
+    'field_message_placeholder' => 'Escriu ací detalladament el que vulgues preguntar al comerciant...',
+    'btn_back' => 'Tornar',
+    'btn_view_all' => 'Veure tots els fòrums',
+    'btn_reply' => 'Enviar resposta',
+    'btn_send' => 'Publicar al fòrum',
+    'success_store' => 'Missatge publicat correctament al fòrum.',
+
+    //(index)
+    'index_title' => 'Fòrums de Tendes',
+    'badge_community_short' => 'COMUNITAT',
+    'index_header_title' => 'Fòrums dels Puestos',
+    'index_subtitle' => 'Resol els teus dubtes directament amb els comerciants del mercat local.',
+    'btn_back_dashboard' => 'Tornar al meu Panell',
+    'status_active' => 'ACTIU',
+    'no_description' => 'Sense descripció disponible del puesto comercial en este moment.',
+    'btn_enter_forum' => 'Entrar al Fòrum',
+    'no_forums_available' => 'No hi ha fòrums disponibles',
+    'no_forums_available_helper' => 'Actualment no s\'han trobat puestos amb fils de debat actius al mercat.',
+];

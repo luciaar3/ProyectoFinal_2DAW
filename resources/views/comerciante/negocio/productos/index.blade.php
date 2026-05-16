@@ -1,27 +1,27 @@
 @extends('layouts.layout')
 
-@section('title', 'Gestión de Catálogo - MercaZone')
+@section('title', __('products.page_title'))
 
 @section('content')
 <div class="container mt-5 pt-4 mb-5">
     
-    {{-- ENCABEZADO MEJORADO --}}
+    {{-- ENCABEZADO --}}
     <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4 pb-3 border-bottom gap-3">
         <div>
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb mb-1" style="background: transparent;">
-                    <li class="breadcrumb-item"><a href="{{ route('comerciante.account') }}" class="text-decoration-none text-secondary hover-link fw-medium">Panel</a></li>
-                    <li class="breadcrumb-item active fw-bold text-dark">Catálogo</li>
+                    <li class="breadcrumb-item"><a href="{{ route('comerciante.account') }}" class="text-decoration-none text-secondary hover-link fw-medium">{{ __('products.breadcrumb_panel') }}</a></li>
+                    <li class="breadcrumb-item active fw-bold text-dark">{{ __('products.breadcrumb_catalog') }}</li>
                 </ol>
             </nav>
-            <h3 class="fw-bolder text-dark mb-1" style="letter-spacing: -1px;">Mi Puesto de Productos</h3>
-            <p class="text-secondary small mb-0">Gestiona existencias, precios y variaciones de stock en tiempo real.</p>
+            <h3 class="fw-bolder text-dark mb-1" style="letter-spacing: -1px;">{{ __('products.main_heading') }}</h3>
+            <p class="text-secondary small mb-0">{{ __('products.sub_heading') }}</p>
         </div>
         <div>
             <button class="btn text-white rounded-pill px-4 py-2.5 fw-bold shadow-sm d-flex align-items-center gap-2" 
                     data-bs-toggle="modal" data-bs-target="#modalAddProducto" 
                     style="background: linear-gradient(135deg, #7b52d9 0%, #6336c7 100%); border: none;">
-                <i class="bi bi-plus-lg fs-6"></i> Nuevo Producto
+                <i class="bi bi-plus-lg fs-6"></i> {{ __('products.btn_new_product') }}
             </button>
         </div>
     </div>
@@ -39,7 +39,6 @@
     <div class="row g-4">
         @forelse($productos as $producto)
             @php
-                // Comprobamos de manera limpia si tiene etiquetas de variantes
                 $nombresEtiquetas = $producto->etiquetas->pluck('nombre')->map(fn($n) => strtolower($n))->toArray();
                 $esModa = in_array('ropa', $nombresEtiquetas) || in_array('calzado', $nombresEtiquetas);
             @endphp
@@ -54,7 +53,7 @@
                         @else
                             <div class="d-flex flex-column align-items-center justify-content-center h-100 text-muted bg-light bg-opacity-50">
                                 <i class="bi bi-image fs-2 opacity-50 mb-1"></i>
-                                <small class="text-uppercase tracking-wider text-muted font-monospace" style="font-size: 0.65rem;">Sin Imagen</small>
+                                <small class="text-uppercase tracking-wider text-muted font-monospace" style="font-size: 0.65rem;">{{ __('products.no_image') }}</small>
                             </div>
                         @endif
                         <span class="position-absolute bottom-0 start-0 m-3 badge bg-dark text-white fw-bold shadow-sm px-3 py-2" style="font-size: 0.85rem; border-radius: 10px;">
@@ -72,7 +71,7 @@
                                 <div class="d-flex gap-1 flex-wrap justify-content-end">
                                     @foreach($producto->etiquetas as $etiqueta)
                                         <span class="badge rounded-pill px-2 py-1 fw-semibold text-capitalize style-badge-tag">
-                                            {{ str_replace('_', ' ', $etiqueta->nombre) }}
+                                            {{ __('products.tags.' . strtolower($etiqueta->nombre)) ?? str_replace('_', ' ', $etiqueta->nombre) }}
                                         </span>
                                     @endforeach
                                 </div>
@@ -81,29 +80,27 @@
                         </div>
                         
                         <div class="d-flex align-items-center justify-content-between text-muted border-top pt-2 mt-2">
-                            <span class="small font-monospace"><i class="bi bi-box-seam me-1"></i> Stock</span>
+                            <span class="small font-monospace"><i class="bi bi-box-seam me-1"></i> {{ __('products.stock_label') }}</span>
                             <span class="badge rounded-pill px-2.5 py-1.5 fw-bold {{ $producto->stock < 5 ? 'bg-danger bg-opacity-10 text-danger' : 'bg-light text-dark border' }}">
-                                {{ $producto->stock }} uds.
+                                {{ $producto->stock }} {{ __('products.units_abbreviation') }}
                             </span>
                         </div>
                     </div>
 
-                    {{-- Footer con Botonera Condicional --}}
                     <div class="card-footer bg-white border-0 p-3 pt-0 d-flex gap-2">
                         <button class="btn btn-light border btn-sm rounded-pill flex-grow-1 edit-button fw-bold text-secondary text-center py-2"
                             data-bs-toggle="modal" data-bs-target="#modalEditProducto"
                             data-id="{{ $producto->id }}" data-nombre="{{ $producto->nombre }}"
                             data-precio="{{ $producto->precio }}" data-stock="{{ $producto->stock }}"
                             data-categoria="{{ $producto->etiquetas->first()->nombre ?? '' }}" data-descripcion="{{ $producto->descripcion }}">
-                            <i class="bi bi-pencil me-1 text-dark"></i> Editar
+                            <i class="bi bi-pencil me-1 text-dark"></i> {{ __('products.btn_edit') }}
                         </button>
 
-                        {{-- SOLUCIÓN: Solo aparece si el tag es ropa o calzado --}}
                         @if($esModa)
                             <button class="btn btn-outline-primary btn-sm rounded-pill flex-grow-1 btn-variantes fw-bold text-center py-2" 
                                 data-bs-toggle="modal" data-bs-target="#modalVariantes"
                                 data-id="{{ $producto->id }}" data-nombre="{{ $producto->nombre }}">
-                                <i class="bi bi-layers-half me-1"></i> Tallas
+                                <i class="bi bi-layers-half me-1"></i> {{ __('products.btn_sizes') }}
                             </button>
                         @endif
 
@@ -111,7 +108,7 @@
                             @csrf @method('DELETE')
                             <button type="submit" class="btn btn-outline-danger btn-sm rounded-circle d-flex align-items-center justify-content-center" 
                                     style="width: 36px; height: 36px; padding: 0;"
-                                    onclick="return confirm('¿Seguro que quieres eliminar este producto?')">
+                                    onclick="return confirm('{{ __('products.confirm_delete') }}')">
                                 <i class="bi bi-trash"></i>
                             </button>
                         </form>
@@ -123,8 +120,8 @@
                 <div class="d-inline-flex align-items-center justify-content-center bg-light text-muted rounded-circle mb-3 shadow-inner" style="width: 80px; height: 80px;">
                     <i class="bi bi-basket fs-2"></i>
                 </div>
-                <h5 class="fw-bold text-dark">Tu catálogo está vacío</h5>
-                <p class="text-secondary small">Empieza haciendo clic en "Nuevo Producto" para llenar tu puesto virtual.</p>
+                <h5 class="fw-bold text-dark">{{ __('products.empty_title') }}</h5>
+                <p class="text-secondary small">{{ __('products.empty_subtitle') }}</p>
             </div>
         @endforelse
     </div>
@@ -135,59 +132,59 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content border-0 shadow" style="border-radius: 24px;">
             <div class="modal-header border-0 pt-4 px-4">
-                <h5 class="fw-bold mb-0 text-dark">Añadir Nuevo Registro</h5>
+                <h5 class="fw-bold mb-0 text-dark">{{ __('products.modal_add_title') }}</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <form action="{{ route('productos.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="modal-body p-4 pt-2">
                     <div class="mb-3">
-                        <label class="form-label small fw-bold">Nombre del Producto</label>
-                        <input type="text" name="nombre" class="form-control rounded-pill border-light-subtle" placeholder="Ej: Camiseta Básica Algodón" required>
+                        <label class="form-label small fw-bold">{{ __('products.label_product_name') }}</label>
+                        <input type="text" name="nombre" class="form-control rounded-pill border-light-subtle" placeholder="{{ __('products.placeholder_name') }}" required>
                     </div>
                     <div class="row mb-3">
                         <div class="col-md-6">
-                            <label class="form-label small fw-bold">Precio Unitario (€)</label>
+                            <label class="form-label small fw-bold">{{ __('products.label_unit_price') }}</label>
                             <input type="number" step="0.01" name="precio" class="form-control rounded-pill border-light-subtle" placeholder="0.00" required>
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label small fw-bold">Unidades Totales</label>
+                            <label class="form-label small fw-bold">{{ __('products.label_total_units') }}</label>
                             <input type="number" name="stock" class="form-control rounded-pill border-light-subtle" placeholder="0" required>
                         </div>
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label small fw-bold">Categoría / Etiqueta Clave</label>
+                        <label class="form-label small fw-bold">{{ __('products.label_category_key') }}</label>
                         <select name="etiqueta_nombre" id="select-etiqueta-add" class="form-select rounded-pill border-light-subtle" required>
-                            <option value="">Selecciona una...</option>
-                            <option value="ropa">Ropa</option>
-                            <option value="calzado">Calzado</option>
-                            <option value="complementos">Complementos (Bolsos, cinturones...)</option>
-                            <option value="comida">Comida / Gourmet</option>
-                            <option value="fruta_verdura">Fruta y Verdura</option>
-                            <option value="aroma">Aroma y Cosmética</option>
-                            <option value="artesania">Artesanía</option>
-                            <option value="hogar">Hogar y Decoración</option>
-                            <option value="bisuteria">Bisutería / Joyería</option>
-                            <option value="juguetes">Juguetes / Infantil</option>
+                            <option value="">{{ __('products.select_option_default') }}</option>
+                            <option value="ropa">{{ __('products.tags.ropa') }}</option>
+                            <option value="calzado">{{ __('products.tags.calzado') }}</option>
+                            <option value="complementos">{{ __('products.tags.complementos') }}</option>
+                            <option value="comida">{{ __('products.tags.comida') }}</option>
+                            <option value="fruta_verdura">{{ __('products.tags.fruta_verdura') }}</option>
+                            <option value="aroma">{{ __('products.tags.aroma') }}</option>
+                            <option value="artesania">{{ __('products.tags.artesania') }}</option>
+                            <option value="hogar">{{ __('products.tags.hogar') }}</option>
+                            <option value="bisuteria">{{ __('products.tags.bisuteria') }}</option>
+                            <option value="juguetes">{{ __('products.tags.juguetes') }}</option>
                         </select>
                     </div>
 
                     <div id="aviso-ropa-add" class="alert alert-primary border-0 rounded-4 d-none mb-3" style="background-color: #f5f3ff; color: #6336c7;">
-                        <small class="fw-bold"><i class="bi bi-info-circle-fill me-1"></i> Categoría con Atributos: Al activar Ropa/Calzado, podrás configurar las variantes de tallas desde el listado.</small>
+                        <small class="fw-bold"><i class="bi bi-info-circle-fill me-1"></i> {{ __('products.alert_category_attributes') }}</small>
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label small fw-bold">Ficha Descriptiva</label>
-                        <textarea name="descripcion" class="form-control" style="border-radius: 16px;" rows="3" placeholder="Detalla los materiales, procedencia, etc."></textarea>
+                        <label class="form-label small fw-bold">{{ __('products.label_description_sheet') }}</label>
+                        <textarea name="descripcion" class="form-control" style="border-radius: 16px;" rows="3" placeholder="{{ __('products.placeholder_description') }}"></textarea>
                     </div>
                     <div class="mb-0">
-                        <label class="form-label small fw-bold">Archivo de Imagen</label>
+                        <label class="form-label small fw-bold">{{ __('products.label_image_file') }}</label>
                         <input type="file" name="imagen" class="form-control rounded-pill border-light-subtle">
                     </div>
                 </div>
                 <div class="modal-footer border-0 pb-4 px-4">
-                    <button type="submit" class="btn text-white w-100 rounded-pill fw-bold py-2.5" style="background-color: #7b52d9; border: none;">Guardar Producto</button>
+                    <button type="submit" class="btn text-white w-100 rounded-pill fw-bold py-2.5" style="background-color: #7b52d9; border: none;">{{ __('products.btn_save_product') }}</button>
                 </div>
             </form>
         </div>
@@ -199,54 +196,54 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content border-0 shadow" style="border-radius: 24px;">
             <div class="modal-header border-0 pt-4 px-4">
-                <h5 class="fw-bold mb-0 text-dark">Editar Ficha Técnico-Comercial</h5>
+                <h5 class="fw-bold mb-0 text-dark">{{ __('products.modal_edit_title') }}</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <form id="formEditProducto" method="POST" enctype="multipart/form-data">
                 @csrf @method('PUT')
                 <div class="modal-body p-4 pt-2">
                     <div class="mb-3">
-                        <label class="form-label small fw-bold">Nombre</label>
+                        <label class="form-label small fw-bold">{{ __('products.label_name') }}</label>
                         <input type="text" name="nombre" id="edit_nombre" class="form-control rounded-pill" required>
                     </div>
                     <div class="row mb-3">
                         <div class="col-6">
-                            <label class="form-label small fw-bold">Precio (€)</label>
+                            <label class="form-label small fw-bold">{{ __('products.label_price') }}</label>
                             <input type="number" step="0.01" name="precio" id="edit_precio" class="form-control rounded-pill" required>
                         </div>
                         <div class="col-6">
-                            <label class="form-label small fw-bold">Stock</label>
+                            <label class="form-label small fw-bold">{{ __('products.stock_label') }}</label>
                             <input type="number" name="stock" id="edit_stock" class="form-control rounded-pill" required>
                         </div>
                     </div>
                     
                     <div class="mb-3">
-                        <label class="form-label small fw-bold">Categoría / Etiqueta Principal</label>
+                        <label class="form-label small fw-bold">{{ __('products.label_main_category') }}</label>
                         <select name="etiqueta_nombre" id="edit_categoria" class="form-select rounded-pill border-light-subtle" required>
-                            <option value="ropa">Ropa</option>
-                            <option value="calzado">Calzado</option>
-                            <option value="complementos">Complementos</option>
-                            <option value="comida">Comida / Gourmet</option>
-                            <option value="fruta_verdura">Fruta y Verdura</option>
-                            <option value="aroma">Aroma y Cosmética</option>
-                            <option value="artesania">Artesanía</option>
-                            <option value="hogar">Hogar y Decoración</option>
-                            <option value="bisuteria">Bisutería / Joyería</option>
-                            <option value="juguetes">Juguetes / Infantil</option>
+                            <option value="ropa">{{ __('products.tags.ropa') }}</option>
+                            <option value="calzado">{{ __('products.tags.calzado') }}</option>
+                            <option value="complementos">{{ __('products.tags.complementos') }}</option>
+                            <option value="comida">{{ __('products.tags.comida') }}</option>
+                            <option value="fruta_verdura">{{ __('products.tags.fruta_verdura') }}</option>
+                            <option value="aroma">{{ __('products.tags.aroma') }}</option>
+                            <option value="artesania">{{ __('products.tags.artesania') }}</option>
+                            <option value="hogar">{{ __('products.tags.hogar') }}</option>
+                            <option value="bisuteria">{{ __('products.tags.bisuteria') }}</option>
+                            <option value="juguetes">{{ __('products.tags.juguetes') }}</option>
                         </select>
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label small fw-bold">Descripción</label>
+                        <label class="form-label small fw-bold">{{ __('products.label_description') }}</label>
                         <textarea name="descripcion" id="edit_descripcion" class="form-control" style="border-radius: 16px;" rows="3"></textarea>
                     </div>
                     <div class="mb-2">
-                        <label class="form-label small fw-bold">Reemplazar Fotografía (Opcional)</label>
+                        <label class="form-label small fw-bold">{{ __('products.label_replace_image') }}</label>
                         <input type="file" name="imagen" class="form-control rounded-pill">
                     </div>
                 </div>
                 <div class="modal-footer border-0 pb-4 px-4">
-                    <button type="submit" class="btn text-white w-100 rounded-pill fw-bold py-2.5" style="background-color: #7b52d9; border: none;">Actualizar Cambios</button>
+                    <button type="submit" class="btn text-white w-100 rounded-pill fw-bold py-2.5" style="background-color: #7b52d9; border: none;">{{ __('products.btn_update_changes') }}</button>
                 </div>
             </form>
         </div>
@@ -258,31 +255,31 @@
     <div class="modal-dialog modal-dialog-centered modal-md">
         <div class="modal-content border-0 shadow" style="border-radius: 24px;">
             <div class="modal-header border-0 pt-4 px-4">
-                <h5 class="fw-bold mb-0 text-dark"><i class="bi bi-sliders2-vertical text-muted me-2"></i>Variantes de: <span id="span-nombre-producto" class="fw-normal text-secondary fs-6"></span></h5>
+                <h5 class="fw-bold mb-0 text-dark"><i class="bi bi-sliders2-vertical text-muted me-2"></i>{{ __('products.modal_variants_of') }} <span id="span-nombre-producto" class="fw-normal text-secondary fs-6"></span></h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body p-4 pt-2">
                 <div class="row g-2 mb-3 p-3 bg-light rounded-4 border">
                     <div class="col-md-4">
-                        <label class="form-label small fw-bold">Atributo</label>
+                        <label class="form-label small fw-bold">{{ __('products.label_attribute') }}</label>
                         <select id="tipo-atributo" class="form-select rounded-pill border-light-subtle">
-                            <option value="Talla">Talla</option>
-                            <option value="Color">Color</option>
-                            <option value="Estampado">Estampado</option>
-                            <option value="Material">Material</option>
+                            <option value="Talla">{{ __('products.attributes.talla') }}</option>
+                            <option value="Color">{{ __('products.attributes.color') }}</option>
+                            <option value="Estampado">{{ __('products.attributes.estampado') }}</option>
+                            <option value="Material">{{ __('products.attributes.material') }}</option>
                         </select>
                     </div>
                     <div class="col-md-5">
-                        <label class="form-label small fw-bold">Valor</label>
-                        <input type="text" id="valor-atributo" class="form-control rounded-pill border-light-subtle" placeholder="Ej: XL, 42, Azul">
+                        <label class="form-label small fw-bold">{{ __('products.label_value') }}</label>
+                        <input type="text" id="valor-atributo" class="form-control rounded-pill border-light-subtle" placeholder="{{ __('products.placeholder_value') }}">
                     </div>
                     <div class="col-md-3">
-                        <label class="form-label small fw-bold">Cant.</label>
+                        <label class="form-label small fw-bold">{{ __('products.label_qty') }}</label>
                         <input type="number" id="stock-atributo" class="form-control rounded-pill border-light-subtle" value="1" min="1">
                     </div>
                 </div>
                 <button type="button" id="btn-confirmar-variante" class="btn text-white w-100 rounded-pill fw-bold" style="background-color: #1b1b18; border: none;">
-                    <i class="bi bi-plus-circle me-1"></i> Insertar Variante
+                    <i class="bi bi-plus-circle me-1"></i> {{ __('products.btn_insert_variant') }}
                 </button>
                 
                 <hr class="my-3 opacity-25">
@@ -291,9 +288,9 @@
                     <table class="table table-hover align-middle mb-0">
                         <thead class="bg-light sticky-top">
                             <tr>
-                                <th class="small fw-bold border-0 text-secondary" style="font-size: 0.75rem;">Variante Cargada</th>
-                                <th class="small fw-bold border-0 text-secondary" style="font-size: 0.75rem;">Stock Atribuido</th>
-                                <th class="small fw-bold border-0 text-secondary text-end" style="font-size: 0.75rem;">Remover</th>
+                                <th class="small fw-bold border-0 text-secondary" style="font-size: 0.75rem;">{{ __('products.col_loaded_variant') }}</th>
+                                <th class="small fw-bold border-0 text-secondary" style="font-size: 0.75rem;">{{ __('products.col_assigned_stock') }}</th>
+                                <th class="small fw-bold border-0 text-secondary text-end" style="font-size: 0.75rem;">{{ __('products.col_remove') }}</th>
                             </tr>
                         </thead>
                         <tbody id="tabla-variantes-body">
@@ -381,7 +378,7 @@
         const tbody = document.getElementById('tabla-variantes-body');
         if(!tbody) return;
         
-        tbody.innerHTML = '<tr><td colspan="3" class="text-center text-muted py-3 small">Buscando variantes...</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="3" class="text-center text-muted py-3 small">{{ __("products.js_searching_variants") }}</td></tr>';
 
         try {
             const response = await fetch(`/comerciante/productos/${productoId}/variantes`);
@@ -389,7 +386,7 @@
             tbody.innerHTML = '';
             
             if(variantes.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="3" class="text-center text-muted py-3 small">Sin variantes registradas.</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="3" class="text-center text-muted py-3 small">{{ __("products.js_no_variants") }}</td></tr>';
                 return;
             }
 
@@ -407,7 +404,7 @@
                     </tr>`;
             });
         } catch (error) {
-            tbody.innerHTML = '<tr><td colspan="3" class="text-center text-danger py-3 small">Error de enlace asíncrono.</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="3" class="text-center text-danger py-3 small">{{ __("products.js_error_async") }}</td></tr>';
         }
     }
 
@@ -421,7 +418,7 @@
                 const inputStock = document.getElementById('stock-atributo');
 
                 if (!inputValor.value.trim() || !inputStock.value) {
-                    alert("Inserta el valor nominal (Ej: M, XL, Verde).");
+                    alert("{{ __('products.js_alert_insert_value') }}");
                     return;
                 }
 
@@ -447,17 +444,17 @@
                         inputStock.value = '1';
                         cargarVariantes(currentProductoId);
                     } else {
-                        alert("Error: " + (data.message || "No se completó la transacción"));
+                        alert("{{ __('products.js_alert_error') }}: " + (data.message || "{{ __('products.js_error_transaction') }}"));
                     }
                 } catch (error) {
-                    alert("Error crítico en consola.");
+                    alert("{{ __('products.js_alert_critical_error') }}");
                 }
             });
         }
     });
 
     async function eliminarVariante(id) {
-        if(!confirm('¿Seguro que deseas eliminar esta variante de forma permanente?')) return;
+        if(!confirm("{{ __('products.js_confirm_delete_variant') }}")) return;
         
         try {
             const response = await fetch(`/comerciante/productos/variantes/${id}`, {
@@ -473,11 +470,11 @@
             if (response.ok && data.success) {
                 cargarVariantes(currentProductoId); 
             } else {
-                alert("No se pudo eliminar: " + (data.message || "Error desconocido"));
+                alert("{{ __('products.js_alert_no_delete') }}: " + (data.message || "{{ __('products.js_unknown_error') }}"));
             }
         } catch (error) {
             console.error("Error al eliminar:", error);
-            alert("Error de conexión con el servidor.");
+            alert("{{ __('products.js_alert_server_error') }}");
         }
     }
 </script>

@@ -133,17 +133,17 @@
     <div class="container-fluid px-0 hero-banner">
         <a href="{{ route('negocios.index') }}" class="btn-volver shadow-sm">
             <i class="bi bi-arrow-left"></i>
-            <span>Volver</span>
+            <span>{{ __('perfil.btn_back') }}</span>
         </a>
         <div id="carouselNegocio" class="carousel slide" data-bs-ride="carousel">
             <div class="carousel-inner">
                 @forelse($negocio->imagenes as $key => $img)
                     <div class="carousel-item {{ $key == 0 ? 'active' : '' }}">
-                        <img src="{{ asset('storage/' . $img->ruta) }}" alt="Foto de {{ $negocio->nombre_negocio }}">
+                        <img src="{{ asset('storage/' . $img->ruta) }}" alt="{{ __('perfil.alt_business_photo', ['name' => $negocio->nombre_negocio]) }}">
                     </div>
                 @empty
                     <div class="carousel-item active">
-                        <img src="{{ asset('storage/'.$negocio->imagen) }}" alt="Foto principal">
+                        <img src="{{ asset('storage/'.$negocio->imagen) }}" alt="{{ __('perfil.alt_main_photo') }}">
                     </div>
                 @endforelse
             </div>
@@ -171,8 +171,8 @@
                             <div>
                                 <h1 class="fw-bold mb-1" style="color: var(--negro-text); letter-spacing: -2px; font-size: 2.8rem;">{{ $negocio->nombre_negocio }}</h1>
                                 <div class="d-flex gap-2">
-                                    <span class="badge bg-light text-dark px-3 py-2 rounded-pill border"><i class="bi bi-shop me-1 text-mercazone"></i> Puesto Nº {{ rand(1,50) }}</span>
-                                    <span class="badge bg-light text-dark px-3 py-2 rounded-pill border"><i class="bi bi-patch-check-fill me-1 text-primary"></i> Verificado</span>
+                                    <span class="badge bg-light text-dark px-3 py-2 rounded-pill border"><i class="bi bi-shop me-1 text-mercazone"></i> {{ __('perfil.stall_no', ['number' => rand(1,50)]) }}</span>
+                                    <span class="badge bg-light text-dark px-3 py-2 rounded-pill border"><i class="bi bi-patch-check-fill me-1 text-primary"></i> {{ __('perfil.verified') }}</span>
                                 </div>
                             </div>
                         </div>
@@ -184,7 +184,7 @@
 
                         <div class="status-badge {{ $abierto ? '' : 'bg-secondary' }}">
                             <i class="bi {{ $abierto ? 'bi-circle-fill' : 'bi-moon-stars-fill' }} me-2" style="font-size:0.7rem;"></i>
-                            {{ $abierto ? 'Abierto ahora' : 'Cerrado' }}
+                            {{ $abierto ? __('perfil.open_now') : __('perfil.closed') }}
                         </div>
                     </div>
 
@@ -195,7 +195,7 @@
                             <div class="d-flex align-items-center p-3 rounded-4 bg-light">
                                 <i class="bi bi-telephone-fill fs-4 text-mercazone me-3"></i>
                                 <div>
-                                    <small class="text-muted d-block">Teléfono de contacto</small>
+                                    <small class="text-muted d-block">{{ __('perfil.contact_phone') }}</small>
                                     <a href="tel:{{ $negocio->telefono }}" class="text-decoration-none text-dark fw-bold">{{ $negocio->telefono }}</a>
                                 </div>
                             </div>
@@ -204,8 +204,8 @@
                             <div class="d-flex align-items-center p-3 rounded-4 bg-light">
                                 <i class="bi bi-geo-alt-fill fs-4 text-mercazone me-3"></i>
                                 <div>
-                                    <small class="text-muted d-block">Ubicación hoy</small>
-                                    <span class="text-dark fw-bold">{{ $hoyH->poblacion ?? 'No disponible' }}</span>
+                                    <small class="text-muted d-block">{{ __('perfil.today_location') }}</small>
+                                    <span class="text-dark fw-bold">{{ $hoyH->poblacion ?? __('perfil.not_available') }}</span>
                                 </div>
                             </div>
                         </div>
@@ -220,9 +220,9 @@
                                         <i class="bi bi-chat-square-text-fill fs-3 text-mercazone"></i>
                                     </div>
                                     <div>
-                                        <span class="badge mb-1 text-white px-2 py-1 rounded-pill" style="background-color: var(--rojo-mercazone); font-size: 0.7rem; font-weight: 700; letter-spacing: 0.5px;">COMUNIDAD</span>
-                                        <h4 class="fw-bold mb-0 text-dark" style="letter-spacing: -0.5px;">Foro de Consultas y Preguntas</h4>
-                                        <p class="text-muted small mb-0 d-none d-md-block">Habla directamente con el comerciante y resuelve tus dudas sobre productos o stock.</p>
+                                        <span class="badge mb-1 text-white px-2 py-1 rounded-pill" style="background-color: var(--rojo-mercazone); font-size: 0.7rem; font-weight: 700; letter-spacing: 0.5px;">{{ __('perfil.community') }}</span>
+                                        <h4 class="fw-bold mb-0 text-dark" style="letter-spacing: -0.5px;">{{ __('perfil.forum_title') }}</h4>
+                                        <p class="text-muted small mb-0 d-none d-md-block">{{ __('perfil.forum_desc') }}</p>
                                     </div>
                                 </div>
 
@@ -236,7 +236,7 @@
                 
                 <div class="col-lg-5 p-4 p-md-5 route-panel">
                     <div class="d-flex justify-content-between align-items-center mb-4">
-                        <h4 class="text-white fw-bold mb-0">Ruta Semanal</h4>
+                        <h4 class="text-white fw-bold mb-0">{{ __('perfil.weekly_route') }}</h4>
                         <span class="badge rounded-pill px-3 py-2" style="background: rgba(255,255,255,0.2)">
                             <i class="bi bi-calendar3 me-1"></i> {{ now()->format('M Y') }}
                         </span>
@@ -247,10 +247,10 @@
                             @php $h = $negocio->horarios->where('dia', $d)->first(); @endphp
                             <div class="horario-item d-flex justify-content-between align-items-center {{ $d == $diaHoy ? 'activo' : '' }}">
                                 <div>
-                                    <div class="dia-nombre">{{ $d }}</div>
+                                    <div class="dia-nombre">{{ __('perfil.' . $d) }}</div>
                                     <div class="poblacion-text">
                                         <i class="bi bi-geo-alt me-1"></i>
-                                        {{ $h && !$h->festivo_cerrado ? $h->poblacion : 'Descanso' }}
+                                        {{ $h && !$h->festivo_cerrado ? $h->poblacion : __('perfil.rest_day') }}
                                     </div>
                                 </div>
                                 
@@ -266,7 +266,7 @@
 
                     <a href="https://www.google.com/maps/search/?api=1&query={{ $hoyH->latitud ?? 0 }},{{ $hoyH->longitud ?? 0 }}" 
                        target="_blank" class="btn btn-light w-100 mt-4 rounded-pill fw-bold py-3 text-mercazone shadow-lg">
-                       <i class="bi bi-cursor-fill me-2"></i> Cómo llegar al puesto hoy
+                       <i class="bi bi-cursor-fill me-2"></i> {{ __('perfil.get_directions') }}
                     </a>
                 </div>
             </div>
@@ -276,10 +276,10 @@
     <div class="container py-5 mt-4">
         <div class="d-flex justify-content-between align-items-center mb-5 px-1">
             <div>
-                <h2 class="fw-bold mb-0 text-dark" style="letter-spacing: -1.5px;">Selección del día</h2>
-                <p class="text-muted mb-0">Productos frescos disponibles para reserva</p>
+                <h2 class="fw-bold mb-0 text-dark" style="letter-spacing: -1.5px;">{{ __('perfil.daily_selection') }}</h2>
+                <p class="text-muted mb-0">{{ __('perfil.products_subtitle') }}</p>
             </div>
-            <a href="#" class="btn btn-outline-dark rounded-pill px-4 fw-bold">Ver catálogo completo</a>
+            <a href="#" class="btn btn-outline-dark rounded-pill px-4 fw-bold">{{ __('perfil.view_full_catalog') }}</a>
         </div>
 
         <div class="row g-4">
@@ -288,14 +288,14 @@
                     <div class="product-minimal card h-100 border-0 shadow-sm p-2">
                         <div class="product-img-wrapper rounded-4 mb-3">
                             <img src="{{ $p->imagen ? asset('storage/'.$p->imagen) : asset('img/default-product.png') }}" class="w-100 h-100 object-fit-cover">
-                            <div class="product-tag shadow-sm">Puesto Local</div>
+                            <div class="product-tag shadow-sm">{{ __('perfil.local_stall') }}</div>
                         </div>
                         <div class="px-2 pb-2 text-center">
                             <h6 class="fw-bold mb-1 text-dark">{{ $p->nombre }}</h6>
                             <p class="text-muted small mb-3 text-truncate px-2">{{ $p->descripcion }}</p>
                             <div class="d-grid">
                                 <a href="{{ route('productos.show', $p->id) }}" class="btn btn-mercazone py-2">
-                                    {{ number_format($p->precio, 2) }}€ · Reservar
+                                    {{ __('perfil.book_btn', ['price' => number_format($p->precio, 2)]) }}
                                 </a>
                             </div>
                         </div>

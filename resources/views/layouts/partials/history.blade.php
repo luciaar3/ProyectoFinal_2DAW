@@ -31,25 +31,25 @@
     <div class="container main-wrapper shadow-lg" style="background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(20px); border-radius: 32px; border: 1px solid rgba(255, 255, 255, 0.6);">
         
         <div class="text-center mb-5">
-            <span class="badge px-3 py-2 mb-3 rounded-pill" style="background-color: rgba(245, 48, 3, 0.1); color: #f53003; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;">Más que comercio, es vida</span>
-            <h2 class="display-4 fw-bolder text-dark" style="letter-spacing: -2px;">El alma de <span style="color: #f53003;">MercaZone</span></h2>
+            <span class="badge px-3 py-2 mb-3 rounded-pill" style="background-color: rgba(245, 48, 3, 0.1); color: #f53003; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;">{{ __('messages.hist_badge') }}</span>
+            <h2 class="display-4 fw-bolder text-dark" style="letter-spacing: -2px;">{{ __('messages.hist_title') }} <span style="color: #f53003;">MercaZone</span></h2>
             <div class="mx-auto mt-2" style="width: 80px; height: 4px; background-color: #f53003; border-radius: 10px;"></div>
         </div>
 
         <div class="row align-items-center mb-5">
             <div class="col-lg-6 px-lg-5">
-                <h4 class="fw-bold text-dark mb-3">Bajo el frío y el sol</h4>
+                <h4 class="fw-bold text-dark mb-3">{{ __('messages.hist_sec1_title') }}</h4>
                 <p class="text-secondary leading-relaxed">
-                    MercaZone nace de una profunda admiración por quienes no entienden de domingos ni de festivos. Hemos visto vuestras manos frías montando estructuras metálicas a las seis de la mañana, y vuestra frente sudada bajo el sol de agosto, siempre con una palabra amable preparada. 
+                    {{ __('messages.hist_sec1_p1') }}
                 </p>
                 <p class="text-secondary">
-                    Ese esfuerzo titánico es el que sostiene nuestros barrios. No podíamos permitir que el silencio digital apagara el eco de vuestros pregones. Queríamos que vuestro sacrificio tuviera la visibilidad que merece.
+                    {{ __('messages.hist_sec1_p2') }}
                 </p>
             </div>
             <div class="col-lg-6 mt-4 mt-lg-0">
                 <div class="position-relative p-2" style="border: 1px solid rgba(245, 48, 3, 0.3); border-radius: 24px; background: white;">
-                    <img src="{{ asset('storage/img/3.jpg') }}" alt="El esfuerzo diario" class="img-fluid shadow-sm" style="border-radius: 20px; width: 100%; object-fit: cover; height: 350px;">
-                    <div class="position-absolute top-0 end-0 bg-mercazone m-3 px-3 py-1 rounded-pill shadow-sm small fw-bold">Honor a la tradición</div>
+                    <img src="{{ asset('storage/img/3.jpg') }}" alt="MercaZone History" class="img-fluid shadow-sm" style="border-radius: 20px; width: 100%; object-fit: cover; height: 350px;">
+                    <div class="position-absolute top-0 end-0 bg-mercazone text-white m-3 px-3 py-1 rounded-pill shadow-sm small fw-bold">{{ __('messages.hist_sec1_badge') }}</div>
                 </div>
             </div>
         </div>
@@ -57,50 +57,50 @@
         <div class="row align-items-center mb-5 flex-column-reverse flex-lg-row">
             <div class="col-lg-6 mt-4 mt-lg-0">
                 <div class="position-relative">
-                    <img src="{{ asset('storage/img/4.jpg') }}" alt="La familia del mercado" class="img-fluid shadow-lg" style="border-radius: 24px; transform: rotate(1deg); width: 100%; height: 400px; object-fit: cover; filter: contrast(1.1);">
+                    <img src="{{ asset('storage/img/4.jpg') }}" alt="MercaZone Family" class="img-fluid shadow-lg" style="border-radius: 24px; transform: rotate(1deg); width: 100%; height: 400px; object-fit: cover; filter: contrast(1.1);">
                     <div class="position-absolute bottom-0 start-0 m-4 p-3 bg-white rounded-4 shadow-lg border-start border-5 border-danger" style="max-width: 250px;">
-                        <p class="mb-0 small fw-bold text-dark">"Aquí no eres un código de barras, aquí tienes nombre."</p>
+                        <p class="mb-0 small fw-bold text-dark">{{ __('messages.hist_sec2_quote') }}</p>
                     </div>
                 </div>
             </div>
             <div class="col-lg-6 px-lg-5">
-                <h4 class="fw-bold text-dark mb-3">Donde los clientes son nombres, no números</h4>
+                <h4 class="fw-bold text-dark mb-3">{{ __('messages.hist_sec2_title') }}</h4>
                 <p class="text-secondary leading-relaxed">
-                    En los grandes almacenes eres un ticket; en el mercado eres "el de siempre". Esa calidez de acordarte de cómo le gusta el pan a tu vecino o de preguntar por la familia mientras pesas el género es un tesoro que ninguna inteligencia artificial podrá replicar.
+                    {{ __('messages.hist_sec2_p1') }}
                 </p>
                 <p class="text-secondary">
-                    MercaZone es el guardián de esa <strong>personalización humana</strong>. Nuestra tecnología solo tiene un objetivo: que ese "tú a tú" siga ocurriendo cada día, facilitando que el encuentro se produzca sin importar las distancias digitales.
+                    {{ __('messages.hist_sec2_p2') }}
                 </p>
             </div>
         </div>
 
         <div class="row align-items-center">
             <div class="col-lg-6 px-lg-5">
-                <h4 class="fw-bold text-dark mb-3">La calidez que hace ciudad</h4>
+                <h4 class="fw-bold text-dark mb-3">{{ __('messages.hist_sec3_title') }}</h4>
                 <p class="text-secondary">
-                    Cuando un mercado está vivo, el barrio respira. Esa energía, ese brindis improvisado al terminar la jornada y esa red de apoyo mutuo es lo que realmente nos mueve. No estamos creando una simple plataforma de ventas; estamos blindando el estilo de vida que amamos.
+                    {{ __('messages.hist_sec3_p1') }}
                 </p>
                 <p class="text-secondary fw-bold" style="color: #f53003;">
-                    Por los que estuvieron, por los que están y por los que vendrán: MercaZone es vuestra casa digital.
+                    {{ __('messages.hist_sec3_p2') }}
                 </p>
                 <div class="mt-4">
                     @guest
-                    <a href="{{ route('registro') }}" class="btn btn-mercazone btn-lg rounded-pill px-5 py-3 shadow-lg">
-                        <i class="bi bi-shop-window me-2"></i> Unirme a la Zona
+                    <a href="{{ route('registro') }}" class="btn btn-mercazone btn-lg rounded-pill px-5 py-3 shadow-lg text-white">
+                        <i class="bi bi-shop-window me-2"></i> {{ __('messages.hist_btn_join') }}
                     </a>
                     @endguest
                     @auth
                         @if(auth()->user()->rol === 'Cliente')
-                            <a href="{{ route('cliente.account') }}" class="btn btn-mercazone btn-lg rounded-pill px-5 py-3 shadow-lg">
-                                <i class="bi bi-speedometer2 me-2"></i> Ir a mi Panel
+                            <a href="{{ route('cliente.account') }}" class="btn btn-mercazone btn-lg rounded-pill px-5 py-3 shadow-lg text-white">
+                                <i class="bi bi-speedometer2 me-2"></i> {{ __('messages.hist_btn_panel') }}
                             </a>
                         @elseif(auth()->user()->rol === 'Comerciante')
-                            <a href="{{ route('comerciante.account') }}" class="btn btn-mercazone btn-lg rounded-pill px-5 py-3 shadow-lg">
-                                <i class="bi bi-shop me-2"></i> Gestionar mi Comercio
+                            <a href="{{ route('comerciante.account') }}" class="btn btn-mercazone btn-lg rounded-pill px-5 py-3 shadow-lg text-white">
+                                <i class="bi bi-shop me-2"></i> {{ __('messages.hist_btn_manage') }}
                             </a>
                         @elseif(auth()->user()->rol === 'Admin')
-                            <a href="{{ route('admin.account') }}" class="btn btn-mercazone btn-lg rounded-pill px-5 py-3 shadow-lg">
-                                <i class="bi bi-shield-lock me-2"></i> Panel de Control
+                            <a href="{{ route('admin.account') }}" class="btn btn-mercazone btn-lg rounded-pill px-5 py-3 shadow-lg text-white">
+                                <i class="bi bi-shield-lock me-2"></i> {{ __('messages.hist_btn_admin') }}
                             </a>
                         @endif
                     @endauth
@@ -108,7 +108,7 @@
             </div>
             <div class="col-lg-6 mt-4 mt-lg-0">
                 <div class="p-2 bg-white shadow-sm border" style="border-radius: 28px;">
-                    <img src="{{ asset('storage/img/5.jpg') }}" alt="El corazón del barrio" class="img-fluid" style="border-radius: 22px; width: 100%; height: 380px; object-fit: cover;">
+                    <img src="{{ asset('storage/img/5.jpg') }}" alt="MercaZone" class="img-fluid" style="border-radius: 22px; width: 100%; height: 380px; object-fit: cover;">
                 </div>
             </div>
         </div>

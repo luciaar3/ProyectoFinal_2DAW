@@ -1,6 +1,6 @@
 @extends('layouts.layout')
 
-@section('title', 'Editar mi Negocio - ' . $negocio->nombre_negocio)
+@section('title', __('business.page_title', ['name' => $negocio->nombre_negocio]))
 
 @section('content')
 <style>
@@ -10,7 +10,6 @@
         box-shadow: 0 .5rem 1rem rgba(0,0,0,.08)!important;
         border-color: #0d6efd !important;
     }
-    /* Estilo para inputs readonly */
     input[readonly] {
         background-color: #f8f9fa;
         cursor: not-allowed;
@@ -28,13 +27,13 @@
                 <div class="card border-0 shadow-sm mb-4" style="border-radius: 20px;">
                     <div class="card-body p-4">
                         <div class="d-flex justify-content-between align-items-center mb-4">
-                            <h4 class="mb-0 fw-bold text-primary">Configuración del Negocio</h4>
-                            <a href="{{ route('comerciante.account') }}" class="btn btn-outline-secondary rounded-pill">Volver al Panel</a>
+                            <h4 class="mb-0 fw-bold text-primary">{{ __('business.card_title_config') }}</h4>
+                            <a href="{{ route('comerciante.account') }}" class="btn btn-outline-secondary rounded-pill">{{ __('business.back_btn') }}</a>
                         </div>
                         
                         {{-- Nombre --}}
                         <div class="mb-3">
-                            <label class="form-label fw-semibold">Nombre Comercial</label>
+                            <label class="form-label fw-semibold">{{ __('business.label_name') }}</label>
                             <input type="text" name="nombre_negocio" id="inputNombre" 
                                 class="form-control rounded-pill @error('nombre_negocio') is-invalid @enderror" 
                                 value="{{ old('nombre_negocio', $negocio->nombre_negocio) }}">
@@ -46,7 +45,7 @@
                         <div class="row">
                             {{-- NIF --}}
                             <div class="col-md-6 mb-3">
-                                <label class="form-label fw-semibold">NIF</label>
+                                <label class="form-label fw-semibold">{{ __('business.label_nif') }}</label>
                                 <input type="text" name="nif" 
                                     class="form-control rounded-pill @error('nif') is-invalid @enderror" 
                                     value="{{ old('nif', $negocio->nif) }}">
@@ -56,7 +55,7 @@
                             </div>
                             {{-- Teléfono --}}
                             <div class="col-md-6 mb-3">
-                                <label class="form-label fw-semibold">Teléfono</label>
+                                <label class="form-label fw-semibold">{{ __('business.label_phone') }}</label>
                                 <input type="text" name="telefono" id="inputTelefono" 
                                     class="form-control rounded-pill @error('telefono') is-invalid @enderror" 
                                     value="{{ old('telefono', $negocio->telefono) }}">
@@ -68,17 +67,17 @@
 
                         {{-- Permiso (Solo lectura) --}}
                         <div class="mb-3">
-                            <label class="form-label fw-semibold text-muted">Número de Permiso Municipal (No editable)</label>
+                            <label class="form-label fw-semibold text-muted">{{ __('business.label_permit') }}</label>
                             <input type="text" name="numero_permiso" 
                                 class="form-control rounded-pill" 
                                 value="{{ $negocio->numero_permiso }}" 
                                 readonly>
-                            <div class="form-text ms-2 small">Este número está vinculado a tu licencia y no se puede cambiar.</div>
+                            <div class="form-text ms-2 small">{{ __('business.help_permit') }}</div>
                         </div>
 
                         {{-- Descripción --}}
                         <div class="mb-3">
-                            <label class="form-label fw-semibold">Descripción para Clientes</label>
+                            <label class="form-label fw-semibold">{{ __('business.label_desc') }}</label>
                             <textarea name="descripcion" id="inputDesc" 
                                 class="form-control @error('descripcion') is-invalid @enderror" 
                                 style="border-radius: 15px;" rows="4">{{ old('descripcion', $negocio->descripcion) }}</textarea>
@@ -89,7 +88,7 @@
 
                         {{-- Logo --}}
                         <div class="mb-4">
-                            <label class="form-label fw-semibold">Logo Principal</label>
+                            <label class="form-label fw-semibold">{{ __('business.label_logo') }}</label>
                             <input type="file" name="imagen" 
                                 class="form-control rounded-pill shadow-sm @error('imagen') is-invalid @enderror">
                             @error('imagen')
@@ -99,17 +98,17 @@
 
                         {{-- Galería --}}
                         <div class="mb-4">
-                            <label class="form-label fw-bold">Añadir Fotos a la Galería</label>
+                            <label class="form-label fw-bold">{{ __('business.label_gallery_add') }}</label>
                             <input type="file" name="imagenes_galeria[]" id="inputGaleria" 
                                 class="form-control rounded-pill @error('imagenes_galeria*') is-invalid @enderror" multiple>
-                            <div class="form-text ms-2 small">Puedes seleccionar varias fotos a la vez.</div>
+                            <div class="form-text ms-2 small">{{ __('business.help_gallery') }}</div>
                             @error('imagenes_galeria*')
                                 <div class="text-danger small ms-2">{{ $message }}</div>
                             @enderror
                         </div>
 
                         {{-- Galería Actual --}}
-                        <h6 class="fw-bold mb-3">Tu Galería actual:</h6>
+                        <h6 class="fw-bold mb-3">{{ __('business.title_current_gallery') }}</h6>
                         <div class="d-flex flex-wrap gap-3 mb-4">
                             @foreach($negocio->imagenes as $img)
                                 <div class="position-relative shadow-sm rounded" style="width: 80px; height: 80px;">
@@ -121,7 +120,7 @@
                                             onclick="confirmDelete('{{ route('comerciante.imagen.destroy', $img->id) }}')" 
                                             class="btn btn-danger btn-sm position-absolute top-0 start-100 translate-middle rounded-circle p-0 d-flex align-items-center justify-content-center"
                                             style="width: 20px; height: 20px; border: 2px solid white;"
-                                            title="Eliminar foto">
+                                            title="{{ __('business.delete_photo_title') }}">
                                         <i class="fas fa-times" style="font-size: 0.6rem;"></i>
                                     </button>
                                 </div>
@@ -130,17 +129,17 @@
                     </div>
                 </div>
 
-                {{-- SECCIÓN DE HORARIOS Y RUTA--}}
+                {{-- SECCIÓN DE HORARIOS Y RUTA --}}
                 <div class="card border-0 shadow-sm" style="border-radius: 20px;">
                     <div class="card-body p-4">
                         <div class="d-flex align-items-center mb-4">
                             <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 35px; height: 35px;">
                                 <i class="fas fa-route"></i>
                             </div>
-                            <h4 class="mb-0 fw-bold text-primary">Calendario de Ruta Semanal</h4>
+                            <h4 class="mb-0 fw-bold text-primary">{{ __('business.card_title_route') }}</h4>
                         </div>
 
-                        <p class="text-muted small mb-4">Indica dónde se ubica tu puesto cada día. Usa el mapa para fijar la posición exacta y autocompletar la dirección.</p>
+                        <p class="text-muted small mb-4">{{ __('business.desc_route') }}</p>
 
                         <div class="row g-2 timeline">
                             @foreach(['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo'] as $dia)
@@ -149,21 +148,21 @@
                                 @endphp
                                 <div class="col-12 p-3 rounded-4 border border-light-subtle shadow-sm bg-white hover-shadow transition mb-2">
                                     <div class="row align-items-center g-3">
-                                        <div class="col-md-2 fw-bold text-capitalize text-primary small">{{ $dia }}</div>
+                                        <div class="col-md-2 fw-bold text-capitalize text-primary small">{{ __('business.days.' . $dia) }}</div>
                                         <div class="col-md-5">
                                             <div class="row g-2">
                                                 <div class="col-6">
                                                     <input type="text" name="horarios[{{ $dia }}][poblacion]" 
-                                                           id="pob-{{ $dia }}" {{-- ID para autocompletar --}}
+                                                           id="pob-{{ $dia }}" 
                                                            class="form-control form-control-sm rounded-pill" 
-                                                           placeholder="Población" 
+                                                           placeholder="{{ __('business.placeholder_town') }}" 
                                                            value="{{ old("horarios.$dia.poblacion", $h->poblacion ?? '') }}">
                                                 </div>
                                                 <div class="col-6">
                                                     <input type="text" name="horarios[{{ $dia }}][ubicacion]" 
-                                                           id="ubi-{{ $dia }}" {{-- ID para autocompletar --}}
+                                                           id="ubi-{{ $dia }}" 
                                                            class="form-control form-control-sm rounded-pill" 
-                                                           placeholder="Ubicación o Mercadillo" 
+                                                           placeholder="{{ __('business.placeholder_location') }}" 
                                                            value="{{ old("horarios.$dia.ubicacion", $h->ubicacion ?? '') }}">
                                                 </div>
                                             </div>
@@ -172,7 +171,9 @@
 
                                             <button type="button" class="btn btn-link btn-sm p-0 mt-1 text-decoration-none small" onclick="abrirMapa('{{ $dia }}')">
                                                 <i class="fas fa-map-marker-alt me-1 text-danger"></i> 
-                                                <span id="status-{{ $dia }}">{{ (isset($h->latitud) && $h->latitud) ? 'Ubicación fijada' : 'Fijar en mapa' }}</span>
+                                                <span id="status-{{ $dia }}">
+                                                    {{ (isset($h->latitud) && $h->latitud) ? __('business.map_status_fixed') : __('business.map_status_set') }}
+                                                </span>
                                             </button>
                                         </div>
                                         {{-- Horas --}}
@@ -181,7 +182,7 @@
                                                 <input type="time" name="horarios[{{ $dia }}][apertura]" 
                                                        class="form-control" 
                                                        value="{{ old("horarios.$dia.apertura", $h ? \Carbon\Carbon::parse($h->apertura)->format('H:i') : '') }}">
-                                                <span class="input-group-text bg-light border-0 small">a</span>
+                                                <span class="input-group-text bg-light border-0 small">{{ __('business.time_to') }}</span>
                                                 <input type="time" name="horarios[{{ $dia }}][cierre]" 
                                                        class="form-control" 
                                                        value="{{ old("horarios.$dia.cierre", $h ? \Carbon\Carbon::parse($h->cierre)->format('H:i') : '') }}">
@@ -192,7 +193,7 @@
                                             <div class="form-check form-switch ms-2 d-inline-block">
                                                 <input class="form-check-input" type="checkbox" name="horarios[{{ $dia }}][festivo_cerrado]" 
                                                        {{ (old("horarios.$dia.festivo_cerrado", $h->festivo_cerrado ?? false)) ? 'checked' : '' }}>
-                                                <label class="small text-muted mb-0">Festivo</label>
+                                                <label class="small text-muted mb-0">{{ __('business.label_holiday') }}</label>
                                             </div>
                                         </div>
                                     </div>
@@ -200,10 +201,10 @@
                             @endforeach
                         </div>
 
-                        {{-- Botón Guardar--}}
+                        {{-- Botón Guardar --}}
                         <div class="d-grid mt-5">
                             <button type="submit" class="btn btn-primary btn-lg rounded-pill shadow">
-                                <i class="fas fa-save me-2"></i> Guardar Todos los Cambios
+                                <i class="fas fa-save me-2"></i> {{ __('business.save_btn') }}
                             </button>
                         </div>
                     </div>
@@ -212,7 +213,7 @@
 
             <div class="col-lg-5">
                 <div class="sticky-top" style="top: 20px;">
-                    <h5 class="text-secondary mb-3 ms-2 small fw-bold text-uppercase">Vista previa para clientes</h5>
+                    <h5 class="text-secondary mb-3 ms-2 small fw-bold text-uppercase">{{ __('business.preview_title') }}</h5>
                     
                     <div class="card border-0 shadow-lg overflow-hidden" style="border-radius: 25px;">
                         <div class="position-relative">
@@ -233,7 +234,7 @@
                                 </div>
                             </div>
 
-                            {{-- Logo--}}
+                            {{-- Logo --}}
                             <div class="position-absolute start-50 translate-middle" style="top: 220px; z-index: 10;">
                                 <div class="rounded-circle border border-4 border-white shadow bg-white" style="width: 100px; height: 100px; overflow: hidden;">
                                     <img src="{{ $negocio->imagen ? asset('storage/' . $negocio->imagen) : '' }}" id="previewLogo" class="w-100 h-100 {{ $negocio->imagen ? '' : 'd-none' }}" style="object-fit: cover;">
@@ -247,7 +248,7 @@
                         {{-- Textos --}}
                         <div style="margin-top: 55px;"></div>
                         <div class="card-body p-4 text-center">
-                            <h3 class="fw-bold mb-1" id="previewNombre">{{ old('nombre', $negocio->nombre) }}</h3>
+                            <h3 class="fw-bold mb-1" id="previewNombre">{{ old('nombre_negocio', $negocio->nombre_negocio) }}</h3>
                             <p class="text-muted small mb-3">
                                 <i class="fas fa-phone me-1"></i> <span id="previewTelefono">{{ old('telefono', $negocio->telefono) }}</span>
                             </p>
@@ -262,7 +263,7 @@
     </form>
 </div>
 
-{{-- borrar imágenes--}}
+{{-- Borrar imágenes --}}
 <form id="delete-image-form" method="POST" style="display:none;">
     @csrf
     @method('DELETE')
@@ -274,21 +275,20 @@
         <div class="modal-content" style="border-radius: 25px; border: none;">
             <div class="modal-header border-0 pb-0">
                 <h5 class="modal-title fw-bold text-primary" id="mapModalLabel">
-                    <i class="fas fa-map-marked-alt me-2"></i>Selecciona ubicación exacta
+                    <i class="fas fa-map-marked-alt me-2"></i>{{ __('business.modal_map_title') }}
                 </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                {{-- Contenedor del Mapa --}}
                 <div id="mapContainer" style="height: 450px; width: 100%; border-radius: 20px; border: 2px solid #f8f9fa;"></div>
                 
                 <div class="alert alert-info mt-3 border-0 small d-flex align-items-center" style="border-radius: 12px; background-color: #f0f7ff; color: #0056b3;">
                     <i class="fas fa-info-circle me-2 fa-lg"></i>
-                    <div>Haz clic en el mapa para marcar el punto exacto donde montas tu puesto este día. Los campos de población y dirección se intentarán rellenar automáticamente.</div>
+                    <div>{{ __('business.modal_map_hint') }}</div>
                 </div>
             </div>
             <div class="modal-footer border-0 pt-0">
-                <button type="button" class="btn btn-primary rounded-pill px-4" data-bs-dismiss="modal">Confirmar y cerrar</button>
+                <button type="button" class="btn btn-primary rounded-pill px-4" data-bs-dismiss="modal">{{ __('business.modal_map_confirm') }}</button>
             </div>
         </div>
     </div>
@@ -296,6 +296,17 @@
 
 @section('scripts')
 <script>
+    // Inyectamos cadenas de JS traducidas desde Blade
+    const jsLang = {
+        deleteConfirm: "{{ __('business.js_delete_confirm') }}",
+        searchingAddress: "{{ __('business.js_searching_address') }}",
+        statusFixed: "{{ __('business.map_status_fixed') }}",
+        statusSuccess: "{{ __('business.js_status_success') }}",
+        statusNotFound: "{{ __('business.js_status_not_found') }}",
+        statusError: "{{ __('business.js_status_error') }}",
+        defaultName: "{{ __('business.js_default_name') }}"
+    };
+
     // 1. SINCRONIZACIÓN DE PREVISUALIZACIÓN EN TIEMPO REAL
     const inputsMap = {
         'inputNombre': 'previewNombre',
@@ -313,12 +324,12 @@
                 if (inputId === 'inputDesc' && value.length > 120) {
                     value = value.substring(0, 120) + '...';
                 }
-                previewEl.innerText = value || (inputId === 'inputNombre' ? 'Nombre del Negocio' : '...');
+                previewEl.innerText = value || (inputId === 'inputNombre' ? jsLang.defaultName : '...');
             });
         }
     });
 
-    // 2. PREVISUALIZACIÓN DE LOGO AL SELECCIONAR ARCHIVO
+    // 2. PREVISUALIZACIÓN DE LOGO
     const inputLogo = document.querySelector('input[name="imagen"]');
     if (inputLogo) {
         inputLogo.addEventListener('change', function(e) {
@@ -335,9 +346,9 @@
         });
     }
 
-    // 3. FUNCIÓN PARA ELIMINAR FOTOS DE LA GALERÍA
+    // 3. FUNCIÓN PARA ELIMINAR FOTOS
     function confirmDelete(url) {
-        if (confirm('¿Estás seguro de que quieres eliminar esta foto de la galería?')) {
+        if (confirm(jsLang.deleteConfirm)) {
             const form = document.getElementById('delete-image-form');
             form.action = url;
             form.submit();
@@ -379,52 +390,41 @@
         }, { once: true });
     }
 
-    // Función para mover chincheta, guardar coordenadas y buscar dirección
     async function actualizarPosicion(lat, lng, buscarDireccion = true) {
-        // Mover o crear marcador
         if (marker) marker.remove();
         marker = L.marker([lat, lng]).addTo(map);
 
         document.getElementById(`lat-${currentDia}`).value = lat;
         document.getElementById(`lng-${currentDia}`).value = lng;
-        document.getElementById(`status-${currentDia}`).innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i>Buscando dirección...';
+        document.getElementById(`status-${currentDia}`).innerHTML = `<i class="fas fa-spinner fa-spin me-1"></i>${jsLang.searchingAddress}`;
 
         if (!buscarDireccion) {
-            document.getElementById(`status-${currentDia}`).innerText = "Ubicación fijada";
+            document.getElementById(`status-${currentDia}`).innerText = jsLang.statusFixed;
             return;
         }
 
         try {
-            // Llamada a la API gratuita Nominatim de OpenStreetMap
             const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lng}&zoom=18&addressdetails=1`, {
-                headers: {
-                    'Accept-Language': 'es' // Forzar idioma español
-                }
+                headers: { 'Accept-Language': 'es' }
             });
             const data = await response.json();
 
             if (data && data.address) {
-                // 1. Extraer Población
                 const poblacion = data.address.city || data.address.town || data.address.village || data.address.municipality || data.address.hamlet || "";
-                
-                // 2. Extraer Dirección
                 const calle = data.address.road || data.address.pedestrian || "";
                 const numero = data.address.house_number || "";
                 const direccionFormateada = calle + (numero ? " " + numero : "");
-                if (poblacion) {
-                    document.getElementById(`pob-${currentDia}`).value = poblacion;
-                }
-                if (direccionFormateada) {
-                    document.getElementById(`ubi-${currentDia}`).value = direccionFormateada;
-                }
                 
-                document.getElementById(`status-${currentDia}`).innerHTML = '<i class="fas fa-check-circle text-success me-1"></i>Ubicación y dirección fijadas';
+                if (poblacion) document.getElementById(`pob-${currentDia}`).value = poblacion;
+                if (direccionFormateada) document.getElementById(`ubi-${currentDia}`).value = direccionFormateada;
+                
+                document.getElementById(`status-${currentDia}`).innerHTML = `<i class="fas fa-check-circle text-success me-1"></i>${jsLang.statusSuccess}`;
             } else {
-                 document.getElementById(`status-${currentDia}`).innerText = "Ubicación fijada (dirección no encontrada)";
+                document.getElementById(`status-${currentDia}`).innerText = jsLang.statusNotFound;
             }
         } catch (error) {
             console.error("Error Nominatim:", error);
-            document.getElementById(`status-${currentDia}`).innerText = "Ubicación fijada (error de red)";
+            document.getElementById(`status-${currentDia}`).innerText = jsLang.statusError;
         }
     }
 </script>

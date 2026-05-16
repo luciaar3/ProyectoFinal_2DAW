@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Producto;
 use App\Models\Reserva;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
 class ClienteController extends Controller
@@ -18,7 +19,6 @@ class ClienteController extends Controller
             $message = 'Producto eliminado de favoritos.';
             $is_favorite = false;
         } else {
-            // Se le asigna el rol 'customer' ya que la tabla lo requiere según el enum
             $user->favoritos()->attach($producto->id, ['rol' => 'Cliente']);
             $message = 'Producto añadido a favoritos.';
             $is_favorite = true;
@@ -40,25 +40,19 @@ class ClienteController extends Controller
 
         $cantidad = $request->input('cantidad');
 
-        // 1. RECOGER LAS VARIANTES
-        // Buscamos todos los campos que empiecen por "variante_"
         $opcionesSeleccionadas = [];
         foreach ($request->all() as $key => $value) {
             if (str_contains($key, 'variante_')) {
-                // Limpiamos el nombre (de "variante_talla" a "Talla")
                 $nombreAtributo = ucfirst(str_replace('variante_', '', $key));
                 $opcionesSeleccionadas[] = "$nombreAtributo: $value";
             }
         }
         
-        // Convertimos el array ["Talla: L", "Color: Rojo"] en un string "Talla: L, Color: Rojo"
         $varianteTexto = implode(', ', $opcionesSeleccionadas);
 
-        // 2. DESCONTAR STOCK
         $producto->stock -= $cantidad;
         $producto->save();
 
-        // 3. CREAR LA RESERVA (Añadimos la nueva columna)
         Reserva::create([
             'fecha_expiracion' => now()->addDays(7),
             'fecha_creacion'   => now(),
@@ -85,6 +79,24 @@ class ClienteController extends Controller
         // Obtener las reservas del usuario con el producto y el negocio asociado
         $reservas = auth()->user()->reservas()->with(['producto.negocio', 'lugarRecogida']) ->orderBy('fecha_creacion', 'desc')->get();
         return view('cliente.reservas', compact('reservas'));
+    }
+
+    public function cancelarReserva($id)
+    {
+        $reserva = Reserva::where('id', $id)->where('user_id', Auth::id())->firstOrFail();
+
+        if ($reserva->estado !== 'pendiente') {
+            return back()->with('error', 'Esta reserva ya no se puede cancelar porque está ' . $reserva->estado . '.');
+        }
+
+        if ($reserva->producto) {
+            $reserva->producto->increment('stock', $reserva->cantidad);
+        }
+
+        $reserva->estado = 'cancelada';
+        $reserva->save();
+
+        return back()->with('success', 'La reserva ha sido cancelada correctamente.');
     }
 
     public function misFavoritos()

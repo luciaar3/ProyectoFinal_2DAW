@@ -1,6 +1,6 @@
 @extends('layouts.layout')
 
-@section('title', 'MercaZone - Tu Mercado de Proximidad Digital')
+@section('title', __('messages.title'))
 
 @section('content')
 <style>
@@ -201,22 +201,22 @@
             Merca<span style="color: var(--rojo-mercazone);">Zone</span>
         </h1>
         <p class="fs-5 text-secondary mx-auto mb-5" style="max-width: 700px;">
-            Encuentra tus puestos favoritos, descubre nuevas rutas y apoya al comercio de tu barrio con un solo clic.
+            {{ __('messages.subtitle') }}
         </p>
 
         <div class="search-container">
             <form action="{{ route('negocios.index') }}" method="GET">
                 <div class="custom-search-bar">
                     <select name="categoria" class="category-select d-none d-md-block">
-                        <option value="">Categorías</option>
+                        <option value="">{{ __('messages.categories') }}</option>
                         @foreach($etiquetas as $et)
                             <option value="{{ $et->nombre }}">{{ ucfirst(str_replace('_', ' y ', $et->nombre)) }}</option>
                         @endforeach
                     </select>
                     <div class="vr d-none d-md-block" style="height: 30px; align-self: center; background-color: #ccc;"></div>
-                    <input type="text" name="search" class="search-input" value="{{ request('search') }}" placeholder="¿Qué estás buscando?">
+                    <input type="text" name="search" class="search-input" value="{{ request('search') }}" placeholder="{{ __('messages.search_placeholder') }}">
                     <button type="submit" class="btn-search">
-                        <i class="bi bi-search me-2"></i> Buscar
+                        <i class="bi bi-search me-2"></i> {{ __('messages.btn_search') }}
                     </button>
                 </div>
             </form>
@@ -239,8 +239,8 @@
                 <div class="flip-card-inner">
                     <div class="flip-card-front">
                         <div class="card-header-front">
-                            <h5 class="fw-bold mb-1 fs-4">Explorar Mapa</h5>
-                            <p class="text-secondary small">Localiza puestos en tiempo real.</p>
+                            <h5 class="fw-bold mb-1 fs-4">{{ __('messages.card_map_title') }}</h5>
+                            <p class="text-secondary small">{{ __('messages.card_map_subtitle') }}</p>
                         </div>
                         <div class="tarjeta-foto" style="background-image: url('{{ asset('storage/img/mapa.webp') }}');"></div>
                     </div>
@@ -248,9 +248,9 @@
                         <div class="icon-box icon-box-blue">
                             <i class="bi bi-map fs-3"></i>
                         </div>
-                        <h5 class="fw-bold mb-2">Encuentra la Ruta</h5>
-                        <p class="text-secondary small text-center mb-4">Mira dónde están tus comerciantes favoritos hoy mismo.</p>
-                        <a href="{{ route('negocios.index') }}" class="btn btn-dark rounded-pill px-4 shadow-sm">Ver Mapa</a>
+                        <h5 class="fw-bold mb-2">{{ __('messages.card_map_back_title') }}</h5>
+                        <p class="text-secondary small text-center mb-4">{{ __('messages.card_map_back_desc') }}</p>
+                        <a href="{{ route('negocios.index') }}" class="btn btn-dark rounded-pill px-4 shadow-sm">{{ __('messages.card_map_btn') }}</a>
                     </div>
                 </div>
             </div>
@@ -262,7 +262,7 @@
                     <div class="flip-card-front" style="border: 2px solid var(--rojo-mercazone);">
                         <div class="card-header-front">
                             <span class="badge bg-danger mb-2 px-3 py-2 rounded-pill" style="background-color: var(--rojo-mercazone) !important;">PRO</span>
-                            <h4 class="fw-bolder">Soy Comerciante</h4>
+                            <h4 class="fw-bolder">{{ __('messages.card_merchant_title') }}</h4>
                         </div>
                         <div class="tarjeta-foto" style="background-image: url('{{ asset('storage/img/comerciante.webp') }}');"></div>
                     </div>
@@ -270,9 +270,9 @@
                         <div class="icon-box icon-box-red">
                             <i class="bi bi-graph-up-arrow fs-3"></i>
                         </div>
-                        <h4 class="fw-bold mb-2">Digitaliza tu Puesto</h4>
-                        <p class="text-secondary small text-center mb-4">Publica tus productos y recibe pedidos online fácilmente.</p>
-                        <a href="{{ route('registro') }}" class="btn btn-danger rounded-pill px-4 fw-bold shadow-sm" style="background-color: var(--rojo-mercazone);">Empezar Ahora</a>
+                        <h4 class="fw-bold mb-2">{{ __('messages.card_merchant_back_title') }}</h4>
+                        <p class="text-secondary small text-center mb-4">{{ __('messages.card_merchant_back_desc') }}</p>
+                        <a href="{{ route('registro') }}" class="btn btn-danger rounded-pill px-4 fw-bold shadow-sm" style="background-color: var(--rojo-mercazone);">{{ __('messages.card_merchant_btn') }}</a>
                     </div>
                 </div>
             </div>
@@ -283,8 +283,8 @@
                 <div class="flip-card-inner">
                     <div class="flip-card-front">
                         <div class="card-header-front">
-                            <h5 class="fw-bold mb-1 fs-4">Comunidad</h5>
-                            <p class="text-secondary small">Confianza y vecindad.</p>
+                            <h5 class="fw-bold mb-1 fs-4">{{ __('messages.card_community_title') }}</h5>
+                            <p class="text-secondary small">{{ __('messages.card_community_subtitle') }}</p>
                         </div>
                         <div class="tarjeta-foto" style="background-image: url('{{ asset('storage/img/comunidad.webp') }}');"></div>
                     </div>
@@ -292,9 +292,9 @@
                         <div class="icon-box icon-box-green">
                             <i class="bi bi-stars fs-3"></i>
                         </div>
-                        <h5 class="fw-bold mb-2">Opiniones Reales</h5>
-                        <p class="text-secondary small text-center mb-4">Descubre los mejores productos según tus vecinos.</p>
-                        <a href="{{route('foros.index') }}" class="btn btn-dark rounded-pill px-4 shadow-sm">Leer Foros</a>
+                        <h5 class="fw-bold mb-2">{{ __('messages.card_community_back_title') }}</h5>
+                        <p class="text-secondary small text-center mb-4">{{ __('messages.card_community_back_desc') }}</p>
+                        <a href="{{ route('foros.index') }}" class="btn btn-dark rounded-pill px-4 shadow-sm">{{ __('messages.card_community_btn') }}</a>
                     </div>
                 </div>
             </div>
