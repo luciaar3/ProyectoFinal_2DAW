@@ -69,7 +69,7 @@ class AuthController extends Controller
             } elseif ($rol === 'Comerciante') {
                 return redirect()->route('comerciante.account');
             }
-            return redirect()->route('account');
+            return redirect()->route('cliente.account');
         } else {
             return view('auth.login');
         }
