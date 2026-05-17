@@ -19,6 +19,11 @@ class SetLocale
     {
         if (Session::has('locale')) {
             App::setLocale(Session::get('locale'));
+        } else {
+            // 2. Si ha hecho logout, miramos el idioma de su navegador
+            $browserLocale = $request->getPreferredLanguage(['es', 'en']); 
+            
+            App::setLocale($browserLocale);
         }
 
         return $next($request);

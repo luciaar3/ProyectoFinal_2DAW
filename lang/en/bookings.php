@@ -20,6 +20,7 @@ return [
     'details_btn' => 'Details',
     'cancel_btn_title' => 'Cancel Booking',
     'cancel_confirm_js' => 'Are you sure you want to cancel this booking?',
+    'btn_back' => 'Back',
     
     // Statuses
     'status_pendiente' => 'pending',

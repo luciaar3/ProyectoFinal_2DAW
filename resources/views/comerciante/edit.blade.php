@@ -17,7 +17,6 @@
 </style>
 
 <div class="container py-5">
-    {{-- Formulario único para todo el panel --}}
     <form action="{{ route('comerciante.update') }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('PUT')
@@ -65,7 +64,7 @@
                             </div>
                         </div>
 
-                        {{-- Permiso (Solo lectura) --}}
+                        {{-- Permiso--}}
                         <div class="mb-3">
                             <label class="form-label fw-semibold text-muted">{{ __('business.label_permit') }}</label>
                             <input type="text" name="numero_permiso" 
@@ -107,7 +106,6 @@
                             @enderror
                         </div>
 
-                        {{-- Galería Actual --}}
                         <h6 class="fw-bold mb-3">{{ __('business.title_current_gallery') }}</h6>
                         <div class="d-flex flex-wrap gap-3 mb-4">
                             @foreach($negocio->imagenes as $img)
@@ -217,7 +215,7 @@
                     
                     <div class="card border-0 shadow-lg overflow-hidden" style="border-radius: 25px;">
                         <div class="position-relative">
-                            {{-- Carousel Preview --}}
+                            {{-- Carousel--}}
                             <div id="previewCarousel" class="carousel slide" data-bs-ride="carousel">
                                 <div class="carousel-inner">
                                     @forelse($negocio->imagenes as $key => $img)
@@ -244,8 +242,7 @@
                                 </div>
                             </div>
                         </div>
-                        
-                        {{-- Textos --}}
+
                         <div style="margin-top: 55px;"></div>
                         <div class="card-body p-4 text-center">
                             <h3 class="fw-bold mb-1" id="previewNombre">{{ old('nombre_negocio', $negocio->nombre_negocio) }}</h3>
@@ -428,5 +425,4 @@
         }
     }
 </script>
-@endsection
 @endsection

@@ -31,7 +31,7 @@ return [
     'card_business_btn' => 'Editar Negocio',
 
     // Tarjeta: Mi Cuenta
-    'card_account_title' => 'Mi Cuenta',
+    'card_account_title' => 'Configuración',
     'card_account_desc' => 'Cambia tu contraseña, email y ajustes de seguridad de tu usuario.',
     'card_account_btn' => 'Editar Perfil',
 

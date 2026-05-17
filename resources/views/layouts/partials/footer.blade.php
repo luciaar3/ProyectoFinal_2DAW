@@ -69,7 +69,7 @@
                 <small class="text-muted">&copy; {{ date('Y') }} MercaZone. {{ __('messages.footer_rights') }}</small>
             </div>
             <div class="col-md-6 text-center text-md-end mt-2 mt-md-0">
-                <small class="text-muted">{{ __('messages.footer_crafted') }} <i class="bi bi-heart-fill text-danger"></i></small>
+                <small class="text-muted">{!! __('messages.footer_crafted', ['heart' => '<i class="bi bi-heart-fill text-danger mx-1"></i>']) !!}</small>
             </div>
         </div>
     </div>

@@ -20,6 +20,7 @@ return [
     'details_btn' => 'Detalls',
     'cancel_btn_title' => 'Cancel·lar Reserva',
     'cancel_confirm_js' => 'Segur que vols cancel·lar esta reserva?',
+    'btn_back' => 'Tornar arrere',
     
     // Estats
     'status_pendiente' => 'pendent',

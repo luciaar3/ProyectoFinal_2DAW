@@ -143,7 +143,6 @@
 </div>
 
 <style>
-    /* Estilos de Tabla Avanzados */
     .custom-table-card {
         border: 1px solid rgba(0,0,0,0.06);
     }
@@ -167,7 +166,6 @@
     .fs-7.5 { font-size: 0.8rem; }
     .style-badge { font-size: 0.75rem; letter-spacing: 0.3px; }
 
-    /* Botonera Interactiva */
     .btn-quick-action {
         width: 32px;
         height: 32px;

@@ -22,7 +22,7 @@ return [
     'footer_help_desc' => '¿Tienes dudas con tus funciones o quieres debatir en nuestra comunidad?',
     'footer_help_btn' => 'Ir al Foro MercaZone',
     'footer_rights' => 'Todos los derechos reservados.',
-    'footer_crafted' => 'Hecho con para el comercio local.',
+    'footer_crafted' => 'Hecho con :heart para el comercio local.',
 
     // Historia
     'hist_badge' => 'Más que comercio, es vida',

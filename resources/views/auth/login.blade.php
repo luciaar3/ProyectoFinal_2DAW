@@ -133,9 +133,16 @@
                             <div class="d-flex justify-content-between align-items-center">
                                 <label for="password" class="form-label">{{ __('login.label_password') }}</label>
                             </div>
-                            <input type="password" class="form-control @error('password') is-invalid @enderror" 
-                                   id="password" name="password" placeholder="••••••••" required>
-                            @error('password') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                            
+                            <div class="position-relative">
+                                <input type="password" class="form-control pe-5 @error('password') is-invalid @enderror" 
+                                    id="password" name="password" placeholder="••••••••" required>
+                                
+                                <button type="button" id="togglePassword" class="btn position-absolute end-0 top-50 translate-middle-y border-0 text-secondary me-2" style="z-index: 10;">
+                                    <i class="bi bi-eye" id="eyeIcon"></i>
+                                </button>
+                            </div>
+                            @error('password') <div class="invalid-feedback d-block">{{ $message }}</div> @enderror
                         </div>
 
                         <div class="d-grid gap-2">
@@ -162,4 +169,20 @@
         </div>
     </div>
 </div>
+<script>
+    document.getElementById('togglePassword').addEventListener('click', function () {
+        const passwordInput = document.getElementById('password');
+        const eyeIcon = document.getElementById('eyeIcon');
+        
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            eyeIcon.classList.remove('bi-eye');
+            eyeIcon.classList.add('bi-eye-slash');
+        } else {
+            passwordInput.type = 'password';
+            eyeIcon.classList.remove('bi-eye-slash');
+            eyeIcon.classList.add('bi-eye');
+        }
+    });
+</script>
 @endsection

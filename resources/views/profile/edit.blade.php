@@ -37,19 +37,11 @@
                         <li class="breadcrumb-item active fw-bold" aria-current="page" style="color: #f53003;">{{ __('profile.bc_settings') }}</li>
                     </ol>
                 </nav>
-                
-                <button onclick="window.history.back();" class="btn btn-light rounded-pill px-3 py-2 btn-volver border d-flex align-items-center gap-2 bg-white text-secondary small fw-bold shadow-sm">
-                    <i class="bi bi-arrow-left fs-6 text-dark"></i> {{ __('profile.back_btn') }}
-                </button>
             </div>
 
             <div class="card border-0 shadow-sm mb-4 shadow-hover" style="border-radius: 24px; transition: transform 0.3s ease;">
                 <div class="card-body p-4 p-md-5">
-                    <div class="text-center mb-5 position-relative">
-                        <a href="{{ Auth::user()->rol === 'Cliente' ? route('cliente.account') : (Auth::user()->rol === 'Comerciante' ? route('comerciante.account') : route('admin.account')) }}" 
-                        class="btn btn-outline-secondary rounded-pill position-absolute top-0 end-0">
-                            {{ __('profile.panel_btn') }}
-                        </a>
+                    <div class="text-center mb-5 position-relative">                   
                         <div class="d-inline-flex align-items-center justify-content-center rounded-circle mb-3 shadow-inner" style="width: 80px; height: 80px; background-color: rgba(245, 48, 3, 0.08);">
                             <span class="fs-1 fw-bold" style="color: #f53003;">{{ substr($user->nombre, 0, 1) }}</span>
                         </div>

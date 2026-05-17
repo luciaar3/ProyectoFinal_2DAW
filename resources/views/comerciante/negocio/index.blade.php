@@ -4,7 +4,6 @@
 <style>
     :root { --rojo-mercazone: #f53003; }
 
-    /* Contenedor principal */
     .view-container { position: relative; min-height: 100vh; background: #f8f9fa; overflow: hidden; }
 
     /* --- MODO LISTA--- */
@@ -80,7 +79,6 @@
     }
     .map-card:hover { border-color: var(--rojo-mercazone); }
 
-    /* --- ELEMENTOS COMUNES --- */
     .view-toggle-btn {
         position: fixed;
         bottom: 30px;

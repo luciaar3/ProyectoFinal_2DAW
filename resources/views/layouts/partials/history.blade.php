@@ -1,5 +1,4 @@
 <style>
-    /* Sección Historia */
     .leading-relaxed { line-height: 1.8; }
     .shadow-inner { box-shadow: inset 0 2px 10px rgba(0,0,0,0.05); }
 
