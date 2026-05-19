@@ -115,18 +115,36 @@
     </button>
 
     <div id="vistaLista">
-        <div class="d-flex justify-content-between align-items-end mb-4 px-2">
-            <div>
+        <div class="row align-items-center mb-4 px-2 g-3">
+            <div class="col-md-6 col-12">
                 <h2 class="fw-bold mb-0">{{ __('index.title') }}</h2>
-                <p class="text-muted">{{ __('index.subtitle') }}</p>
+                <p class="text-muted mb-0">{{ __('index.subtitle') }}</p>
             </div>
-            <div style="width: 200px;">
+            <div class="col-md-6 col-12">
                 <form action="{{ route('negocios.index') }}" method="GET">
-                    <select name="dia" class="form-select rounded-pill" onchange="this.form.submit()">
-                        @foreach(['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo'] as $d)
-                            <option value="{{ $d }}" {{ $diaFiltro == $d ? 'selected' : '' }}>{{ __('index.' . $d) }}</option>
-                        @endforeach
-                    </select>
+                    <div class="d-flex gap-2">
+                        <div class="input-group">
+                            <span class="input-group-text bg-white border-end-0 rounded-start-pill"><i class="bi bi-search text-muted"></i></span>
+                            <input type="text" name="search" class="form-control border-start-0 rounded-end-pill" 
+                                   placeholder="{{ __('index.search_placeholder') }}" value="{{ request('search') }}">
+                        </div>
+                        
+                        <div style="min-width: 140px;">
+                            <select name="dia" class="form-select rounded-pill" onchange="this.form.submit()">
+                                @foreach(['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo'] as $d)
+                                    <option value="{{ $d }}" {{ $diaFiltro == $d ? 'selected' : '' }}>{{ __('index.' . $d) }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        @if(request('categoria'))
+                            <input type="hidden" name="categoria" value="{{ request('categoria') }}">
+                        @endif
+
+                        <button type="submit" class="btn btn-mercazone rounded-pill px-3 d-none d-md-block">
+                            Buscar
+                        </button>
+                    </div>
                 </form>
             </div>
         </div>

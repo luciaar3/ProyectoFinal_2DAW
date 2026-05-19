@@ -22,12 +22,24 @@ class NegocioController extends Controller
         // 2. Iniciamos la Query
         $query = Negocio::with(['horarios', 'imagenes']);
 
-        // 3. Aplicamos Filtro por nombre o población
+        // 3. Aplicamos Filtro por categoría
         if ($request->filled('categoria')) {
             $categoriaNombre = $request->categoria;
             $query->whereHas('productos.etiquetas', function($q) use ($categoriaNombre) {
                 // Buscamos por el nombre en la tabla 'etiquetas'
                 $q->where('nombre', $categoriaNombre);
+            });
+        }
+
+        // Aplicamos Filtro por el texto del buscador (Nombre del negocio o Población)
+        if ($request->filled('search')) {
+            $buscar = $request->search;
+            $query->where(function($q) use ($buscar) {
+                $q->where('nombre_negocio', 'LIKE', '%' . $buscar . '%')
+                  ->orWhereHas('horarios', function($qHorario) use ($buscar) {
+                      $qHorario->where('poblacion', 'LIKE', '%' . $buscar . '%')
+                               ->orWhere('ubicacion', 'LIKE', '%' . $buscar . '%');
+                  });
             });
         }
 
@@ -41,7 +53,7 @@ class NegocioController extends Controller
             // Buscamos el horario del día que estamos filtrando
             $h = $n->horarios->where('dia', $diaFiltro)->first();
             
-            // Si por algún error ese día no tiene horario (aunque no debería pasar), evitamos que rompa
+            // Si por algún error ese día no tiene horario, evitamos que rompa
             if (!$h) return null;
 
             return [

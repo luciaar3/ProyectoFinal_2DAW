@@ -62,9 +62,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/comerciante/productos/{producto}/variantes', [ProductoController::class, 'getVariantes']);
     Route::post('/comerciante/productos/variantes', [ProductoController::class, 'addVariante']);
 
-    //Notificaciones
-    Route::resource('notificaciones', NotificacionController::class);
-
     //Foros
     Route::get('/foros', [ForoController::class, 'index'])->name('foros.index');
     Route::get('/foros/comercio/{id}', [ForoController::class, 'show'])->name('foros.show');
