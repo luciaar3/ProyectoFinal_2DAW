@@ -64,13 +64,14 @@ class NegocioController extends Controller
                 'pob'            => $h->poblacion,
                 'ubi'            => $h->ubicacion,
                 'url'            => route('negocios.show', $n->id),
-                // Si tienes una carpeta 'img' dentro de 'public', asegúrate de que la ruta sea correcta
-                'logo'           => $n->imagen ? asset('storage/'.$n->imagen) : asset('img/default-logo.png')
+                'logo'           => $n->imagen 
+                                    ? (\Illuminate\Support\Str::contains($n->imagen, 'http') ? $n->imagen : asset('storage/'.$n->imagen)) 
+                                    : asset('img/default-logo.png')
             ];
         })->filter();
 
         // 6. EJECUTAMOS LA PAGINACIÓN PARA LA LISTA
-        $negocios = $query->paginate(10)->withQueryString(); 
+        $negocios = $query->paginate(12)->withQueryString(); 
 
         $etiquetas = Etiqueta::all();
 

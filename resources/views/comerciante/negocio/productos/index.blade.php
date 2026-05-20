@@ -49,7 +49,10 @@
                     {{-- Contenedor de Imagen + Precio --}}
                     <div style="height: 220px; overflow: hidden; position: relative; background-color: #fdfdfd;">
                         @if($producto->imagen)
-                            <img src="{{ asset('storage/' . $producto->imagen) }}" class="w-100 h-100 img-zoom" style="object-fit: cover;">
+                            <img src="{{ \Illuminate\Support\Str::contains($producto->imagen, 'http') ? $producto->imagen : asset('storage/' . $producto->imagen) }}" 
+                                class="w-100 h-100 img-zoom" 
+                                style="object-fit: cover;" 
+                                alt="{{ $producto->nombre }}">
                         @else
                             <div class="d-flex flex-column align-items-center justify-content-center h-100 text-muted bg-light bg-opacity-50">
                                 <i class="bi bi-image fs-2 opacity-50 mb-1"></i>

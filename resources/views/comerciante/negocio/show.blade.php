@@ -139,11 +139,13 @@
             <div class="carousel-inner">
                 @forelse($negocio->imagenes as $key => $img)
                     <div class="carousel-item {{ $key == 0 ? 'active' : '' }}">
-                        <img src="{{ asset('storage/' . $img->ruta) }}" alt="{{ __('perfil.alt_business_photo', ['name' => $negocio->nombre_negocio]) }}">
+                        <img src="{{ \Illuminate\Support\Str::contains($img->ruta, 'http') ? $img->ruta : asset('storage/' . $img->ruta) }}" 
+                        alt="{{ __('perfil.alt_business_photo', ['name' => $negocio->nombre_negocio]) }}">
                     </div>
                 @empty
                     <div class="carousel-item active">
-                        <img src="{{ asset('storage/'.$negocio->imagen) }}" alt="{{ __('perfil.alt_main_photo') }}">
+                        <img src="{{ $negocio->imagen ? (\Illuminate\Support\Str::contains($negocio->imagen, 'http') ? $negocio->imagen : asset('storage/'.$negocio->imagen)) : asset('img/default-shop.png') }}" 
+                        alt="{{ __('perfil.alt_main_photo') }}">
                     </div>
                 @endforelse
             </div>
@@ -166,7 +168,10 @@
                     <div class="d-flex align-items-start justify-content-between mb-4 flex-wrap gap-3">
                         <div class="d-flex align-items-center">
                             <div class="position-relative">
-                                <img src="{{ asset('storage/'.$negocio->imagen) }}" class="rounded-circle shadow-sm me-4" style="width:120px; height:120px; object-fit:cover; border: 4px solid white; box-shadow: 0 5px 15px rgba(0,0,0,0.1) !important;">
+                                <img src="{{ $negocio->imagen ? (\Illuminate\Support\Str::contains($negocio->imagen, 'http') ? $negocio->imagen : asset('storage/'.$negocio->imagen)) : asset('img/default-shop.png') }}" 
+                                    class="rounded-circle shadow-sm me-4" 
+                                    style="width:120px; height:120px; object-fit:cover; border: 4px solid white; box-shadow: 0 5px 15px rgba(0,0,0,0.1) !important;"
+                                    alt="{{ $negocio->nombre_negocio }}">
                             </div>
                             <div>
                                 <h1 class="fw-bold mb-1" style="color: var(--negro-text); letter-spacing: -2px; font-size: 2.8rem;">{{ $negocio->nombre_negocio }}</h1>
@@ -287,7 +292,9 @@
                 <div class="col-6 col-md-4 col-lg-3">
                     <div class="product-minimal card h-100 border-0 shadow-sm p-2">
                         <div class="product-img-wrapper rounded-4 mb-3">
-                            <img src="{{ $p->imagen ? asset('storage/'.$p->imagen) : asset('img/default-product.png') }}" class="w-100 h-100 object-fit-cover">
+                            <img src="{{ $p->imagen ? (\Illuminate\Support\Str::contains($p->imagen, 'http') ? $p->imagen : asset('storage/'.$p->imagen)) : asset('img/default-product.png') }}" 
+                            class="w-100 h-100 object-fit-cover" 
+                            alt="{{ $p->nombre }}">
                             <div class="product-tag shadow-sm">{{ __('perfil.local_stall') }}</div>
                         </div>
                         <div class="px-2 pb-2 text-center">

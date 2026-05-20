@@ -6,9 +6,9 @@
 <div class="container mt-5 pt-4 mb-5">
     <div class="row mb-5 align-items-center bg-white p-4 p-md-5 shadow-sm" style="border-radius: 24px; border: 1px solid rgba(0,0,0,0.05);">
         <div class="col-md-auto text-center mb-3 mb-md-0">
-            <img src="{{ $negocio->imagen ? asset('storage/' . $negocio->imagen) : 'https://via.placeholder.com/100' }}" 
-                 class="rounded-circle shadow-sm border border-3" 
-                 style="width: 100px; height: 100px; object-fit: cover; border-color: rgba(245, 48, 3, 0.2) !important;">
+            <img src="{{ $negocio->imagen ? (\Illuminate\Support\Str::contains($negocio->imagen, 'http') ? $negocio->imagen : asset('storage/' . $negocio->imagen)) : 'https://via.placeholder.com/100' }}" 
+                class="rounded-circle shadow-sm border border-3" 
+                style="width: 100px; height: 100px; object-fit: cover; border-color: rgba(245, 48, 3, 0.2) !important;">
         </div>
         <div class="col-md">
             <span class="badge mb-1 text-white px-3 py-1 rounded-pill" style="background-color: #f53003; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.5px;">{{ __('foro.badge_community') }}</span>

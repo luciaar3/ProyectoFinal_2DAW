@@ -153,7 +153,7 @@
             @foreach($negocios as $negocio)
                 <div class="col-xl-3 col-lg-4 col-md-6">
                     <div class="business-card shadow-sm">
-                        <img src="{{ $negocio->imagen ? asset('storage/'.$negocio->imagen) : asset('img/default-shop.png') }}">
+                        <img src="{{ $negocio->imagen ? (\Illuminate\Support\Str::contains($negocio->imagen, 'http') ? $negocio->imagen : asset('storage/'.$negocio->imagen)) : asset('img/default-shop.png') }}">
                         <div class="p-3">
                             <h6 class="fw-bold mb-1">{{ $negocio->nombre_negocio }}</h6>
                             <p class="text-muted small mb-3">
@@ -165,6 +165,11 @@
                     </div>
                 </div>
             @endforeach
+        </div>
+        <div id="indicador-carga" class="text-center my-4" style="display: none;" data-next-page="{{ $negocios->nextPageUrl() }}">
+            <div class="spinner-border text-danger" role="status">
+                <span class="visually-hidden">Cargando...</span>
+            </div>
         </div>
     </div>
 
@@ -187,8 +192,8 @@
                     <div class="map-card p-2 shadow-sm" onclick="centrarMapa({{ $h->latitud ?? 0 }}, {{ $h->longitud ?? 0 }})">
                         <div class="d-flex align-items-center">
                             <a href="{{ route('negocios.show', $negocio->id) }}">
-                                <img src="{{ $negocio->imagen ? asset('storage/'.$negocio->imagen) : asset('img/default-shop.png') }}" 
-                                     class="rounded-circle border" style="width: 45px; height: 45px; object-fit: cover;">
+                                <img src="{{ $negocio->imagen ? (\Illuminate\Support\Str::contains($negocio->imagen, 'http') ? $negocio->imagen : asset('storage/'.$negocio->imagen)) : asset('img/default-shop.png') }}" 
+                                class="rounded-circle border" style="width: 45px; height: 45px; object-fit: cover;">
                             </a>
                             
                             <div class="ms-2 flex-grow-1">
@@ -251,7 +256,11 @@
 
     puntos.forEach(function (p) {
         if (p.lat && p.lng) {
-            let imagenUrl = p.logo ? p.logo : '/img/default-shop.png';
+
+            let imagenUrl = '/img/default-shop.png';
+            if (p.logo) {
+                imagenUrl = p.logo.includes('http') ? p.logo : '/storage/' + p.logo;
+            }   
 
             L.marker([p.lat, p.lng], { icon: mercaIcon }).addTo(markers).bindPopup(`
                 <div class="text-center p-1" style="min-width: 120px;">
@@ -277,5 +286,65 @@
     function centrarMapa(lat, lng) {
         if(lat != 0) map.flyTo([lat, lng], 15);
     }
+
+    // --- SCROLL INFINITO ---
+    document.addEventListener("DOMContentLoaded", function() {
+        const contenedorLista = document.getElementById('vistaLista');
+        const indicadorCarga = document.getElementById('indicador-carga');
+        const gridProductos = contenedorLista.querySelector('.row.g-4');
+        
+        let urlSiguientePagina = indicadorCarga.getAttribute('data-next-page');
+        let cargandoMas = false;
+
+        if (urlSiguientePagina) {
+            // Mostrar inicialmente si hay más páginas
+            indicadorCarga.style.display = 'block';
+
+            const observadorScroll = new IntersectionObserver((entries) => {
+                if (entries[0].isIntersecting && !cargandoMas && urlSiguientePagina) {
+                    cargarMasNegocios();
+                }
+            }, {
+                root: contenedorLista,
+                rootMargin: '100px' // Detectar un poco antes de llegar abajo del todo
+            });
+
+            observadorScroll.observe(indicadorCarga);
+
+            function cargarMasNegocios() {
+                cargandoMas = true;
+
+                fetch(urlSiguientePagina, {
+                    headers: { 'X-Requested-With': 'XMLHttpRequest' }
+                })
+                .then(response => response.text())
+                .then(html => {
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(html, 'text/html');
+                    
+                    // Extraer inyecciones HTML de las tarjetas
+                    const nuevasTarjetas = doc.querySelectorAll('#vistaLista .row.g-4 > div');
+                    nuevasTarjetas.forEach(tarjeta => {
+                        gridProductos.appendChild(tarjeta);
+                    });
+
+                    // Obtener la nueva URL directamente del DOM de la respuesta
+                    const nuevoIndicador = doc.getElementById('indicador-carga');
+                    urlSiguientePagina = nuevoIndicador ? nuevoIndicador.getAttribute('data-next-page') : null;
+
+                    cargandoMas = false;
+
+                    if (!urlSiguientePagina) {
+                        indicadorCarga.style.display = 'none';
+                        observadorScroll.disconnect();
+                    }
+                })
+                .catch(error => {
+                    console.error("Error cargando más negocios:", error);
+                    cargandoMas = false;
+                });
+            }
+        }
+    });
 </script>
 @endsection

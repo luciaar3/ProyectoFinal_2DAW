@@ -140,7 +140,7 @@
             {{-- Columna Imagen --}}
             <div class="col-lg-6">
                 <div class="product-visual-container position-relative">
-                    <img src="{{ $producto->imagen ? asset('storage/' . $producto->imagen) : 'https://via.placeholder.com/800' }}" 
+                    <img src="{{ $producto->imagen ? (\Illuminate\Support\Str::contains($producto->imagen, 'http') ? $producto->imagen : asset('storage/' . $producto->imagen)) : 'https://via.placeholder.com/800' }}" 
                         class="w-100 product-img-main" 
                         alt="{{ $producto->nombre }}">
      

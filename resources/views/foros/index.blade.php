@@ -30,9 +30,9 @@
                      style="border-radius: 24px; background-color: #ffffff; overflow: hidden; border: 1px solid rgba(0,0,0,0.03) !important;">
                     
                     <div class="position-relative" style="height: 140px; background-color: #f8f9fa;">
-                        <img src="{{ $negocio->imagen ? asset('storage/' . $negocio->imagen) : 'https://via.placeholder.com/400x250?text=' . urlencode($negocio->nombre_negocio) }}"
-                             class="w-100 h-100" alt="{{ $negocio->nombre_negocio }}"
-                             style="object-fit: cover; filter: brightness(0.95);">
+                        <img src="{{ $negocio->imagen ? (\Illuminate\Support\Str::contains($negocio->imagen, 'http') ? $negocio->imagen : asset('storage/' . $negocio->imagen)) : 'https://via.placeholder.com/400x250?text=' . urlencode($negocio->nombre_negocio) }}"
+                        class="w-100 h-100" alt="{{ $negocio->nombre_negocio }}"
+                        style="object-fit: cover; filter: brightness(0.95);">
                         
                         <span class="position-absolute badge rounded-pill bg-white text-dark shadow-sm px-2 py-1" style="top: 15px; right: 15px; font-size: 0.7rem; font-weight: 700;">
                             <i class="bi bi-circle-fill text-success me-1" style="font-size: 0.5rem;"></i> {{ __('foro.status_active') }}
